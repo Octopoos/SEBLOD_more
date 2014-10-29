@@ -1371,10 +1371,6 @@
 /templates/seb_one/*
 /templates/seb_table/*
 
-######## SEBLOD Deprecated
-
-/plugins/system/blank/*
-
 ######## SublimeText
 
 # workspace files are user-specific
@@ -1409,3 +1405,18 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+######## SEBLOD Deprecated
+
+/plugins/system/blank/*
+
+######## SEBLOD Add-ons >> Packager
+
+/administrator/components/com_cck_packager/*
+/administrator/language/en-GB/en-GB.com_cck_packager.ini
+/administrator/language/en-GB/en-GB.com_cck_packager.sys.ini
+/administrator/language/fr-FR/fr-FR.com_cck_packager.ini
+/administrator/language/fr-FR/fr-FR.com_cck_packager.sys.ini
+/components/com_cck_packager/*
+/language/en-GB/en-GB.com_cck_packager.ini
+/language/fr-FR/fr-FR.com_cck_packager.ini
