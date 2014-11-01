@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="template" version="2.5" method="upgrade">
+	<name>seb_backstretch</name>
+	<author>Octopoos</author>
+	<authorEmail>contact@seblod.com</authorEmail>
+	<authorUrl>http://www.seblod.com</authorUrl>
+	<copyright>Copyright (C) 2013 SEBLOD. All Rights Reserved.</copyright>
+	<license>GNU General Public License version 2 or later.</license>
+	<creationDate>January 2014</creationDate>
+	<description>SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
+	<version>1.1.0</version>
+	
+	<files>
+		<folder>css</folder>
+		<folder>fields</folder>
+		<folder>images</folder>
+		<folder>includes</folder>
+		<folder>js</folder>
+		<folder>languages</folder>
+		<folder>positions</folder>
+		<folder>variations</folder>
+		
+		<filename>config.php</filename>
+		<filename>index.php</filename>
+		<filename>template_picker.png</filename>
+		<filename>template_preview.png</filename>
+		<filename>template_thumbnail.png</filename>
+		<filename>templateDetails.xml</filename>
+		<filename>index.html</filename>
+	</files>
+	
+	<languages folder="languages">
+		<language tag="en-GB">en-GB/en-GB.tpl_seb_backstretch.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.tpl_seb_backstretch.ini</language>
+	</languages>
+	
+	<positions>
+		<position>element</position>
+	</positions>
+	
+	<config addfieldpath="/libraries/cck/construction/field">
+		<fields name="params">
+			<fieldset name="style" label="TPL_SEB_BACKSTRETCH_LEGEND_STYLE">
+				<field name="cck_client_item" type="hidden" default="0" />				
+				<field name="backstretch_duration" type="cck" construction="more_backstretch_duration" default="5000" label="TPL_SEB_BACKSTRETCH_DURATION" description="" class="inputbox" />
+				<field name="backstretch_selector" type="cck" construction="more_backstretch_selector" default="" label="TPL_SEB_BACKSTRETCH_SELECTOR" description="" class="inputbox" />
+				<field name="backstretch_fade" type="cck" construction="more_backstretch_fade" default="0" label="TPL_SEB_BACKSTRETCH_FADE" description="" class="inputbox" />
+				<field name="backstretch_height" type="cck" construction="more_backstretch_height" default="auto" label="TPL_SEB_BACKSTRETCH_HEIGHT" description="" class="inputbox" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
