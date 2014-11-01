@@ -14,9 +14,9 @@ Going Further
 ======
 - <a href="http://www.seblod.com/community/forums" target="_blank">Forums</a>
 - <a href="http://www.seblod.com/products/vip" target="_blank">Memberships</a>
-- <a href="http://www.seblod.com/products" target="_blank">Products</a>
+- <a href="http://www.seblod.com/products" target="_blank">Marketplace</a>
 - <a href="http://www.seblod.com/enterprise/support" target="_blank">Support</a>
 
 Get Involved?
 ======
-Anyone that want to help and to get involved in the development on SEBLOD should use the "Dev" branch, and Pull Request only on the "Dev" branch. Any PR on the "Master" or "Next" branches will be closed.
+Anyone that want to help & get involved in the development of SEBLOD should use the "Dev" branch, and Pull Request only to the "Dev" branch. Any PR to the "Master" or "Next" branches will be closed.
