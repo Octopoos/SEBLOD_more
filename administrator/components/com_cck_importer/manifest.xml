@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>com_cck_importer</name>
+	<author>Octopoos</author>
+	<authorEmail>contact@seblod.com</authorEmail>
+	<authorUrl>http://www.seblod.com</authorUrl>
+	<copyright>Copyright (C) 2013 SEBLOD. All Rights Reserved.</copyright>
+	<license>GNU General Public License version 2 or later.</license>
+	<creationDate>January 2012</creationDate>
+	<description>SEBLOD Importer Add-on for SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
+	<version>1.3.2</version>
+	
+	<scriptfile>script.php</scriptfile>
+	
+	<files folder="site">
+		<folder>assets</folder>
+		<folder>helpers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+		
+		<filename>controller.php</filename>
+		<filename>cck_importer.php</filename>
+		<filename>index.html</filename>
+	</files>
+	
+	<languages folder="site/languages">
+		<language tag="en-GB">en-GB/en-GB.com_cck_importer.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.com_cck_importer.ini</language>
+	</languages>
+	
+	<administration>
+		<menu>SEBLOD Importer</menu>
+	
+		<files folder="admin">
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>install</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+	
+			<filename>_CHANGELOG.php</filename>
+			<filename>_VERSION.php</filename>
+			<filename>access.xml</filename>
+			<filename>cck_importer.php</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+		</files>
+		
+		<languages folder="admin/languages">
+			<language tag="en-GB">en-GB/en-GB.com_cck_importer.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_cck_importer.sys.ini</language>
+			<language tag="fr-FR">fr-FR/fr-FR.com_cck_importer.ini</language>
+			<language tag="fr-FR">fr-FR/fr-FR.com_cck_importer.sys.ini</language>
+		</languages>
+	</administration>
+	
+	<updateservers>
+		<server type="extension" priority="1" name="SEBLOD Importer Add-on Updates">http://update.seblod.com/com_cck_importer.xml</server>
+	</updateservers>
+</extension>

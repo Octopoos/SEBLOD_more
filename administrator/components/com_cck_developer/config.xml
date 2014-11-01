@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config addfieldpath="/libraries/cck/construction/field">
+	<fieldset name="main" label="COM_CCK_CONFIG_FIELDSET_MAIN" description="COM_CCK_CONFIG_FIELDSET_MAIN_DESC">
+		<field name="author" type="text" size="32" default="Octopoos" label="COM_CCK_CONFIG_AUTHOR" description="COM_CCK_CONFIG_AUTHOR_DESC" class="inputbox" />
+		<field name="author_email" type="text" size="32" default="contact@seblod.com" label="COM_CCK_CONFIG_AUTHOR_EMAIL" description="COM_CCK_CONFIG_AUTHOR_EMAIL_DESC" class="inputbox" />
+		<field name="author_url" type="text" size="32" default="http://www.seblod.com" label="COM_CCK_CONFIG_AUTHOR_URL" description="COM_CCK_CONFIG_AUTHOR_URL_DESC" class="inputbox" />
+		<field name="copyright" type="text" size="64" default="Copyright (C) 2013 SEBLOD. All Rights Reserved." label="COM_CCK_CONFIG_COPYRIGHT" description="COM_CCK_CONFIG_COPYRIGHT_DESC" class="inputbox" />
+		<field name="license" type="text" size="64" default="GNU General Public License version 2 or later." label="COM_CCK_CONFIG_LICENSE" description="COM_CCK_CONFIG_LICENSE_DESC" class="inputbox" />
+		<field name="COM_CCK_CONFIG_LEGEND_DEFAULT_VALUES" type="spacer" hr="false" />
+		<field name="creation_date" type="list" default="0" label="COM_CCK_CONFIG_CREATION_DATE" description="COM_CCK_CONFIG_CREATION_DATE_DESC" class="inputbox">
+			<option value="0">COM_CCK_CURRENT_DATE</option>
+			<option value="1">COM_CCK_CUSTOM_DATE</option>
+		</field>
+		<field name="creation_date_custom" type="text" size="16" default="2012" label="COM_CCK_CONFIG_CREATION_DATE_CUSTOM" description="COM_CCK_CONFIG_CREATION_DATE_CUSTOM_DESC" class="inputbox" />
+		<field name="creation_date_format" type="text" size="16" default="F Y" label="COM_CCK_CONFIG_CREATION_DATE_FORMAT" description="COM_CCK_CONFIG_CREATION_DATE_FORMAT_DESC" class="inputbox" />
+		<field name="description" type="text" size="64" default="SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com" label="COM_CCK_CONFIG_DESCRIPTION" description="COM_CCK_CONFIG_DESCRIPTION_DESC" class="inputbox" />
+		<field name="COM_CCK_CONFIG_LEGEND_OUTPUT" type="spacer" hr="false" />
+		<field name="output" type="list" default="0" label="COM_CCK_CONFIG_OUTPUT" description="COM_CCK_CONFIG_OUTPUT_DESC" class="inputbox">
+			<option value="0">COM_CCK_CONFIG_OPTION_DOWNLOAD</option>
+			<option value="1">COM_CCK_CONFIG_OPTION_EXPORT</option>
+			<option value="2">COM_CCK_CONFIG_OPTION_EXPORT_ABSOLUTE</option>
+		</field>
+		<field name="output_path" type="text" size="32" default="tmp/" label="COM_CCK_CONFIG_OUTPUT_PATH" description="COM_CCK_CONFIG_OUTPUT_PATH_DESC" class="inputbox" />
+	</fieldset>
+	
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_cck_developer" section="component" />
+		<field name="cckjs" type="cckjs" label="" description="" js_isvisiblewhen="#jform_output_path='jform_output','1,2'" js_format="html" hidden="true" />
+		<field name="cckjs2" type="cckjs" label="" description="" js_isvisiblewhen="#jform_creation_date_format='jform_creation_date','0'" js_format="html" hidden="true"
+			   js_appendto="jform_creation_date=#jform_creation_date_format" />
+		<field name="cckjs3" type="cckjs" label="" description="" js_isvisiblewhen="#jform_creation_date_custom='jform_creation_date','1'" js_format="html" hidden="true" />
+	</fieldset>
+</config>

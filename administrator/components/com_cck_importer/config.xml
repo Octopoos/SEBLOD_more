@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config addfieldpath="/libraries/cck/construction/field">
+	<fieldset name="main" label="COM_CCK_CONFIG_FIELDSET_MAIN" description="COM_CCK_CONFIG_FIELDSET_MAIN_DESC">
+		<field name="mode" type="list" default="0" label="COM_CCK_CONFIG_MODE" description="COM_CCK_CONFIG_MODE_DESC" class="inputbox">
+			<option value="1">COM_CCK_CONFIG_OPTION_AJAX</option>
+			<option value="0">COM_CCK_CONFIG_OPTION_STANDARD</option>
+		</field>
+		<field name="mode_ajax_count" type="text" size="8" default="25" label="COM_CCK_CONFIG_MODE_AJAX_COUNT" description="COM_CCK_CONFIG_MODE_AJAX_COUNT_DESC" class="inputbox" />
+		<field name="COM_CCK_CONFIG_LEGEND_DEFAULT_VALUES" type="spacer" hr="false" />
+		<field name="storage" type="list" default="standard" label="COM_CCK_CONFIG_STORAGE" description="COM_CCK_CONFIG_STORAGE_DESC" class="inputbox">
+			<option value="standard">COM_CCK_CONFIG_OPTION_STANDARD</option>
+			<option value="custom">COM_CCK_CONFIG_OPTION_CUSTOM</option>
+		</field>
+		<field name="separator" type="list" default="0" label="COM_CCK_CONFIG_SEPARATOR" description="COM_CCK_CONFIG_SEPARATOR_DESC" class="inputbox">
+			<option value=",">COM_CCK_COMMA</option>
+			<option value=";">COM_CCK_SEMICOLON</option>
+			<option value="|">COM_CCK_VERTICAL_BAR</option>
+		</field>
+		<field name="force_utf8" type="list" default="0" label="COM_CCK_CONFIG_FORCE_UTF8" description="COM_CCK_CONFIG_FORCE_UTF8_DESC" class="inputbox">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="COM_CCK_CONFIG_LEGEND_FILENAME" type="spacer" hr="false" />
+		<field name="filename_date" type="text" size="16" default="" label="COM_CCK_CONFIG_FILENAME_DATE" description="COM_CCK_CONFIG_FILENAME_DATE_DESC" class="inputbox" />
+		<field name="COM_CCK_CONFIG_LEGEND_OUTPUT" type="spacer" hr="false" />
+		<field name="output" type="list" default="1" label="COM_CCK_CONFIG_OUTPUT" description="COM_CCK_CONFIG_OUTPUT_DESC" class="inputbox">
+			<option value="0">COM_CCK_CONFIG_OPTION_DOWNLOAD</option>
+			<option value="1">COM_CCK_CONFIG_OPTION_EXPORT</option>
+			<option value="2">COM_CCK_CONFIG_OPTION_EXPORT_ABSOLUTE</option>
+		</field>
+		<field name="output_path" type="text" size="32" default="tmp/" label="COM_CCK_CONFIG_OUTPUT_PATH" description="COM_CCK_CONFIG_OUTPUT_PATH_DESC" class="inputbox" required="true" />
+	</fieldset>
+	
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_cck_importer" section="component" />
+	</fieldset>
+</config>

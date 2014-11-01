@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config addfieldpath="/libraries/cck/construction/field">	
+	<fieldset name="main" label="COM_CCK_CONFIG_FIELDSET_MAIN" description="COM_CCK_CONFIG_FIELDSET_MAIN_DESC">
+		<field name="secret_key" type="text" size="32" default="" label="COM_CCK_SECRET_KEY" description="COM_CCK_SECRET_KEY_DESC" class="inputbox" />
+	</fieldset>
+	
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_cck_updater" section="component" />
+	</fieldset>
+</config>
