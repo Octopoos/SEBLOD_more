@@ -1,0 +1,21 @@
+/* ADMIN */
+div.cck_forms.cck_admin div.cck_form.cck_form_radio_numeric fieldset,
+div.cck_forms.cck_admin div.cck_form.cck_form_radio_numeric fieldset.radio{ border: none;margin:0;text-align:left;padding: 0;}
+div.cck_forms.cck_admin div.cck_form.cck_form_radio_numeric fieldset.radios.vertical input{clear:both;}
+div.cck_forms.cck_admin div.cck_form.cck_form_radio_numeric input{float:left;margin: 5px 5px 0 0 !important; padding-left:0;}
+div.cck_forms.cck_admin div.cck_form.cck_form_radio_numeric label{clear:none;display:table;float:left;line-height:190%;margin:0;padding-right:20px;}
+div.cck_forms.cck_admin div.cck_form.cck_form_radio_numeric fieldset.radios.btn-group label{line-height:120%;padding-right:14px;}
+
+/* SITE */
+div.cck_forms.cck_site div.cck_form.cck_form_radio_numeric fieldset,
+div.cck_forms.cck_site div.cck_form.cck_form_radio_numeric fieldset.radio{ border: none;margin:0;text-align:left;padding: 0;}
+div.cck_forms.cck_site div.cck_form.cck_form_radio_numeric fieldset.radios.vertical input{ clear:both;}
+div.cck_forms.cck_site div.cck_form.cck_form_radio_numeric input{float:left;margin: 5px 5px 0 0 !important; padding-left:0!important;}
+div.cck_forms.cck_site div.cck_form.cck_form_radio_numeric label{clear:none;display:table;float:left;line-height:190%;margin:0;padding-right:20px;}
+
+/* SEARCH */
+div.cck_forms.cck_search div.cck_form.cck_form_radio_numeric fieldset,
+div.cck_forms.cck_search div.cck_form.cck_form_radio_numeric fieldset.radio{ border: none;margin:0;text-align:left;padding: 0;}
+div.cck_forms.cck_search div.cck_form.cck_form_radio_numeric fieldset.radios.vertical input{ clear:both;}
+div.cck_forms.cck_search div.cck_form.cck_form_radio_numeric input{float:left;margin: 5px 5px 0 0 !important; padding-left:0!important;}
+div.cck_forms.cck_search div.cck_form.cck_form_radio_numeric label{clear:none;display:table;float:left;line-height:190%;margin:0;padding-right:20px;}
