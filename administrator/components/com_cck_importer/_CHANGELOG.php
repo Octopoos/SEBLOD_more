@@ -25,11 +25,17 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.3.2 Upgrade Release [29-Apr-2013] ------------------
+-------------------- 1.3.3 Upgrade Release [20-Nov-2014] ------------------
+
++ "CSV Length" added to SEBLOD Importer Options.
+
+# CSV Length issue fixed.
+
+-------------------- 1.3.2 Upgrade Release [29-Apr-2014] ------------------
 
 ! Download URL updated for SEBLOD 3.3.4
 
--------------------- 1.3.1 Upgrade Release [15-Apr-2013] ------------------
+-------------------- 1.3.1 Upgrade Release [15-Apr-2014] ------------------
 
 # cck.dev-3.2.0.min.js updated to cck.dev-3.3.0.min.js
 
