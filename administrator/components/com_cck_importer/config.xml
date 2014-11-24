@@ -6,6 +6,7 @@
 			<option value="0">COM_CCK_CONFIG_OPTION_STANDARD</option>
 		</field>
 		<field name="mode_ajax_count" type="text" size="8" default="25" label="COM_CCK_CONFIG_MODE_AJAX_COUNT" description="COM_CCK_CONFIG_MODE_AJAX_COUNT_DESC" class="inputbox" />
+		<field name="csv_length" type="text" size="8" default="1000" label="COM_CCK_CONFIG_CSV_LENGTH" description="COM_CCK_CONFIG_CSV_LENGTH_DESC" class="inputbox" />
 		<field name="COM_CCK_CONFIG_LEGEND_DEFAULT_VALUES" type="spacer" hr="false" />
 		<field name="storage" type="list" default="standard" label="COM_CCK_CONFIG_STORAGE" description="COM_CCK_CONFIG_STORAGE_DESC" class="inputbox">
 			<option value="standard">COM_CCK_CONFIG_OPTION_STANDARD</option>

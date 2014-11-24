@@ -49,7 +49,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		$content	=	array();
 		$fieldnames	=	array();
 		if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
-			while ( ( $data = fgetcsv( $handle, 1000, $options['separator'] ) ) !== false ) {
+			while ( ( $data = fgetcsv( $handle, $params->get( 'csv_length', 1000 ), $options['separator'] ) ) !== false ) {
 				if ( $row == 0 ) {
 					$fieldnames	=	$data;   
 				} else {

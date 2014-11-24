@@ -69,7 +69,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		// CSV Process
 		$i	=	0;
 		if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
-			while ( ( $data = fgetcsv( $handle, 1000, $session['options']['separator'] ) ) !== false ) {
+			while ( ( $data = fgetcsv( $handle, $params->get( 'csv_length', 1000 ), $session['options']['separator'] ) ) !== false ) {
 				if ( $i == 0 ) {
 					$session['fieldnames']	=	$data;
 				} else {
