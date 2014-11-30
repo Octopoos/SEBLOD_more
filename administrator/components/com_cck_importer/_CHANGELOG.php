@@ -25,7 +25,7 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.3.3 Upgrade Release [20-Nov-2014] ------------------
+-------------------- 1.3.3 Upgrade Release [1-Dec-2014] ------------------
 
 + "CSV Length" added to SEBLOD Importer Options.
 
