@@ -6,7 +6,7 @@
 	<authorUrl>http://www.seblod.com</authorUrl>
 	<copyright>Copyright (C) 2013 SEBLOD. All Rights Reserved.</copyright>
 	<license>GNU General Public License version 2 or later.</license>
-	<creationDate>November 2014</creationDate>
+	<creationDate>December 2014</creationDate>
 	<description>SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
 	<version>1.0.0</version>
 	
@@ -39,4 +39,8 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="URL Variable Restriction Plug-in Updates">http://update.seblod.com/plg_cck_field_restriction_url_variable.xml</server>
+	</updateservers>
 </extension>
