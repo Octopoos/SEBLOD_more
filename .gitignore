@@ -1371,6 +1371,10 @@
 /templates/seb_one/*
 /templates/seb_table/*
 
+######## Aptana Studio
+
+.project
+
 ######## SublimeText
 
 # workspace files are user-specific
