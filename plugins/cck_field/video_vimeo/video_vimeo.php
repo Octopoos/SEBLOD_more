@@ -69,7 +69,7 @@ class plgCCK_FieldVideo_Vimeo extends JCckPluginField
 		
 		// Preview Video
 		$options2	=	JCckDev::fromJSON( $field->options2 );
-		$preview	= 	isset( $options2['video_preview'] )	? $options2['video_preview'] : '0';
+		$preview	= 	isset( $options2['video_preview'] ) ? $options2['video_preview'] : '0';
 		$width		= 	isset( $options2['video_width'] ) ? $options2['video_width'] : '300';
 		$height		=	isset( $options2['video_height'] ) ? $options2['video_height'] : '300';
 		$video		=	'';
@@ -177,8 +177,8 @@ class plgCCK_FieldVideo_Vimeo extends JCckPluginField
 			return;
 		}
 
-		$v_tag	=	str_replace( 'http://vimeo.com/', '', $value );
-
+		$v_tag	=	str_replace( array( 'http://vimeo.com/', 'https://vimeo.com/' ), '', $value );
+		
 		if ( $v_tag ) {
 			$width	=	( isset( $options2['video_width'] ) && $options2['video_width'] ) ?	$options2['video_width'] : '300';
 			$height	=	( isset( $options2['video_height'] ) && $options2['video_height'] ) ? $options2['video_height'] : '300';
