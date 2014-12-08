@@ -69,9 +69,9 @@ class plgCCK_FieldVideo_Dailymotion extends JCckPluginField
 		
 		// Preview Video
 		$options2	=	JCckDev::fromJSON( $field->options2 );
-		$preview	= 	isset( $options2['video_preview'] ) ?	$options2['video_preview'] : '0';
-		$width		= 	isset( $options2['video_width'] ) ?	$options2['video_width'] : '300';
-		$height		=	isset( $options2['video_height'] ) ?	$options2['video_height'] : '300';
+		$preview	= 	isset( $options2['video_preview'] ) ? $options2['video_preview'] : '0';
+		$width		= 	isset( $options2['video_width'] ) ? $options2['video_width'] : '300';
+		$height		=	isset( $options2['video_height'] ) ? $options2['video_height'] : '300';
 		$video		=	'';
 
 		if ( $preview == 1 && $value ){
@@ -187,12 +187,12 @@ class plgCCK_FieldVideo_Dailymotion extends JCckPluginField
 		if ( isset( $v_tag ) ) {
 			$width	=	( isset( $options2['video_width'] ) && $options2['video_width'] ) ?	$options2['video_width'] : '300';
 			$height	=	( isset( $options2['video_height'] ) && $options2['video_height'] ) ? $options2['video_height'] : '300';
-
+			
 			if ( $bool2 == 0 ) {
 				$video	=	'<iframe width="'.$width.'" height="'.$height.'" ';
 				$video	.=	'frameborder="0" src="';
-				$video	.=	'http://www.dailymotion.com/embed/'.$v_tag.'?width='.$width;
-				$video	.=	'" ></iframe>';
+				$video	.=	'//www.dailymotion.com/embed/'.$v_tag.'?width='.$width;
+				$video	.=	'" allowfullscreen></iframe>';
 			}else{
 				$video	= 	'<object width="'.$width.'" height="'.$height.'">';
 				$video	.=	'<param value="http://www.dailymotion.com/swf/'.$v_tag.'" name="movie"></param>';
