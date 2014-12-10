@@ -20,6 +20,7 @@ $class			=	trim( $cck->getStyleParam( 'class', '' ) );
 $class			=	$class ? ' class="'.$class.'"' : '';
 $display_mode	=	(int)$cck->getStyleParam( 'list_display', '0' );
 $html			=	'';
+$id_class		=	$cck->id_class;
 $items			=	$cck->getItems();
 $fieldnames		=	$cck->getFields( 'element', '', false );
 $multiple		=	( count( $fieldnames ) > 1 ) ? true : false;
@@ -27,7 +28,7 @@ $count			=	count( $items );
 $auto_clean		=	( $count == 1 ) ? $cck->getStyleParam( 'auto_clean', 0 ) : 0;
 
 // -- Render
-if ( $cck->id_class ) {
+if ( $id_class ) {
 ?>
 <div class="<?php echo trim( $cck->id_class ); ?>"><?php }
 if ( !$auto_clean ) { ?>
@@ -76,10 +77,10 @@ if ( !$auto_clean ) {
 </ul>
 <?php
 }
-if ( $cck->id_class ) { ?>
+if ( $id_class ) { ?>
 </div>
-<?php } ?>
-<?php
+<?php }
+
 // -- Finalize
 $cck->finalize();
 ?>
