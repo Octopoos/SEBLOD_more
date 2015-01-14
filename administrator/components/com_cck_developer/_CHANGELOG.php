@@ -25,6 +25,10 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.2.0 Initial Release [5-Jan-2014] ------------------
+
+^ Implement JCckDeveloperVersion class.
+
 -------------------- 1.1.0 Upgrade Release [29-Apr-2013] ------------------
 
 ! Download URL updated for SEBLOD 3.3.4
