@@ -346,12 +346,12 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		static $autorized	=	array(
 									'access'=>'',
 									'author'=>'',
-									'created_at'=>''
+									'created_at'=>'',
 									'context'=>'',
 									'contexts'=>'',
 									'custom'=>'',
 									'key'=>'',
-									'modified_at'=>''
+									'modified_at'=>'',
 									'ordering'=>'',
 									'parent'=>'',
 									/*'routes'=>'',*/
