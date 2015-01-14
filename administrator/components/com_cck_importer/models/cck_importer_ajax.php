@@ -82,7 +82,12 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		if ( $session['fieldnames'][0] != '' ) {
 			$session['fieldnames'][0]	=	preg_replace( '/[^A-Za-z0-9_#\(\)\|]/', '', $session['fieldnames'][0] );
 		}
-
+		if ( count( $session['fieldnames'] ) ) {
+			foreach ( $session['fieldnames'] as $k=>$fieldname ) {
+				$session['fieldnames'][$k]	=	strtolower( $fieldname );
+			}
+		}
+		
 		$session['count']		=	count( $session['fieldnames'] );
 		$session['total']		=	count( $session['content'] );
 		$session['header']		=	str_putcsv( $session['fieldnames'], $session['options']['separator'] )."\n";

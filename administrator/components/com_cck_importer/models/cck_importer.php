@@ -62,6 +62,11 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		if ( $fieldnames[0] != '' ) {
 			$fieldnames[0]	=	preg_replace( '/[^A-Za-z0-9_#\(\)\|]/', '', $fieldnames[0] );
 		}
+		if ( count( $fieldnames ) ) {
+			foreach ( $fieldnames as $k=>$fieldname ) {
+				$fieldnames[$k]	=	strtolower( $fieldname );
+			}
+		}
 		$total		=	count( $content );
 		
 		// -------- -------- -------- -------- -------- -------- -------- -------- //
