@@ -10,14 +10,14 @@
 
 defined( '_JEXEC' ) or die;
 
-jimport( 'joomla.filesystem.file' );
-if ( JFile::exists( JPATH_COMPONENT.'/_VERSION.php' ) ) {
-	$version	=	JFile::read( JPATH_COMPONENT.'/_VERSION.php' );
+if ( is_file( JPATH_COMPONENT.'/_VERSION.php' ) ) {
+	require_once JPATH_COMPONENT.'/_VERSION.php';
+	$version	=	new JCckDeveloperVersion;
 }
 
 // -------- -------- -------- -------- -------- -------- -------- -------- // Core
 
-define( 'CCK_VERSION', 			( @$version ) ? $version : '1.x' );
+define( 'CCK_VERSION', 			( isset( $version ) && is_object( $version ) ) ? $version->getShortVersion() : '1.x' );
 define( 'CCK_NAME',				'cck_developer' );
 define( 'CCK_TITLE',			'CCK_DEVELOPER' );
 define( 'CCK_ADDON',			'com_'.CCK_NAME );
