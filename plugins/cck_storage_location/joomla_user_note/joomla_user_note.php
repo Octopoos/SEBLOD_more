@@ -15,22 +15,24 @@ JLoader::register( 'UsersTableNote', JPATH_ADMINISTRATOR.'/components/com_users/
 // Plugin
 class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 {
-	protected static $type		=	'joomla_user_note';
-	protected static $table		=	'#__user_notes';
-	protected static $key		=	'id';
+	protected static $type			=	'joomla_user_note';
+	protected static $table			=	'#__user_notes';
+	protected static $key			=	'id';
 	
-	protected static $access	=	'';
-	protected static $author	=	'created_user_id';
-	protected static $custom	=	'body';
-	protected static $parent	=	'catid';
-	protected static $status	=	'state';
-	protected static $to_route	=	'';
+	protected static $access		=	'';
+	protected static $author		=	'created_user_id';
+	protected static $created_at	=	'created_time';
+	protected static $custom		=	'body';
+	protected static $modified_at	=	'modified_time';
+	protected static $parent		=	'catid';
+	protected static $status		=	'state';
+	protected static $to_route		=	'';
 	
-	protected static $context	=	'';
-	protected static $contexts	=	array();
-	protected static $error		=	false;
-	protected static $ordering	=	array( 'alpha'=>'subject ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC' );
-	protected static $pk		=	0;
+	protected static $context		=	'';
+	protected static $contexts		=	array();
+	protected static $error			=	false;
+	protected static $ordering		=	array( 'alpha'=>'subject ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC' );
+	protected static $pk			=	0;
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Construct
 	
@@ -275,7 +277,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	// -------- -------- -------- -------- -------- -------- -------- -------- // SEF
 	
 	// buildRoute
-	public static function buildRoute( &$query, &$segments, $config )
+	public static function buildRoute( &$query, &$segments, $config, $menuItem = NULL )
 	{
 	}
 	
@@ -344,15 +346,18 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		static $autorized	=	array(
 									'access'=>'',
 									'author'=>'',
+									'created_at'=>''
 									'context'=>'',
 									'contexts'=>'',
 									'custom'=>'',
 									'key'=>'',
+									'modified_at'=>''
+									'ordering'=>'',
 									'parent'=>'',
-									'routes'=>'',
+									/*'routes'=>'',*/
 									'status'=>'',
 									'table'=>'',
-									'to_route'=>''	
+									'to_route'=>''
 								);
 		
 		if ( count( $properties ) ) {
