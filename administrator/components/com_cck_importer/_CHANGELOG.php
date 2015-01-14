@@ -25,6 +25,12 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.4.0 Initial Release [5-Jan-2014] ------------------
+
+^ Implement JCckImporterVersion class.
+
+# Force fieldnames to lowercase.
+
 -------------------- 1.3.3 Upgrade Release [1-Dec-2014] ------------------
 
 + "CSV Length" added to SEBLOD Importer Options.
