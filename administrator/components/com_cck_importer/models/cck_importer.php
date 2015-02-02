@@ -31,6 +31,12 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		
 		$app				=	JFactory::getApplication();
 		$options			=	$app->input->get( 'options', array(), 'array' );
+		if ( $options['key'] == -1 && isset( $options['key_fieldname'] ) && $options['key_fieldname'] != '' ) {
+			$key_field		=	JCckDatabase::loadObject( 'SELECT storage_field, storage_table FROM #__cck_core_fields WHERE name = "'.$options['key_fieldname'].'"' );
+			$options['key']			=	$options['key_fieldname'];
+			$options['key_column']	=	$key_field->storage_field;
+			$options['key_table']	=	$key_field->storage_table;
+		}
 		$values				=	$app->input->get( 'values', array(), 'array' );
 		$file				=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', NULL, 'files', 'array' ) );
 		$storage			=	$options['storage'];
@@ -223,6 +229,8 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 									'auto_inc'=>0,
 									'component'=>'com_cck_importer',
 									'key'=>$options['key'],
+									'key_column'=>@$options['key_column'],
+									'key_table'=>@$options['key_table'],
 									'tasks'=>array()
 								);
 		$config['params']	=	new JRegistry( $plugin_location->params );
@@ -300,6 +308,18 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					$more[$storage_table][$fieldnames[$i]]					=	$c[$i];
 					$storage_field											=	( isset( $fieldnames1[$i]['storage_field'] ) ) ? $fieldnames1[$i]['storage_field'] : $fieldnames[$i];
 					$config['storages'][$storage_table][$storage_field]		=	$more[$storage_table][$fieldnames[$i]];
+				}
+			}
+			
+			// Get :: More Key
+			if ( $config['key_table'] && $config['key_column'] ) {
+				if ( count( $more ) ) {
+					foreach ( $more as $m ) {
+						if ( isset( $m[$config['key']] ) && $m[$config['key']] != '' ) {
+							$pk		=	JCckDatabase::loadResult( 'SELECT id FROM '.$config['key_table'].' WHERE '.$config['key_column'].' = "'.$m[$config['key']].'"' );
+							break;
+						}
+					}
 				}
 			}
 			

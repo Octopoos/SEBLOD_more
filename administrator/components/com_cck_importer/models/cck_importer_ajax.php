@@ -56,6 +56,12 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$file						=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', NULL, 'files', 'array' ) );
 		$session['options']			=	$app->input->get( 'options', array(), 'array' );
 		$session['options']['key']	=	( isset( $session['options']['key'] ) ) ? $session['options']['key'] : '';
+		if ( $session['options']['key'] == -1 && isset( $session['options']['key_fieldname'] ) && $session['options']['key_fieldname'] != '' ) {
+			$key_field				=	JCckDatabase::loadObject( 'SELECT storage_field, storage_table FROM #__cck_core_fields WHERE name = "'.$session['options']['key_fieldname'].'"' );
+			$session['options']['key']			=	$session['options']['key_fieldname'];
+			$session['options']['key_column']	=	$key_field->storage_field;
+			$session['options']['key_table']	=	$key_field->storage_table;
+		}
 		$session['values']			=	$app->input->get( 'values', array(), 'array' );
 		$session['location']		=	$session['options']['storage_location'];
 		$session['storage']			=	$session['options']['storage'];
@@ -284,6 +290,8 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 						'auto_inc'=>$session['auto_inc'],
 						'component'=>'com_cck_importer',
 						'key'=>$session['options']['key'],
+						'key_column'=>@$session['options']['key_column'],
+						'key_table'=>@$session['options']['key_table'],
 						'params'=>$session['params'],
 						'tasks'=>$session['tasks'],
 						'type'=>$session['options']['content_type'],
@@ -332,6 +340,18 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 					$more[$storage_table][$session['fieldnames'][$i]]		=	$c[$i];
 					$storage_field											=	( isset( $session['fieldnames2'][$i]['storage_field'] ) ) ? $session['fieldnames2'][$i]['storage_field'] : $session['fieldnames'][$i];
 					$config['storages'][$storage_table][$storage_field]		=	$more[$storage_table][$session['fieldnames'][$i]];
+				}
+			}
+			
+			// Get :: More Key
+			if ( $config['key_table'] && $config['key_column'] ) {
+				if ( count( $more ) ) {
+					foreach ( $more as $m ) {
+						if ( isset( $m[$config['key']] ) && $m[$config['key']] != '' ) {
+							$pk		=	JCckDatabase::loadResult( 'SELECT id FROM '.$config['key_table'].' WHERE '.$config['key_column'].' = "'.$m[$config['key']].'"' );
+							break;
+						}
+					}
 				}
 			}
 			
