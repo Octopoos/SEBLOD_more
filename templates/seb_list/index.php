@@ -1,6 +1,6 @@
 <?php
 /**
-* @version 			SEBLOD 3.x More
+* @version 			SEBLOD 3.x More ~ $Id: index.php sebastienheraud $
 * @package			SEBLOD (App Builder & CCK) // SEBLOD nano (Form Builder)
 * @url				http://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
@@ -17,7 +17,6 @@ if ( $cck->initialize() === false ) { return; }
 
 // -- Prepare
 $class			=	trim( $cck->getStyleParam( 'class', '' ) );
-$class			=	$class ? ' class="'.$class.'"' : '';
 $display_mode	=	(int)$cck->getStyleParam( 'list_display', '0' );
 $html			=	'';
 $id_class		=	$cck->id_class;
@@ -25,13 +24,21 @@ $items			=	$cck->getItems();
 $fieldnames		=	$cck->getFields( 'element', '', false );
 $multiple		=	( count( $fieldnames ) > 1 ) ? true : false;
 $count			=	count( $items );
-$auto_clean		=	( $count == 1 ) ? $cck->getStyleParam( 'auto_clean', 0 ) : 0;
+$isRaw			=	( $count == 1 ) ? $cck->getStyleParam( 'auto_clean', 0 ) : 0;
+
+// Set
+$isMore			=	$cck->isLoadingMore();
+if ( $cck->isGoingToLoadMore() ) {
+	$class		=	trim( $class.' '.'cck-loading-more' );
+}
+$class			=	str_replace( '$total', $count, $class );
+$class			=	$class ? ' class="'.$class.'"' : '';
 
 // -- Render
-if ( $id_class ) {
+if ( $id_class && !$isMore ) {
 ?>
 <div class="<?php echo trim( $cck->id_class ); ?>"><?php }
-if ( !$auto_clean ) { ?>
+if ( !( $isRaw || $isMore ) ) { ?>
 <ul<?php echo $class; ?>>
 <?php }
 	if ( $count ) {
@@ -46,7 +53,7 @@ if ( !$auto_clean ) { ?>
 		} elseif ( $display_mode == 1 ) {
 			foreach ( $items as $pk=>$item ) {
 				$row	=	$cck->renderItem( $pk );
-				if ( $row && !$auto_clean ) {
+				if ( $row && !$isRaw ) {
 					$row	=	'<li>'.$row.'</li>';
 				}
 				$html	.=	$row;
@@ -64,7 +71,7 @@ if ( !$auto_clean ) { ?>
 						}
 					}
 				}
-				if ( $row && !$auto_clean ) {
+				if ( $row && !$isRaw ) {
 					$row	=	'<li>'.$row.'</li>';
 				}
 	            $html	.=	$row;
@@ -72,15 +79,15 @@ if ( !$auto_clean ) { ?>
 		}
 		echo $html;
 	}
-if ( !$auto_clean ) {
+if ( !( $isRaw || $isMore ) ) {
 ?>
 </ul>
 <?php
 }
-if ( $id_class ) { ?>
+if ( $id_class && !$isMore ) { ?>
 </div>
-<?php }
-
+<?php } ?>
+<?php
 // -- Finalize
 $cck->finalize();
 ?>
