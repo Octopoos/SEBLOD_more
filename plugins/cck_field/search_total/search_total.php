@@ -129,7 +129,7 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 		$name	=	$process['name'];
 		$jtext	=	$process['jtext'];
 		
-		if ( isset( $config['total'] ) && $config['total'] > 0 ) {
+		if ( ( isset( $config['total'] ) && $config['total'] > 0 ) || $fields[$name]->defaultvalue != '' ) {
 			if ( $config['total'] < $config['limitend'] ) {
 				$step				=	$config['total'];
 			} else {

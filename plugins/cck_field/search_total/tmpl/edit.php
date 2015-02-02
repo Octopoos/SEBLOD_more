@@ -19,6 +19,7 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
     <ul class="adminformlist adminformlist-2cols">
         <?php
         echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
+        echo JCckDev::renderForm( 'core_defaultvalue', $this->item->defaultvalue, $config );
 		echo JCckDev::renderForm( 'core_dev_text', @$options2['jtext'], $config, array( 'label'=>'Language Constant', 'defaultvalue'=>'COM_CCK_SEARCH_TOTAL', 'storage_field'=>'json[options2][jtext]' ) );
 		
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
