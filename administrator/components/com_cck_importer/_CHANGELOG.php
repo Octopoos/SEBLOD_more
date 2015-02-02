@@ -27,6 +27,7 @@ $ -> Language fix or change
 
 -------------------- 1.4.0 Initial Release [5-Jan-2014] ------------------
 
++ Update by Custom Key (custom field) added.
 ^ Implement JCckImporterVersion class.
 
 # Force fieldnames to lowercase.
