@@ -29,6 +29,7 @@ $ -> Language fix or change
 
 + Update by Custom Key (custom field) added.
 ^ Implement JCckImporterVersion class.
+^ SQL table storage engine switched from MyISAM to InnoDB in install.sql
 
 # Force fieldnames to lowercase.
 
