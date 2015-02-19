@@ -32,7 +32,7 @@ class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 			// #__store_form_...
 			if( $session['storage'] == 'standard' ) {
 				$session['table2']	=	'#__cck_store_form_'.$type->name;
-				JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$session['table2'].' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;' );
+				JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$session['table2'].' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;' );
 			}
 			
 			for ( $i = 0; $i < $count; $i++ ) {
@@ -99,7 +99,7 @@ class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 			//created the table #__store_form_  	
 			$session['table2']	=	'#__cck_store_form_'.$session['options']['content_type'];
 			
-			JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$session['table2'].' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;' );
+			JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$session['table2'].' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;' );
 			
 			$count		=	count( $session['fieldnames'] );
 			for ( $i = 0;  $i < $count;  $i++ ) {
