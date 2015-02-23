@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="package" version="2.5">
+	<name>pkg_cck_field_validation_credit_cards</name>
+	<packagename>cck_field_validation_credit_cards</packagename>
+	<packager>Octopoos</packager>
+	<packagerurl>http://www.seblod.com</packagerurl>
+	<copyright>Copyright (C) 2013 SEBLOD. All Rights Reserved.</copyright>
+	<license>GNU General Public License version 2 or later.</license>
+	<creationDate>May 2013</creationDate>
+	<description>Credit Cards Validation Pack for SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
+	<version>1.0.0</version>
+	
+	<scriptfile>pkg_script.php</scriptfile>
+	
+	<files folder="extensions">
+		<file type="plugin" id="credit_card" group="cck_field_validation">plg_cck_field_validation_credit_card.zip</file>
+		<file type="plugin" id="credit_card_american_express" group="cck_field_validation">plg_cck_field_validation_credit_card_american_express.zip</file>
+		<file type="plugin" id="credit_card_mastercard" group="cck_field_validation">plg_cck_field_validation_credit_card_mastercard.zip</file>
+		<file type="plugin" id="credit_card_visa" group="cck_field_validation">plg_cck_field_validation_credit_card_visa.zip</file>
+	</files>
+	
+	<updateservers>
+		<server type="extension" priority="1" name="Credit Cards Validation Pack Updates">http://update.seblod.com/pkg_cck_field_validation_credit_cards.xml</server>
+	</updateservers>
+</extension>
