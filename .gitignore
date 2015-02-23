@@ -481,7 +481,13 @@
 /administrator/language/en-GB/index.html
 /administrator/language/overrides/*
 /administrator/language/index.html
-/administrator/manifests/*
+/administrator/manifests/files/*
+/administrator/manifests/libraries/*
+/administrator/manifests/packages/cck/*
+/administrator/manifests/packages/pkg_cck.xml
+/administrator/manifests/packages/pkg_fr-FR.xml
+/administrator/manifests/packages/index.html
+/administrator/manifests/index.html
 /administrator/modules/mod_custom/*
 /administrator/modules/mod_feed/*
 /administrator/modules/mod_latest/*
