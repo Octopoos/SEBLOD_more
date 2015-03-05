@@ -48,9 +48,7 @@ class plgCCK_Field_RestrictionUrl_Variable extends JCckPluginRestriction
 			return;
 		}
 		
-		$restriction	=	parent::g_getRestriction( $field->restriction_options );
-		
-		return self::_authorise( $restriction, $field, $config );
+		return true;
 	}
 	
 	// _authorise
