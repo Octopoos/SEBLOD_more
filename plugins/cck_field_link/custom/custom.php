@@ -38,6 +38,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 		$app			=	JFactory::getApplication();
 		$custom			=	$link->get( 'custom', '#' );
 		$itemId			=	$link->get( 'itemid', 0 );
+		$link_attr		=	$link->get( 'attributes', '' );
 		$link_class		=	$link->get( 'class', '' );
 		$link_rel		=	$link->get( 'rel', '' );
 		$link_target	=	$link->get( 'target', '' );
@@ -67,11 +68,12 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				if ( $vars ) {
 					$f->link	.=	( strpos( $f->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
 				}
-				$f->link_class	=	$link_class ? $link_class : ( isset( $f->link_class ) ? $f->link_class : '' );
-				$f->link_rel	=	$link_rel ? $link_rel : ( isset( $f->link_rel ) ? $f->link_rel : '' );
-				$f->link_state	=	$link->get( 'state', 1 );
-				$f->link_target	=	$link_target ? ( $link_target == '-1' ? '_blank' : $link_target ) : ( isset( $f->link_target ) ? $f->link_target : '' );
-				$f->link_title	=	$link_title ? ( $link_title == '2' ? $link_title2 : ( isset( $f->link_title ) ? $f->link_title : '' ) ) : '';
+				$f->link_attributes	=	$link_attr ? $link_attr : ( isset( $f->link_attributes ) ? $f->link_attributes : '' );
+				$f->link_class		=	$link_class ? $link_class : ( isset( $f->link_class ) ? $f->link_class : '' );
+				$f->link_rel		=	$link_rel ? $link_rel : ( isset( $f->link_rel ) ? $f->link_rel : '' );
+				$f->link_state		=	$link->get( 'state', 1 );
+				$f->link_target		=	$link_target ? ( $link_target == '-1' ? '_blank' : $link_target ) : ( isset( $f->link_target ) ? $f->link_target : '' );
+				$f->link_title		=	$link_title ? ( $link_title == '2' ? $link_title2 : ( isset( $f->link_title ) ? $f->link_title : '' ) ) : '';
 			}
 			$field->link		=	'#';	//todo
 		} else {
@@ -147,11 +149,12 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 			if ( $vars ) {
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
 			}
-			$field->link_class	=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
-			$field->link_rel	=	$link_rel ? $link_rel : ( isset( $field->link_rel ) ? $field->link_rel : '' );
-			$field->link_state	=	$link->get( 'state', 1 );
-			$field->link_target	=	$link_target ? ( $link_target == '-1' ? '_blank' : $link_target ) : ( isset( $field->link_target ) ? $field->link_target : '' );
-			$field->link_title	=	$link_title ? ( $link_title == '2' ? $link_title2 : ( isset( $field->link_title ) ? $field->link_title : '' ) ) : '';
+			$field->link_attributes	=	$link_attr ? $link_attr : ( isset( $field->link_attributes ) ? $field->link_attributes : '' );
+			$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
+			$field->link_rel		=	$link_rel ? $link_rel : ( isset( $field->link_rel ) ? $field->link_rel : '' );
+			$field->link_state		=	$link->get( 'state', 1 );
+			$field->link_target		=	$link_target ? ( $link_target == '-1' ? '_blank' : $link_target ) : ( isset( $field->link_target ) ? $field->link_target : '' );
+			$field->link_title		=	$link_title ? ( $link_title == '2' ? $link_title2 : ( isset( $field->link_title ) ? $field->link_title : '' ) ) : '';
 		}
 	}
 	
