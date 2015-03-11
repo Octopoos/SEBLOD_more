@@ -16,6 +16,7 @@ $cck	=	CCK_Rendering::getInstance( $this->template );
 if ( $cck->initialize() === false ) { return; }
 
 // -- Prepare
+$attributes		=	$cck->item_attributes ? ' '.$cck->item_attributes : '';
 $class			=	trim( $cck->getStyleParam( 'class', '' ) );
 $display_mode	=	(int)$cck->getStyleParam( 'list_display', '0' );
 $html			=	'';
@@ -46,7 +47,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 			foreach ( $items as $item ) {
 				$row	=	$item->renderPosition( 'element' );
 				if ( $row ) {
-					$row	=	'<li>'.$row.'</li>';
+					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
 				}
 				$html	.=	$row;
 			}
@@ -54,7 +55,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 			foreach ( $items as $pk=>$item ) {
 				$row	=	$cck->renderItem( $pk );
 				if ( $row && !$isRaw ) {
-					$row	=	'<li>'.$row.'</li>';
+					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
 				}
 				$html	.=	$row;
 			}
@@ -72,7 +73,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 					}
 				}
 				if ( $row && !$isRaw ) {
-					$row	=	'<li>'.$row.'</li>';
+					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
 				}
 	            $html	.=	$row;
 			}
