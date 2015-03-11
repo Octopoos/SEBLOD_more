@@ -38,7 +38,7 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 		parent::g_onCCK_FieldPrepareContent( $field, $config );
 
 		// Process
-		if ( $field->authorised !== false ) {
+		if ( $field->state ) {
 			$app		=	JFactory::getApplication();
 			$doc		=	JFactory::getDocument();
 			$postpone	=	false;
