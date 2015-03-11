@@ -78,6 +78,9 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 					$value	=	trim( $value2 ).$typo->get( 'suffix_overflow', '' );
 				}
 				break;
+			case 'substr_count':
+				$value		=	substr_count( $value, $arg1 );
+				break;
 			case 'ucfirst':
 				if ( $force ) {
 					$value	=	JString::strtolower( $value );
