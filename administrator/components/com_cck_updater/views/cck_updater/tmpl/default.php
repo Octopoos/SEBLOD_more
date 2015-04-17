@@ -16,14 +16,7 @@ Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
-<?php if ( !empty( $this->sidebar ) ) { ?>
-    <div id="j-sidebar-container" class="span3">
-        <?php echo $this->sidebar; ?>
-    </div>
-    <div id="j-main-container" class="span9">
-<?php } else { ?>
-    <div id="j-main-container">
-<?php } ?>
+<div>
 
 <div class="<?php echo $this->css['wrapper']; ?> hidden-phone">
     <div class="<?php echo $this->css['w100']; ?>">
