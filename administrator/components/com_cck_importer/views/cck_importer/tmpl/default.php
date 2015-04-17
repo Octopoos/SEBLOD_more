@@ -40,14 +40,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 ?>
 
 <form enctype="multipart/form-data" action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
-<?php if ( !empty( $this->sidebar ) ) { ?>
-    <div id="j-sidebar-container" class="span3">
-        <?php echo $this->sidebar; ?>
-    </div>
-    <div id="j-main-container" class="span9">
-<?php } else { ?>
-    <div id="j-main-container">
-<?php } ?>
+<div>
 
 <div class="<?php echo $this->css['wrapper']; ?> hidden-phone">
     <div class="<?php echo $this->css['w100']; ?>">
@@ -80,7 +73,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 					 .	 '</li>';
 	                echo JCckDev::renderForm( 'more_importer_upload_file', '', $config );
 	                echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ',' ), $config );
-	                echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '0' ), $config );
+	                echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '1' ), $config );
 	                ?>
 	            </ul>
 	        </div>
