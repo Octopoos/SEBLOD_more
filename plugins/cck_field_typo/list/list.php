@@ -43,32 +43,43 @@ class plgCCK_Field_TypoList extends JCckPluginTypo
 		$tag		=	'ul';
 		
 		if ( isset( $field->values ) && count( $field->values ) ) {
-			$html	.=	'<'.$tag.' class="'.$class.'">';
 			$target	=	$field->typo_target;
 			foreach ( $field->values as $k=>$v ) {
 				$v	=	parent::g_hasLink( $v, $typo, $v->$target );
-				$html	.=	'<li>'.$v.'</li>';
+				if ( $v != '' ) {
+					$html	.=	'<li>'.$v.'</li>';
+				}
 			}
-			$html	.=	'</'.$tag.'>';
+			if ( $html != '' ) {
+				$html	=	'<'.$tag.' class="'.$class.'">'.$html.'</'.$tag.'>';	
+			}
 		} else if ( is_array( $value ) && count( $value ) ) {
-			$html	.=	'<'.$tag.' class="'.$class.'">';
 			foreach( $value as $v ) {
 				if ( is_array( $v ) ) {
 					$v	=	current( $v );
 				}
 				if ( is_object( $v ) ) {
-					$html	.=	'<li>'.JCck::callFunc( 'plgCCK_Field'.$v->type, 'onCCK_FieldRenderContent', $v ).'</li>';
+					$v2		=	JCck::callFunc( 'plgCCK_Field'.$v->type, 'onCCK_FieldRenderContent', $v );
+					if ( $v2 != '' ) {
+						$html	.=	'<li>'.$v2.'</li>';
+					}
 				}
 			}
-			$html	.=	'</'.$tag.'>';
+			if ( $html != '' ) {
+				$html	=	'<'.$tag.' class="'.$class.'">'.$html.'</'.$tag.'>';	
+			}
 		} elseif ( $field->divider ) {
 			$value	=	explode( $field->divider, $value );
 			if ( is_array( $value ) && count( $value ) ) {
-				$html	.=	'<'.$tag.' class="'.$class.'">';
 				foreach( $value as $v ) {
-					$html	.=	'<li>'.$v.'</li>';
+					if ( $v != '' ) {
+						$html	.=	'<li>'.$v.'</li>';
+					}
 				}
-				$html	.=	'</'.$tag.'>';
+				
+			}
+			if ( $html != '' ) {
+				$html	=	'<'.$tag.' class="'.$class.'">'.$html.'</'.$tag.'>';
 			}
 		}
 		
