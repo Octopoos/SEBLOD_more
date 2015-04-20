@@ -15,9 +15,12 @@ require_once dirname(__FILE__).'/config.php';
 $cck	=	CCK_Rendering::getInstance( $this->template );
 if ( $cck->initialize() === false ) { return; }
 
+$attributes	=	$cck->id_attributes ? ' '.$cck->id_attributes : '';
+$attributes	=	$cck->replaceLive( $attributes );
+
 // -- Render
 if ( $cck->id_class != '' ) {
-	echo '<div class="'.trim( $cck->id_class ).'">'.$cck->renderPosition( 'mainbody', '', $cck->h( 'mainbody' ) ).'</div>';
+	echo '<div class="'.trim( $cck->id_class ).'"'.$attributes.'>'.$cck->renderPosition( 'mainbody', '', $cck->h( 'mainbody' ) ).'</div>';
 } else {
 	echo $cck->renderPosition( 'mainbody', '', $cck->h( 'mainbody' ) );
 }
