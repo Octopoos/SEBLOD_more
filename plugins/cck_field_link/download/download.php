@@ -35,17 +35,30 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
-		$collection		=	''; // todo: collection
-		$link			=	( $config['client'] == 'intro' /*|| $config['client'] == 'list' || $config['client'] == 'item'*/ ) ? '&client='.$config['client'] : '';
+		// Prepare
+		$link_more		=	( $config['client'] == 'intro' /*|| $config['client'] == 'list' || $config['client'] == 'item'*/ ) ? '&client='.$config['client'] : '';
 		$xi				=	0;
 
-		// Prepare
-		$query			=	'SELECT a.hits FROM #__cck_core_downloads AS a WHERE a.id = '.(int)$config['id'].' AND a.field = "'.(string)$field->name.'" AND a.collection = "'.(string)$collection.'" AND a.x = '.(int)$xi;
-		$hits			=	JCckDatabase::loadResult( $query ); //@
-
 		// Set
-		$field->hits	=	( $hits ) ? $hits : 0;
-		$field->link	=	'index.php?option=com_cck&task=download'.$link.'&file='.$field->name.'&id='.$config['id'];
+		if ( is_array( $field->value ) ) {
+			$collection			=	$field->name;
+			
+			foreach ( $field->value as $f ) {
+				$query			=	'SELECT a.hits FROM #__cck_core_downloads AS a WHERE a.id = '.(int)$config['id'].' AND a.field = "'.(string)$f->name.'" AND a.collection = "'.(string)$collection.'" AND a.x = '.(int)$xi;
+				$field->hits	=	(int)JCckDatabase::loadResult( $query ); //@
+				
+				$link_more2		=	$link_more.'&collection='.$collection.'&xi='.$xi;
+				$f->link		=	'index.php?option=com_cck&task=download'.$link_more2.'&file='.$f->name.'&id='.$config['id'];
+				$xi++;
+			}
+			$field->link		=	'#';	//todo
+		} else {
+			$collection			=	'';
+			
+			$query				=	'SELECT a.hits FROM #__cck_core_downloads AS a WHERE a.id = '.(int)$config['id'].' AND a.field = "'.(string)$field->name.'" AND a.collection = "'.(string)$collection.'" AND a.x = '.(int)$xi;
+			$field->hits		=	(int)JCckDatabase::loadResult( $query ); //@
+			$field->link		=	'index.php?option=com_cck&task=download'.$link_more.'&file='.$field->name.'&id='.$config['id'];
+		}
 	}
 }
 ?>
