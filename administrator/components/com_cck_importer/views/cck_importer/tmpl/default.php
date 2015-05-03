@@ -96,7 +96,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 					}
 					echo '<li class="btn-group flt-right">'
 					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ) );
-					echo JCck::on() ? '<a href="javascript:void(0)" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-star"></span></a>' : '<img id="featured_session" src="components/com_cck/assets/images/16/icon-16-featured.png" />';
+					echo JCck::on() ? '<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-star"></span></a>' : '<img id="featured_session" src="components/com_cck/assets/images/16/icon-16-featured.png" />';
 					echo '</li>';
 	                ?>
 	            </ul>
