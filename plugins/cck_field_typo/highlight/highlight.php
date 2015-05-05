@@ -38,14 +38,18 @@ class plgCCK_Field_TypoHighlight extends JCckPluginTypo
 	// _typo
 	protected static function _typo( $typo, $field, $value, &$config = array() )
 	{
-		return '#'.$value.'#';
-	}
-	
-	// -------- -------- -------- -------- -------- -------- -------- -------- // Special Events
-	
-	// onCCK_Field_TypoBeforeRenderContent
-	public static function onCCK_Field_TypoBeforeRenderContent( $process, &$fields, &$storages, &$config = array() )
-	{
+		$fieldname		=	$typo->get( 'fieldname', '' );
+		
+		if ( $fieldname ) {
+			$app		=	JFactory::getApplication();
+			$keyword	=	$app->input->getString( $fieldname, '' );
+			
+			if ( $keyword != '' ) {
+				$value	=	str_replace( $keyword, '<span class="highlight">' . $keyword . '</span>', $value );
+			}
+		}
+		
+		return $value;
 	}
 }
 ?>
