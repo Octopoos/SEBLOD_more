@@ -25,9 +25,12 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.4.0 Initial Release [5-Jan-2014] ------------------
+-------------------- 1.4.0 Initial Release [7-May-2014] ------------------
+
+! Joomla! 3.4 ready.
 
 + Update by Custom Key (custom field) added.
+
 ^ Implement JCckImporterVersion class.
 ^ SQL table storage engine switched from MyISAM to InnoDB in install.sql
 
