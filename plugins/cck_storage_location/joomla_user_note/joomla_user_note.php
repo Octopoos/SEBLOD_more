@@ -17,6 +17,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_user_note';
 	protected static $table			=	'#__user_notes';
+	protected static $table_object	=	array( 'Note', 'UsersTable' );
 	protected static $key			=	'id';
 	
 	protected static $access		=	'';
@@ -404,6 +405,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 									/*'routes'=>'',*/
 									'status'=>'',
 									'table'=>'',
+									'table_object'=>'',
 									'to_route'=>''
 								);
 		
