@@ -45,7 +45,7 @@ class plgCCK_Field_TypoHighlight extends JCckPluginTypo
 			$keyword	=	$app->input->getString( $fieldname, '' );
 			
 			if ( $keyword != '' ) {
-				$value	=	str_replace( $keyword, '<span class="highlight">' . $keyword . '</span>', $value );
+				$value	=	preg_replace( '/' . $keyword . '/i', '<span class="highlight">' . "\$0" . '</span>', $value );
 			}
 		}
 		
