@@ -16,7 +16,9 @@ $cck	=	CCK_Rendering::getInstance( $this->template );
 if ( $cck->initialize() === false ) { return; }
 
 // -- Prepare
-$html	=	$cck->getStyleParam( 'code' );
+$attributes	=	$cck->id_attributes ? ' '.$cck->id_attributes : '';
+$attributes	=	$cck->replaceLive( $attributes );
+$html		=	$cck->getStyleParam( 'code' );
 
 if ( $html != '' && strpos( $html, '$cck->get' ) !== false ) {
 	$matches	=	'';
@@ -60,7 +62,7 @@ if ( $html != '' && strpos( $html, 'J(' ) !== false ) {
 
 // -- Render
 if ( $cck->id_class != '' ) {
-	echo '<div class="'.trim( $cck->id_class ).'">'.$html.'</div>';
+	echo '<div class="'.trim( $cck->id_class ).'"'.$attributes.'>'.$html.'</div>';
 } else {
 	echo $html;
 }
