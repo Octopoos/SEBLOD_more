@@ -35,7 +35,10 @@ class plgCCK_Field_LinkCustom_Js extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
+		$link_class				=	$link->get( 'class', '' );
+		
 		$field->link			=	'javascript: void(0);';
+		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
 		$field->link_onclick	=	htmlspecialchars( $link->get( 'custom' ) );
 	}
 }
