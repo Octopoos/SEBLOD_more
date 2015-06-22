@@ -51,7 +51,7 @@ foreach ( $texts as $t ) {
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Php String Suffix', 'storage_field'=>'suffix' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.JText::_( 'COM_CCK_GENERIC' ).')</span>' );
-		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Typo Label', 'selectlabel'=>'', 'defaultvalue'=>'0', 'storage_field'=>'typo_label' ) );
+		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Behavior', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'Auto=0||Typo Label=1', 'storage_field'=>'typo_label' ) );
 		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Typo Target', 'selectlabel'=>'Auto', 'defaultvalue'=>'', 'options'=>'Value=value', 'storage_field'=>'typo_target' ) );
         ?>
     </ul>
