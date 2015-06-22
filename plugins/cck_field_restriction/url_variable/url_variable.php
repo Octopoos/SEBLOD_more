@@ -54,8 +54,8 @@ class plgCCK_Field_RestrictionUrl_Variable extends JCckPluginRestriction
 	// _authorise
 	protected static function _authorise( $restriction, &$field, &$config )
 	{
-		$do		=	$restriction->get( 'do', 0 );
-		$state			=	0;
+		$do					=	$restriction->get( 'do', 0 );
+		$state				=	0;
 
 		// --
 		$condition_field	=	$restriction->get( 'trigger' );
@@ -64,7 +64,11 @@ class plgCCK_Field_RestrictionUrl_Variable extends JCckPluginRestriction
 
 		$variable			=	Jfactory::getApplication()->input->get( $condition_field, null, null );
 
-		if ( $condition_match == 'isEqual' ) {
+		if ( $condition_match == 'isFilled' ) {
+			if ( $variable != '' ) {
+				$state		=	1;
+			}
+		} elseif ( $condition_match == 'isEqual' ) {
 			if ( isset( $variable ) ) {
 				$condition_values	=	explode( ',', $condition_values );
 				foreach ( $condition_values as $v ) {

@@ -21,9 +21,15 @@ JCckDev::initScript( 'restriction', $this->item );
 		echo JCckDev::renderForm( 'core_bool', '', $config, array( 'label'=>'Invert', 'defaultvalue'=>'0', 'options'=>'Yes=1||No=0', 'storage_field'=>'do' ) );
 		echo '<li class="w100"><label>'.JText::_( 'COM_CCK_VARIABLE_/_VALUES' ).'</label>'
 		 .	 JCckDev::getForm( 'core_dev_text', '', $config, array( 'label'=>'', 'defaultvalue'=>'', 'storage_field'=>'trigger' ) )
-		 .	 JCckDev::getForm( 'core_dev_select', '', $config, array( 'label'=>'', 'selectlabel'=>'', 'defaultvalue'=>'isEqual', 'options'=>'STATE_IS_EQUAL_IN=isEqual', 'storage_field'=>'match' ) )
+		 .	 JCckDev::getForm( 'core_dev_select', '', $config, array( 'label'=>'', 'selectlabel'=>'', 'defaultvalue'=>'isEqual', 'options'=>'STATE_IS_EQUAL_IN=isEqual||STATE_IS_FILLED=isFilled', 'storage_field'=>'match' ) )
 		 .	 JCckDev::getForm( 'core_dev_text', '', $config, array( 'label'=>'', 'defaultvalue'=>'', 'css'=>'input-small', 'storage_field'=>'values' ) )
 		 .	 '</li>';
         ?>
     </ul>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$('#values').isVisibleWhen('match','isEqual',false);
+});
+</script>
