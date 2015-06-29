@@ -43,6 +43,7 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		if ( !$itemId ) {
 			$itemId			=	$app->input->getInt( 'Itemid', 0 );
 		}
+		$link_attr			=	$link->get( 'attributes', '' );
 		$link_class			=	$link->get( 'class', '' );
 		$link_rel			=	$link->get( 'rel', '' );
 		$link_target		=	$link->get( 'target', '' );
@@ -61,10 +62,11 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$custom : '?'.$custom;
 			}
 		}
-		$field->link_class	=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
-		$field->link_rel	=	$link_rel ? $link_rel : ( isset( $field->link_rel ) ? $field->link_rel : '' );
-		$field->link_state	=	$link->get( 'state', 1 );
-		$field->link_target	=	$link_target ? $link_target : ( isset( $field->link_target ) ? $field->link_target : '' );
+		$field->link_attributes	=	$link_attr ? $link_attr : ( isset( $field->link_attributes ) ? $field->link_attributes : '' );
+		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
+		$field->link_rel		=	$link_rel ? $link_rel : ( isset( $field->link_rel ) ? $field->link_rel : '' );
+		$field->link_state		=	$link->get( 'state', 1 );
+		$field->link_target		=	$link_target ? $link_target : ( isset( $field->link_target ) ? $field->link_target : '' );
 	}
 }
 ?>
