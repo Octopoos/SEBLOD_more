@@ -64,22 +64,20 @@ class plgCCK_Field_RestrictionJoomla_User extends JCckPluginRestriction
 		$condition_match	=	$restriction->get( 'match' );
 		$condition_values	=	$restriction->get( 'values' );
 
-
-		$variable			=	JCck::getUser()->$condition_field;
+		$user				=	JCck::getUser();
+		$variable			=	( is_object( $user ) && isset( $user->$condition_field ) ) ? $user->$condition_field : '';
 
 		if ( $condition_match == 'isFilled' ) {
 			if ( $variable != '' ) {
 				$state		=	1;
 			}
 		} elseif ( $condition_match == 'isEqual' ) {
-			if ( isset( $variable ) ) {
-				$condition_values	=	explode( ',', $condition_values );
-				foreach ( $condition_values as $v ) {
-					if ( $variable == $v ) {
-						$state		=	1;
-						break;
-					}  	
-				}		
+			$condition_values	=	explode( ',', $condition_values );
+			foreach ( $condition_values as $v ) {
+				if ( $variable == $v ) {
+					$state		=	1;
+					break;
+				}
 			}
 		}
 		// --
