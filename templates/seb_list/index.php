@@ -18,6 +18,8 @@ if ( $cck->initialize() === false ) { return; }
 // -- Prepare
 $attributes		=	$cck->item_attributes ? ' '.$cck->item_attributes : '';
 $class			=	trim( $cck->getStyleParam( 'class', '' ) );
+$custom_attr	=	trim( $cck->getStyleParam( 'attributes', '' ) );
+$custom_attr	=	$custom_attr ? ' '.$custom_attr : '';
 $display_mode	=	(int)$cck->getStyleParam( 'list_display', '0' );
 $html			=	'';
 $id_class		=	$cck->id_class;
@@ -40,7 +42,7 @@ if ( $id_class && !$isMore ) {
 ?>
 <div class="<?php echo trim( $cck->id_class ); ?>"><?php }
 if ( !( $isRaw || $isMore ) ) { ?>
-<ul<?php echo $class; ?>>
+<ul<?php echo $class.$custom_attr; ?>>
 <?php }
 	if ( $count ) {
 		if ( $display_mode == 2 ) {
