@@ -65,18 +65,31 @@ class plgCCK_Field_RestrictionUrl_Variable extends JCckPluginRestriction
 		$variable			=	Jfactory::getApplication()->input->get( $condition_field, null, null );
 
 		if ( $condition_match == 'isFilled' ) {
-			if ( $variable != '' ) {
+			if ( is_array( $variable ) ) {
+				foreach ( $variable as $v ) {
+					if ( $v != '' ) {
+						$state	=	1;
+						break;
+					}
+				}
+			} elseif ( $variable != '' ) {
 				$state		=	1;
 			}
 		} elseif ( $condition_match == 'isEqual' ) {
 			if ( isset( $variable ) ) {
 				$condition_values	=	explode( ',', $condition_values );
-				foreach ( $condition_values as $v ) {
-					if ( $variable == $v ) {
+				if ( is_array( $variable ) ) {
+					if ( count( array_intersect( $condition_values, $variable ) ) ) {
 						$state		=	1;
-						break;
-					}  	
-				}		
+					}
+				} else {
+					foreach ( $condition_values as $v ) {
+						if ( $variable == $v ) {
+							$state		=	1;
+							break;
+						}  	
+					}
+				}	
 			}
 		}
 		// --
