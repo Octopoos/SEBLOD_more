@@ -25,7 +25,16 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.4.0 Initial Release [7-May-2014] ------------------
+-------------------- 1.5.0 Upgrade Release [17-Jul-2015] -----------------
+
+! Ability to manage Sessions >> SEBLOD 3.7.0 required. (!)
+
++ Session Manager button added in the toolbar.
++ Session Dropdown Menu updated.
+
+# Javascript issues fixed.
+
+-------------------- 1.4.0 Upgrade Release [7-May-2015] ------------------
 
 ! Joomla! 3.4 ready.
 
