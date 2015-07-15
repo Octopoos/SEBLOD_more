@@ -86,7 +86,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 				}
 	            ?>
 	        </div>
-	        <div class="seblod cck-padding-top-0">
+	        <div class="seblod cck-padding-top-0 cck-overflow-visible">
 	            <ul class="adminformlist">
 					<?php
 					if ( $ajax ) {
@@ -94,10 +94,10 @@ $session->set( 'cck_importer_batch_ok', '' );
 					} else {
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFile\');"';
 					}
-					echo '<li class="btn-group flt-right">'
+					echo '<li class="btn-group dropup flt-right">'
 					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ) );
 					echo JCck::on() ? '<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-star"></span></a>' : '<img id="featured_session" src="components/com_cck/assets/images/16/icon-16-featured.png" />';
-					echo '</li>';
+					echo '</li><li>&nbsp;</li>';
 	                ?>
 	            </ul>
 	        </div>
@@ -211,6 +211,18 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			var data = $.evalJSON(opts);
 			$.each(data, function(k, v) {
 				$("#"+k).myVal(v);
+
+				switch( k ) {
+					case "options_force_utf8":
+	                	if ( v == "1" ) {
+	                		$("label[for='options_force_utf80']").addClass("active btn-success");
+	                		$("label[for='options_force_utf81']").removeClass("active btn-danger");
+	                	} else {
+	                		$("label[for='options_force_utf80']").removeClass("active btn-success");
+	                		$("label[for='options_force_utf81']").addClass("active btn-danger");
+	                	}
+	                	break;
+                }
 			});
 		},
 		submit: function(task) {
@@ -239,7 +251,8 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		$(".featured_sessions").live("click", function() {
 			JCck.Dev.ajaxSession($(this).attr("mydata2"), "options_storage_location", $(this).attr("mydata"));
 		});
-		$(".featured_sessions_del").live("click", function() {
+		$(".featured_sessions_del").live("click", function(e) {
+			e.preventDefault();
 			JCck.Dev.ajaxSessionDelete($(this).attr("mydata"));
 		});
 		$('#options_content_type_new').isVisibleWhen('options_content_type','-1',false);
