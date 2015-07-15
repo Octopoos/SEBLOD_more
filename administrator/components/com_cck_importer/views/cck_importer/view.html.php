@@ -34,6 +34,7 @@ class CCK_ImporterViewCCK_Importer extends JCckBaseLegacyView
 			JToolBarHelper::preferences( CCK_ADDON, 560, 840, 'JTOOLBAR_OPTIONS' );
 		}
 		
+		$bar->appendButton( 'CckLink', 'archive', JText::_( 'COM_CCK_SESSIONS' ), JRoute::_( 'index.php?option=com_cck&view=sessions&extension=com_cck_importer' ), '_self' );
 		Helper_Admin::addToolbarSupportButton();
 	}
 }
