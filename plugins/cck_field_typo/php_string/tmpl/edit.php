@@ -62,39 +62,39 @@ jQuery(document).ready(function($) {
 	var v = $('#function').val();
 	if (v == 'str_replace') {
 		$('#force').parent().hide();
-		$('#arg1').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_SEARCH+'<span class="star"> *</span>');
-		$('#arg2').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_REPLACE);
+		$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_SEARCH')+'<span class="star"> *</span>');
+		$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_REPLACE'));
 		$('#arg1,#arg2,#blank_li').parent().show();
 		$('#arg3,#blank_li3').parent().hide();
 		$('#suffix_overflow,#blank_li2').parent().hide();
 	} else if (v == 'substr') {
-		$('#force').parent().show().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_STRIPTAGS_FIRST);
-		$('#arg1').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_START+'<span class="star"> *</span>');
-		$('#arg2').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_LENGTH);
+		$('#force').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_STRIPTAGS_FIRST'));
+		$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_START')+'<span class="star"> *</span>');
+		$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LENGTH'));
 		$('#arg1,#arg2').parent().show();
 		$('#arg3,#blank_li3,#blank_li').parent().hide();
 		$('#suffix_overflow,#blank_li2').parent().show();
 	} else if (v == 'substr_count' || v == 'str_repeat' || v == 'wordwrap') {
 		$('#force').parent().hide();
 		if (v == 'wordwrap') {
-			$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_WIDTH+'<span class="star"> *</span>');
+			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_WIDTH')+'<span class="star"> *</span>');
 		} else if (v == 'substr_count') {
-			$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_NEEDLE+'<span class="star"> *</span>');	
+			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_NEEDLE')+'<span class="star"> *</span>');	
 		} else {
-			$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_STRING+'<span class="star"> *</span>');	
+			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_STRING')+'<span class="star"> *</span>');	
 		}
 		$('#arg2,#blank_li').parent().hide();
 		$('#arg3,#blank_li3').parent().hide();
 		$('#suffix_overflow,#blank_li2').parent().hide();
 	} else if (v == 'number_format') {
 		$('#force').parent().hide();
-		$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_DECIMALS+'<span class="star"> *</span>');
-		$('#arg2').parent().show().find('label').html(Joomla.JText.COM_CCK_DECIMALS_SEPARATOR);
-		$('#arg3').parent().show().find('label').html(Joomla.JText.COM_CCK_THOUSANDS_SEPARATOR);
+		$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_DECIMALS')+'<span class="star"> *</span>');
+		$('#arg2').parent().show().find('label').html(Joomla.JText._('COM_CCK_DECIMALS_SEPARATOR'));
+		$('#arg3').parent().show().find('label').html(Joomla.JText._('COM_CCK_THOUSANDS_SEPARATOR'));
 		$('#suffix_overflow,#blank_li2,#blank_li3,#blank_li').parent().hide();
 	} else {
 		if ( v == 'ucfirst' || v == 'ucwords' ) {
-			$('#force').parent().show().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_LOWER_FIRST);
+			$('#force').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LOWER_FIRST'));
 		} else {
 			$('#force').parent().hide();
 		}
@@ -106,39 +106,39 @@ jQuery(document).ready(function($) {
 		var v = $(this).val();
 		if (v == 'str_replace') {
 			$('#force').parent().hide();
-			$('#arg1').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_SEARCH+'<span class="star"> *</span>');
-			$('#arg2').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_REPLACE);
+			$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_SEARCH')+'<span class="star"> *</span>');
+			$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_REPLACE'));
 			$('#arg1,#arg2,#blank_li').parent().show();
 			$('#arg3,#blank_li3').parent().hide();
 			$('#suffix_overflow,#blank_li2').parent().hide();
 		} else if (v == 'substr') {
-			$('#force').parent().show().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_STRIPTAGS_FIRST);
-			$('#arg1').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_START+'<span class="star"> *</span>');
-			$('#arg2').parent().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_LENGTH);
+			$('#force').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_STRIPTAGS_FIRST'));
+			$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_START')+'<span class="star"> *</span>');
+			$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LENGTH'));
 			$('#arg1,#arg2').parent().show();
 			$('#arg3,#blank_li3,#blank_li').parent().hide();
 			$('#suffix_overflow,#blank_li2').parent().show();
 		} else if (v == 'substr_count' || v == 'str_repeat' || v == 'wordwrap') {
 			$('#force').parent().hide();
 			if (v == 'wordwrap') {
-				$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_WIDTH+'<span class="star"> *</span>');
+				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_WIDTH')+'<span class="star"> *</span>');
 			} else if (v == 'substr_count') {
-				$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_NEEDLE+'<span class="star"> *</span>');
+				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_NEEDLE')+'<span class="star"> *</span>');
 			} else {
-				$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_STRING+'<span class="star"> *</span>');
+				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_STRING')+'<span class="star"> *</span>');
 			}
 			$('#arg2,#blank_li').parent().hide();
 			$('#arg3,#blank_li3').parent().hide();
 			$('#suffix_overflow,#blank_li2').parent().hide();
 		} else if (v == 'number_format') {
 			$('#force').parent().hide();
-			$('#arg1').parent().show().find('label').html(Joomla.JText.COM_CCK_DECIMALS+'<span class="star"> *</span>');
-			$('#arg2').parent().show().find('label').html(Joomla.JText.COM_CCK_DECIMALS_SEPARATOR);
-			$('#arg3').parent().show().find('label').html(Joomla.JText.COM_CCK_THOUSANDS_SEPARATOR);
+			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_DECIMALS')+'<span class="star"> *</span>');
+			$('#arg2').parent().show().find('label').html(Joomla.JText._('COM_CCK_DECIMALS_SEPARATOR'));
+			$('#arg3').parent().show().find('label').html(Joomla.JText._('COM_CCK_THOUSANDS_SEPARATOR'));
 			$('#suffix_overflow,#blank_li2,#blank_li3,#blank_li').parent().hide();
 		} else {
 			if ( v == 'ucfirst' || v == 'ucwords' ) {
-				$('#force').parent().show().find('label').html(Joomla.JText.COM_CCK_PHP_STRING_LOWER_FIRST);
+				$('#force').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LOWER_FIRST'));
 			} else {
 				$('#force').parent().hide();
 			}
