@@ -26,7 +26,7 @@ class Helper_Include extends CommonHelper_Include
 				JHtml::_( 'bootstrap.tooltip' );
 				// JHtml::_( 'formbehavior.chosen', 'select:not(.no-chosen)' );
 			}
-			JCck::loadjQuery( true, true, array( 'cck.dev-3.3.0.min.js', 'jquery.ui.effects.min.js', 'jquery.json.min.js' ) );
+			JCck::loadjQuery( true, true, array( 'cck.dev-3.6.0.min.js', 'jquery.ui.effects.min.js', 'jquery.json.min.js' ) );
 		}
 		
 		$paths	=	array( 'media/cck/css/definitions/all.css' );
