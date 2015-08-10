@@ -25,6 +25,10 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.2.1 Initial Release [10-Aug-2014] -----------------
+
++ A few Languages constants added.
+
 -------------------- 1.2.0 Initial Release [7-May-2014] ------------------
 
 ! Joomla! 3.4 ready.
