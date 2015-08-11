@@ -10,9 +10,11 @@
 
 defined( '_JEXEC' ) or die;
 
+$canDo  =   Helper_Admin::getActions();
 $config	=	JCckDev::init( array( '42', 'button_submit', 'select_simple', 'text' ), true );
 $params	=	JComponentHelper::getParams( 'com_cck_updater' );
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
+JFactory::getDocument()->addStyleDeclaration( '#system-message-container.j-toggle-main.span10{width: 100%;}' );
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
@@ -20,7 +22,7 @@ Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
 
 <div class="<?php echo $this->css['wrapper']; ?> hidden-phone">
     <div class="<?php echo $this->css['w100']; ?>">
-        <div class="seblod first cpanel_news full beta">
+        <div class="seblod first cpanel_news full">
             <div class="legend top center plus"><?php echo CCK_LABEL .' &rarr; '. JText::_( 'COM_CCK_ADDON_'.CCK_NAME ); ?></div>
             <ul class="adminformlist">
                 <li style="text-align:center;">
@@ -61,6 +63,17 @@ Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
                 </tbody>
             </table>
         </div>
+        <?php if ( $canDo->get( 'core.admin' ) ) { ?>
+        <div class="seblod cck-padding-top-0 cck-overflow-visible">
+            <ul class="adminformlist">
+                <?php
+                $attr   =   'onclick="if (document.adminForm.boxchecked.value==0){alert(\''.htmlspecialchars( JText::_( 'JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST' ) ).'\');}else{ Joomla.submitbutton(\'update\')}"';
+                echo '<li class="btn-group dropup flt-right">'
+                 .   JCckDev::getForm( 'more_updater_submit', '', $config, array( 'label'=>'Update Now', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ) );
+                ?>
+            </ul>
+        </div>
+        <?php } ?>
         <?php echo JCckDevAccordion::end(); ?>
 	</div>
     <div class="clr"></div>

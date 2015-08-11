@@ -24,7 +24,6 @@ class CCK_UpdaterViewCCK_Updater extends JCckBaseLegacyView
 			JToolBarHelper::title( '&nbsp;', 'seblod.png' );
 		}
 		if ( $canDo->get( 'core.admin' ) ) {
-			JToolBarHelper::custom( 'update', 'upload', 'upload', 'COM_CCK_UPDATE', true );
 			JToolBarHelper::preferences( CCK_ADDON, 560, 840, 'JTOOLBAR_OPTIONS' );
 		}
 		
