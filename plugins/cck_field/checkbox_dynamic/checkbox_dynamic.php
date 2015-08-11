@@ -41,10 +41,11 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 	// onCCK_FieldConstruct_SearchSearch
 	public static function onCCK_FieldConstruct_SearchSearch( &$field, $style, $data = array() )
 	{
-		$data['variation'][]	=	JHtml::_( 'select.option', '<OPTGROUP>', JText::_( 'COM_CCK_HTML' ) );
-		$data['variation'][]	=	JHtml::_( 'select.option', 'list', JText::_( 'COM_CCK_LIST' ) );
+		$data['variation'][]	=	JHtml::_( 'select.option', '<OPTGROUP>', JText::_( 'COM_CCK_LIST' ) );
+		$data['variation'][]	=	JHtml::_( 'select.option', 'list', JText::_( 'COM_CCK_DEFAULT' ) );
+		$data['variation'][]	=	JHtml::_( 'select.option', 'list_filter', JText::_( 'COM_CCK_FORM_FILTER' ) );
 		$data['variation'][]	=	JHtml::_( 'select.option', '</OPTGROUP>', '' );
-
+		
 		parent::onCCK_FieldConstruct_SearchSearch( $field, $style, $data );
 	}
 	
@@ -115,6 +116,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			
 			if ( $opt_name && $opt_value && $opt_table ) {
 				$query			=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where.$opt_orderby.$opt_limit;
+				$query			=	JCckDevHelper::replaceLive( $query );
 				$items			=	JCckDatabase::loadObjectList( $query );
 			}
 		} else {
@@ -322,6 +324,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			
 			if ( $opt_name && $opt_table ) {
 				$query	=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where;
+				$query	=	JCckDevHelper::replaceLive( $query );
 				$lists	=	JCckDatabase::loadObjectList( $query );
 				if ( count( $lists ) ) {
 					foreach ( $lists as $list ) {
@@ -331,7 +334,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			}
 		} else {
 			$opt_query	=	isset( $options2['query'] ) ? $options2['query'] : '';
-			
+			$opt_query	=	JCckDevHelper::replaceLive( $opt_query );
 			$lists		=	JCckDatabase::loadObjectList( $opt_query );
 			if ( count( $lists ) ) {
 				foreach ( $lists as $list ) {
