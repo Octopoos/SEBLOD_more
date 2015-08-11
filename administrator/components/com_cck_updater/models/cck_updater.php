@@ -16,7 +16,7 @@ JLoader::register( 'InstallerModelUpdate', JPATH_ADMINISTRATOR.'/components/com_
 class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 {
 	// update
-	public function update( $pks )
+	public function update( $pks, $minimum_stability = JUpdater::STABILITY_STABLE )
 	{
 		$count		=	count( $pks );
 		$params		=	JComponentHelper::getParams( 'com_cck_updater' );
