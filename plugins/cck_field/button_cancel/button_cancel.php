@@ -100,7 +100,7 @@ class plgCCK_FieldButton_Cancel extends JCckPluginField
 		$task	=	'cancel';
 		$task	=	( JFactory::getApplication()->isAdmin() ) ? 'form.'.$task : $task;
 		$class	=	'button btn' . ( $field->css ? ' '.$field->css : '' );
-		$click	=	' onclick="Joomla.submitform(\''.$task.'\', document.getElementById(\'seblod_form\'));"';
+		$click	=	' onclick="JCck.Core.submitForm(\''.$task.'\', document.getElementById(\'seblod_form\'));"';
 		$attr	=	'class="'.$class.'"'.$click . ( $field->attributes ? ' '.$field->attributes : '' );
 		if ( $field->bool ) {
 			$label	=	$value;
@@ -138,7 +138,7 @@ class plgCCK_FieldButton_Cancel extends JCckPluginField
 				}
 				$field->form	=	'';
 				$icon			=	( isset( $options2['icon'] ) && $options2['icon'] ) ? 'icon-'.$options2['icon'] : '';
-				$html			=	'<button class="btn btn-small'.( $field->css ? ' '.$field->css : '' ).'" onclick="Joomla.submitform(\''.$task.'\', document.getElementById(\'seblod_form\'));" href="#"><i class="'.$icon.'"></i> '.$value.'</button>';
+				$html			=	'<button class="btn btn-small'.( $field->css ? ' '.$field->css : '' ).'" onclick="JCck.Core.submitForm(\''.$task.'\', document.getElementById(\'seblod_form\'));" href="#"><i class="'.$icon.'"></i> '.$value.'</button>';
 				JToolBar::getInstance( 'toolbar' )->appendButton( 'Custom', $html, @$options2['icon'] );
 			} else {
 				parent::g_getDisplayVariation( $field, $field->variation, $value, $value, $form, $id, $name, '<'.$tag, ' ', '', $config );
