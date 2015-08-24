@@ -8,7 +8,7 @@
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>April 2013</creationDate>
 	<description>SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
-	<version>1.4.0</version>
+	<version>1.5.0</version>
 	
 	<files>
 		<folder>css</folder>
@@ -52,7 +52,7 @@
 					<option	value="0">JHIDE</option>
 					<option	value="1">JSHOW</option>
 				</field>
-				<field name="variation_default" type="cck" construction="core_variation" default="seb_css3" label="TPL_SEB_MINIMA_DEFAULT_VARIATION" description="" class="inputbox" />
+				<field name="variation_default" type="cck" construction="core_variation" default="" label="TPL_SEB_MINIMA_DEFAULT_VARIATION" description="" class="inputbox" cck_selectlabel="Inherited" />
 				<field name="position_hidden" type="list" default="1" label="TPL_SEB_MINIMA_POSITION_HIDDEN" description="" class="inputbox">
 					<option	value="0">JHIDE</option>
 					<option	value="1">JSHOW</option>
