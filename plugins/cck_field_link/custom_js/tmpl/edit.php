@@ -18,6 +18,8 @@ JCckDev::initScript( 'link', $this->item );
     <ul class="adminformlist adminformlist-2cols">
         <?php
 		echo JCckDev::renderForm( 'core_dev_textarea', '', $config, array( 'label'=>'Javascript', 'cols'=>92, 'rows'=>1, 'storage_field'=>'custom' ), array(), 'w100' );
+		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'defaultvalue'=>0, 'label'=>'Confirm', 'storage_field'=>'confirm' ) );
+		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Alert', 'defaultvalue'=>'Please Confirm', 'size'=>32, 'storage_field'=>'confirm_alert' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.JText::_( 'COM_CCK_GENERIC' ).')</span>' );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Class', 'size'=>24, 'storage_field'=>'class' ) );
@@ -34,5 +36,6 @@ JCckDev::initScript( 'link', $this->item );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('#title_custom').isVisibleWhen('title','2',false);
+	$('#confirm_alert').isVisibleWhen('confirm','1');
 });
 </script>
