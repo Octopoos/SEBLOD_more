@@ -56,7 +56,7 @@ class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 					continue;
 				}
 				$url	.=	$vars;
-				$url	=	str_replace( 'http://', 'https://', $url );
+				$url	=	$this->_applyProxy( $url, $params );
 				$update->set( 'downloadurl', $url );
 			}
 			// --------
@@ -119,6 +119,19 @@ class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 		JInstallerHelper::cleanupInstall( $package['packagefile'], $package['extractdir'] );
 
 		return $result;
+	}
+
+	// _applyProxy
+	protected function _applyProxy( $url, $params )
+	{
+		if ( $proxy = (int)$params->get( 'proxy', '0' ) ) {
+			$proxy	=	Helper_Admin::getProxy( $params, 'proxy_segment2', true );
+			$url	=	str_replace( 'http://www.seblod.com', $proxy, $url );
+		} else {
+			$url	=	str_replace( 'http://', 'https://', $url );
+		}
+
+		return $url;
 	}
 }
 ?>

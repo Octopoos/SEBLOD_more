@@ -10,10 +10,28 @@
 
 defined( '_JEXEC' ) or die;
 
-require_once JPATH_ADMINISTRATOR.'/components/'.CCK_COM.'/helpers/common/admin.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_cck/helpers/common/admin.php';
 
 // Helper
 class Helper_Admin extends CommonHelper_Admin
 {
+	// getProxy
+	static function getProxy( $params, $segment, $scheme = false )
+	{
+		$uri	=	JUri::getInstance();
+
+		if ( $params->get( 'proxy_domain' ) ) {
+			$proxy	=	$params->get( 'proxy_domain' );
+		} else {
+			$proxy	=	$uri->getHost();
+		}
+		$proxy		=	$proxy.$params->get( $segment );
+
+		if ( $scheme ) {
+			$proxy	=	$uri->getScheme().'://'.$proxy;
+		}
+
+		return $proxy;
+	}
 }
 ?>

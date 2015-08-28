@@ -46,7 +46,12 @@ JFactory::getDocument()->addStyleDeclaration( '#system-message-container.j-toggl
                 </thead>
                 <tbody>
                 <?php
-                $items  =   JCckDatabase::loadObjectList( 'SELECT * FROM #__updates WHERE extension_id != 0 AND detailsurl LIKE "%update.seblod.com%"' );
+                $domain     =   'update.seblod.com';
+                $uri        =   JUri::getInstance();
+                if ( (int)$params->get( 'proxy', '0' ) ) {
+                    $domain =   Helper_Admin::getProxy( $params, 'proxy_segment' );
+                }
+                $items      =   JCckDatabase::loadObjectList( 'SELECT * FROM #__updates WHERE extension_id != 0 AND detailsurl LIKE "%'.$domain.'%"' );
                 if ( count( $items ) ) {
                     foreach ( $items as $i=>$item ) {
                         ?>

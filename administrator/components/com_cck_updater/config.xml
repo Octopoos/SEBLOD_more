@@ -3,6 +3,16 @@
 	<fieldset name="main" label="COM_CCK_CONFIG_FIELDSET_MAIN" description="COM_CCK_CONFIG_FIELDSET_MAIN_DESC">
 		<field name="secret_key" type="text" size="32" default="" label="COM_CCK_SECRET_KEY" description="COM_CCK_SECRET_KEY_DESC" class="inputbox" />
 	</fieldset>
+
+	<fieldset name="proxy" label="COM_CCK_CONFIG_FIELDSET_REVERSE_PROXY" description="COM_CCK_CONFIG_FIELDSET_REVERSE_PROXY_DESC">
+		<field name="proxy" type="list" default="0" label="COM_CCK_CONFIG_REVERSE_PROXY" description="COM_CCK_CONFIG_REVERSE_PROXY_DESC" class="inputbox">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="proxy_domain" type="text" size="32" default="" label="COM_CCK_CONFIG_DOMAIN" description="COM_CCK_CONFIG_DOMAIN_DESC" class="inputbox" />
+		<field name="proxy_segment" type="text" size="32" default="" label="COM_CCK_CONFIG_SEGMENT" description="COM_CCK_CONFIG_SEGMENT_DESC" class="inputbox" />
+		<field name="proxy_segment2" type="text" size="32" default="" label="COM_CCK_CONFIG_SEGMENT2" description="COM_CCK_CONFIG_SEGMENT2_DESC" class="inputbox" />
+	</fieldset>
 	
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_cck_updater" section="component" />
