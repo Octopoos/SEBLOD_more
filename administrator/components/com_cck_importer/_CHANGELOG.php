@@ -25,6 +25,10 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.5.1 Upgrade Release [7-Sep-2015] ------------------
+
+! Language constant updated for Updater Add-on.
+
 -------------------- 1.5.0 Upgrade Release [17-Jul-2015] -----------------
 
 ! Ability to manage Sessions >> SEBLOD 3.7.0 required. (!)
