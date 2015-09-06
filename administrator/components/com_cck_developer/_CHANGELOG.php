@@ -25,6 +25,10 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.2.2 Initial Release [7-Sep-2015] -----------------
+
+! Language constant updated for Updater Add-on.
+
 -------------------- 1.2.1 Initial Release [10-Aug-2014] -----------------
 
 + A few Languages constants added.
