@@ -51,9 +51,42 @@ JFactory::getDocument()->addStyleDeclaration( '#system-message-container.j-toggl
                 if ( (int)$params->get( 'proxy', '0' ) ) {
                     $domain =   Helper_Admin::getProxy( $params, 'proxy_segment' );
                 }
-                $items      =   JCckDatabase::loadObjectList( 'SELECT * FROM #__updates WHERE extension_id != 0 AND detailsurl LIKE "%'.$domain.'%"' );
+                $items      =   JCckDatabase::loadObjectList( 'SELECT * FROM #__updates WHERE extension_id != 0 AND detailsurl LIKE "%'.$domain.'%" ORDER BY FIELD(type,"component","package","plugin"), element ASC' );
+                $lang       =   JFactory::getLanguage();
+                $extensions =   array();
                 if ( count( $items ) ) {
+                    jimport( 'joomla.filesystem.file' );
+
                     foreach ( $items as $i=>$item ) {
+                        if ( isset( $extensions[$item->name] ) ) {
+                            continue;
+                        }
+                        $extensions[$item->name]    =   '';
+                        $pos                        =   strpos( $item->name, 'pkg_' );
+
+                        if ( $pos !== false && $pos == 0 ) {
+                            $path   =   JPATH_ADMINISTRATOR.'/manifests/packages/'.$item->name.'.xml';
+
+                            if ( is_file( $path ) ) {
+                                $xml    =   JCckDev::fromXML( $path );
+
+                                if ( isset( $xml->files ) ) {
+                                    if ( isset( $xml->files->file ) && count( $xml->files->file ) ) {
+                                        foreach ( $xml->files->file as $file ) {
+                                            $file   =   (string)$file;
+                                            if ( strpos( $file, '.zip' ) !== false ) {
+                                                $file   =   substr( $file, 0, -4 );
+                                            }
+                                            $extensions[$file]  =   '';
+                                        }
+                                    }
+                                }
+                            }
+                            $lang->load( $item->name.'.sys', JPATH_SITE, $lang->getTag(), true );
+                        } else {
+                            $lang->load( $item->name.'.sys', JPATH_ADMINISTRATOR, $lang->getTag(), true );    
+                        }
+                        $item->name =   JText::_( $item->name );
                         ?>
                         <tr class="row<?php echo $i % 2; ?> half">
                             <td class="center hidden-phone"><?php echo JHtml::_( 'grid.id', $i, $item->update_id ); ?></td>
