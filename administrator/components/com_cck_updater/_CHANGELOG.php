@@ -25,10 +25,14 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.3.0 Initial Release [xx-Sep-2015] ------------------
+-------------------- 1.3.0 Initial Release [7-Sep-2015] ------------------
 
 + Reverse Proxy process added >> useful for Intranets.
 + Proxy parameters added to SEBLOD Updater Options.
+
+! Exclude standalone plug-ins found in packages.
+! Translation applied.
+! Language constant updated for Updater Add-on.
 
 -------------------- 1.2.0 Initial Release [12-Aug-2015] ------------------
 
