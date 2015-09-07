@@ -8,7 +8,7 @@
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>May 2013</creationDate>
 	<description>Credit Cards Validation Pack for SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	
 	<scriptfile>pkg_script.php</scriptfile>
 	
@@ -18,6 +18,11 @@
 		<file type="plugin" id="credit_card_mastercard" group="cck_field_validation">plg_cck_field_validation_credit_card_mastercard.zip</file>
 		<file type="plugin" id="credit_card_visa" group="cck_field_validation">plg_cck_field_validation_credit_card_visa.zip</file>
 	</files>
+	
+	<languages folder="languages">
+		<language tag="en-GB">en-GB/en-GB.pkg_cck_field_validation_credit_cards.sys.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.pkg_cck_field_validation_credit_cards.sys.ini</language>
+	</languages>
 	
 	<updateservers>
 		<server type="extension" priority="1" name="Credit Cards Validation Pack Updates">http://update.seblod.com/pkg_cck_field_validation_credit_cards.xml</server>
