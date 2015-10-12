@@ -27,6 +27,7 @@ $ -> Language fix or change
 
 -------------------- 1.3.0 Initial Release [7-Sep-2015] ------------------
 
++ "Copy/Paste" Modal Box added.
 + Reverse Proxy process added >> useful for Intranets.
 + Proxy parameters added to SEBLOD Updater Options.
 

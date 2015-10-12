@@ -11,10 +11,12 @@
 defined( '_JEXEC' ) or die;
 
 $canDo  =   Helper_Admin::getActions();
-$config	=	JCckDev::init( array( '42', 'button_submit', 'select_simple', 'text' ), true );
+$config	=	JCckDev::init( array( '42', 'button_submit', 'select_simple', 'text', 'textarea' ), true );
 $params	=	JComponentHelper::getParams( 'com_cck_updater' );
+$rows   =   0;
+$text   =   '';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( '#system-message-container.j-toggle-main.span10{width: 100%;}' );
+JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin: 0px 0px 0px 0px;} #system-message-container.j-toggle-main.span10{width: 100%;}' );
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
@@ -87,6 +89,8 @@ JFactory::getDocument()->addStyleDeclaration( '#system-message-container.j-toggl
                             $lang->load( $item->name.'.sys', JPATH_ADMINISTRATOR, $lang->getTag(), true );    
                         }
                         $item->name =   JText::_( $item->name );
+                        $rows++;
+                        $text       .=  '- '.$item->name.'<br />';
                         ?>
                         <tr class="row<?php echo $i % 2; ?> half">
                             <td class="center hidden-phone"><?php echo JHtml::_( 'grid.id', $i, $item->update_id ); ?></td>
@@ -105,9 +109,13 @@ JFactory::getDocument()->addStyleDeclaration( '#system-message-container.j-toggl
         <div class="seblod cck-padding-top-0 cck-overflow-visible">
             <ul class="adminformlist">
                 <?php
-                $attr   =   'onclick="if (document.adminForm.boxchecked.value==0){alert(\''.htmlspecialchars( JText::_( 'JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST' ) ).'\');}else{ Joomla.submitbutton(\'update\')}"';
+                $attr   =   'onclick="if (document.adminForm.boxchecked.value==0){alert(\''.htmlspecialchars( addslashes( JText::_( 'JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST' ) ) ).'\');}else{ Joomla.submitbutton(\'update\')}"';
                 echo '<li class="btn-group dropup flt-right">'
                  .   JCckDev::getForm( 'more_updater_submit', '', $config, array( 'label'=>'Update Now', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ) );
+                if ( JCck::on() ) {
+                    echo '<a href="javascript:void(0);" id="to_be_updated" class="btn btn-primary hasTooltip hasTip" data-toggle="modal" data-target="#collapseModal" title="'.JText::_( 'COM_CCK_COPY_PASTE_ITEMS' ).'"><span class="icon-copy"></span></a>';
+                }
+                echo '</li>';
                 ?>
             </ul>
         </div>
@@ -134,6 +142,22 @@ Helper_Display::quickCopyright();
 ?>
 </div>
 </form>
+<div class="modal modal-small hide fade" id="collapseModal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h3><?php echo JText::_( 'COM_CCK_COPY_PASTE_ITEMS'); ?></h3>
+    </div>
+    <div class="modal-body">
+        <ul class="adminformlist" style="margin:0 0 0 2px;">
+        <?php
+        echo JCckDev::renderForm( 'core_dev_textarea', $text, $config, array( 'cols'=>88, 'rows'=>( $rows + 5 ), 'attributes'=>'style="margin:0;"', 'css'=>'input-xxlarge' ) );
+        ?>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" onclick="" data-dismiss="modal"><?php echo JText::_( 'COM_CCK_CLOSE' ); ?></button>
+    </div>
+</div>
 
 <script type="text/javascript">
 (function ($){
