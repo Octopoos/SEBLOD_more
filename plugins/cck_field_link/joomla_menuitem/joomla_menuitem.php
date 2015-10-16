@@ -59,7 +59,11 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
 			}
 			if ( $custom ) {
-				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$custom : '?'.$custom;
+				if ( $custom[0] == '#' ) {
+					$field->link	.=	$custom;
+				} else {
+					$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$custom : '?'.$custom;
+				}				
 			}
 		}
 		$field->link_attributes	=	$link_attr ? $link_attr : ( isset( $field->link_attributes ) ? $field->link_attributes : '' );
