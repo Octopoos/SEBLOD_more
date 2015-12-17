@@ -23,6 +23,8 @@
 	<languages folder="languages">
 		<language tag="en-GB">en-GB/en-GB.plg_cck_field_restriction_clear.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_cck_field_restriction_clear.sys.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.plg_cck_field_restriction_clear.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.plg_cck_field_restriction_clear.sys.ini</language>
 	</languages>
 	
 	<config>
