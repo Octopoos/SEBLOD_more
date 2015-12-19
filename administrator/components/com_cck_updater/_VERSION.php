@@ -4,7 +4,7 @@
 * @package			SEBLOD Updater Add-on for SEBLOD 3.x
 * @url				http://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
-* @copyright		Copyright (C) 2013 SEBLOD. All Rights Reserved.
+* @copyright		Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved.
 * @license 			GNU General Public License version 2 or later; see _LICENSE.php
 **/
 
@@ -15,7 +15,7 @@ final class JCckUpdaterVersion
 {
 	public $RELEASE = '1.3';
 	
-	public $DEV_LEVEL = '0';
+	public $DEV_LEVEL = '1';
 
 	// getShortVersion
 	public function getShortVersion()
