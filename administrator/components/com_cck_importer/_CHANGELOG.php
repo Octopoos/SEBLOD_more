@@ -4,7 +4,7 @@
 * @package			SEBLOD Importer Add-on for SEBLOD 3.x
 * @url				http://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
-* @copyright		Copyright (C) 2013 SEBLOD. All Rights Reserved.
+* @copyright		Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved.
 * @license 			GNU General Public License version 2 or later; see _LICENSE.php
 **/
 
@@ -24,6 +24,11 @@ $ -> Language fix or change
 ! -> Note
 
 @ID is the ID on SEBLOD Tracker.
+
+-------------------- 1.5.2 Initial Release [19-Dec-2015] -----------------
+
+! Copyright Updated.
+! Language constant updated for Updater Add-on.
 
 -------------------- 1.5.1 Upgrade Release [7-Sep-2015] ------------------
 
