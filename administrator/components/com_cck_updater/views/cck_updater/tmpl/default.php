@@ -58,13 +58,14 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                 $extensions =   array();
                 if ( count( $items ) ) {
                     jimport( 'joomla.filesystem.file' );
-
+                    
                     foreach ( $items as $i=>$item ) {
                         if ( isset( $extensions[$item->name] ) ) {
                             continue;
                         }
                         $extensions[$item->name]    =   '';
                         $pos                        =   strpos( $item->name, 'pkg_' );
+                        $suffix                     =   '';
 
                         if ( $pos !== false && $pos == 0 ) {
                             $path   =   JPATH_ADMINISTRATOR.'/manifests/packages/'.$item->name.'.xml';
@@ -88,7 +89,10 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                         } else {
                             $lang->load( $item->name.'.sys', JPATH_ADMINISTRATOR, $lang->getTag(), true );    
                         }
-                        $item->name =   JText::_( $item->name );
+                        if ( $item->type == 'component' ) {
+                            $suffix =   '_ADDON';
+                        }
+                        $item->name =   JText::_( $item->name.$suffix );
                         $rows++;
                         $text       .=  '- '.$item->name.'<br />';
                         ?>
