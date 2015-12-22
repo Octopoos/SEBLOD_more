@@ -22,10 +22,12 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	
 	protected static $access		=	'access';
 	protected static $author		=	'created_user_id';
+	protected static $author_object	=	'joomla_user';
 	protected static $created_at	=	'created_time';
 	protected static $custom		=	'description';
 	protected static $modified_at	=	'modified_time';
 	protected static $parent		=	'parent_id';
+	protected static $parent_object	=	'joomla_tag';
 	protected static $status		=	'published';
 	protected static $to_route		=	'a.id as pk, a.title, a.alias';
 	
@@ -33,6 +35,7 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	protected static $contexts		=	array(); //TODO
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'title ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC', 'ordering'=>'lft ASC', 'popular'=>'hits DESC' );
+	protected static $ordering2		=	array();
 	protected static $pk			=	0;
 	protected static $routes		=	array();
 	protected static $sef			=	array( '1'=>'full',
@@ -78,6 +81,24 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		}
 	}
 	
+	// onCCK_Storage_LocationPrepareDelete
+	public function onCCK_Storage_LocationPrepareDelete( &$field, &$storage, $pk = 0, &$config = array() )
+	{
+		if ( self::$type != $field->storage_location ) {
+			return;
+		}
+		
+		// Init
+		$table	=	$field->storage_table;
+		
+		// Set
+		if ( $table == self::$table ) {
+			$storage	=	self::_getTable( $pk );
+		} else {
+			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
+		}
+	}
+	
 	// onCCK_Storage_LocationPrepareForm
 	public function onCCK_Storage_LocationPrepareForm( &$field, &$storage, $pk = 0, &$config = array() )
 	{
@@ -95,49 +116,6 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
-	}
-	
-	// onCCK_Storage_LocationPrepareSearch
-	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
-	{
-		if ( self::$type != $type ) {
-			return;
-		}
-		
-		// Prepare
-		if ( ! isset( $tables[self::$table] ) ) {
-			$tables[self::$table]	=	array( '_'=>'t'.$t++,
-											   'fields'=>array(),
-											   'join'=>1,
-											   'location'=>self::$type
-										);
-		}
-		
-		// Set
-		$t_pk	=	$tables[self::$table]['_'];
-		if ( ! isset( $tables[self::$table]['fields']['published'] ) ) {
-			$query->where( $t_pk.'.published = 1' );
-		}
-		if ( ! isset( $tables[self::$table]['fields']['access'] ) ) {
-			$access	=	implode( ',', $user->getAuthorisedViewLevels() );
-			$query->where( $t_pk.'.access IN ('.$access.')' );
-		}
-	}
-	
-	// onCCK_Storage_LocationPrepareOrder
-	public function onCCK_Storage_LocationPrepareOrder( $type, &$order, &$tables, &$config = array() )
-	{
-		if ( self::$type != $type ) {
-			return;
-		}
-		
-		$order	=	( isset( self::$ordering[$order] ) ) ? $tables[self::$table]['_'] .'.'. self::$ordering[$order] : '';
-	}
-	
-	// onCCK_Storage_LocationPrepareList
-	public static function onCCK_Storage_LocationPrepareList( &$params )
-	{
-		// TODO
 	}
 	
 	// onCCK_Storage_LocationPrepareItems
@@ -163,6 +141,49 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 			}
 		}
 		$config['author']	=	$storages[self::$table][$config['pk']]->{self::$author};
+	}
+
+	// onCCK_Storage_LocationPrepareList
+	public static function onCCK_Storage_LocationPrepareList( &$params )
+	{
+		// TODO
+	}
+
+	// onCCK_Storage_LocationPrepareOrder
+	public function onCCK_Storage_LocationPrepareOrder( $type, &$order, &$tables, &$config = array() )
+	{
+		if ( self::$type != $type ) {
+			return;
+		}
+		
+		$order	=	( isset( self::$ordering[$order] ) ) ? $tables[self::$table]['_'] .'.'. self::$ordering[$order] : '';
+	}
+
+	// onCCK_Storage_LocationPrepareSearch
+	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
+	{
+		if ( self::$type != $type ) {
+			return;
+		}
+		
+		// Prepare
+		if ( ! isset( $tables[self::$table] ) ) {
+			$tables[self::$table]	=	array( '_'=>'t'.$t++,
+											   'fields'=>array(),
+											   'join'=>1,
+											   'location'=>self::$type
+										);
+		}
+		
+		// Set
+		$t_pk	=	$tables[self::$table]['_'];
+		if ( ! isset( $tables[self::$table]['fields']['published'] ) ) {
+			$query->where( $t_pk.'.published = 1' );
+		}
+		if ( ! isset( $tables[self::$table]['fields']['access'] ) ) {
+			$access	=	implode( ',', $user->getAuthorisedViewLevels() );
+			$query->where( $t_pk.'.access IN ('.$access.')' );
+		}
 	}
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Store
@@ -391,6 +412,7 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		static $autorized	=	array(
 									'access'=>'',
 									'author'=>'',
+									'author_object'=>'',
 									'created_at'=>'',
 									'context'=>'',
 									'contexts'=>'',
@@ -399,12 +421,14 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 									'modified_at'=>'',
 									'ordering'=>'',
 									'parent'=>'',
+									'parent_object'=>'',
 									'routes'=>'',
 									'status'=>'',
 									'table'=>'',
+									'table_object'=>'',
 									'to_route'=>''
 								);
-
+		
 		if ( count( $properties ) ) {
 			foreach ( $properties as $i=>$p ) {
 				if ( isset( $autorized[$p] ) ) {
