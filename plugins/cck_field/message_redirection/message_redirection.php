@@ -42,10 +42,13 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 			$options2	=	json_decode( $field->options2 );
 
 			if ( is_object( $options2 ) && isset( $options2->itemid ) && $options2->itemid ) {
-				$redirection	=	'window.location.href=\''.JCckDevHelper::getAbsoluteUrl( $options2->itemid ).'\'';
-				$time			=	5000;
+				if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
+					JFactory::getApplication()->redirect( JCckDevHelper::getAbsoluteUrl( $options2->itemid ) );
+				} else {
+					$redirection	=	'window.location.href=\''.JCckDevHelper::getAbsoluteUrl( $options2->itemid ).'\'';
 				
-				JFactory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$time.');' );
+					JFactory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$options2->timeout_ms.');' );
+				}
 			}	
 		}
 
