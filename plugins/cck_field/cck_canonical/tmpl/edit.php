@@ -4,7 +4,7 @@
 * @package			SEBLOD (App Builder & CCK) // SEBLOD nano (Form Builder)
 * @url				http://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
-* @copyright		Copyright (C) 2013 SEBLOD. All Rights Reserved.
+* @copyright		Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved.
 * @license 			GNU General Public License version 2 or later; see _LICENSE.php
 **/
 
@@ -22,7 +22,9 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
         echo JCckDev::renderForm( 'core_menuitem', @$options2['itemid'], $config, array( 'selectlabel'=>'Inherited', 'options'=>'Use Value=optgroup||Field=-2', 'storage_field'=>'json[options2][itemid]' ) );
         echo JCckDev::renderBlank( '<input type="hidden" id="blank_li2" value="" />' );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['itemid_fieldname'], $config, array( 'label'=>'Field Name', 'storage_field'=>'json[options2][itemid_fieldname]' ) );
-		echo JCckDev::renderForm( 'core_dev_select', @$options2['content'], $config, array( 'defaultvalue'=>'', 'label'=>'Content', 'selectlabel'=>'Current', 'options'=>'Use Value=optgroup||Field=2', 'storage_field'=>'json[options2][content]' ) );
+		echo JCckDev::renderForm( 'core_bool', $this->item->bool, $config, array( 'label'=>'Behavior', 'defaultvalue'=>'0', 'options'=>'Always=0||Auto=1' ) );
+        echo JCckDev::renderForm( 'core_dev_select', @$options2['content'], $config, array( 'defaultvalue'=>'', 'label'=>'Content', 'selectlabel'=>'Current', 'options'=>'Use Value=optgroup||Field=2', 'storage_field'=>'json[options2][content]' ) );
+        echo JCckDev::renderBlank( '<input type="hidden" id="blank_li" value="" />' );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['content_fieldname'], $config, array( 'label'=>'Field Name', 'storage_field'=>'json[options2][content_fieldname]' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
@@ -34,6 +36,6 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     $('#json_options2_itemid_fieldname,#blank_li2').isVisibleWhen('json_options2_itemid','-2');
-    $('#json_options2_content_fieldname').isVisibleWhen('json_options2_content','2');
+    $('#json_options2_content_fieldname,#blank_li').isVisibleWhen('json_options2_content','2');
 });
 </script>
