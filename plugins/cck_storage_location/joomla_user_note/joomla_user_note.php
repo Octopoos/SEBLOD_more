@@ -22,10 +22,12 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	
 	protected static $access		=	'';
 	protected static $author		=	'created_user_id';
+	protected static $author_object	=	'joomla_user';
 	protected static $created_at	=	'created_time';
 	protected static $custom		=	'body';
 	protected static $modified_at	=	'modified_time';
 	protected static $parent		=	'catid';
+	protected static $parent_object	=	'joomla_category';
 	protected static $status		=	'state';
 	protected static $to_route		=	'';
 	
@@ -33,7 +35,10 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	protected static $contexts		=	array();
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'subject ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC' );
+	protected static $ordering2		=	array();
 	protected static $pk			=	0;
+	protected static $routes		=	array();
+	protected static $sef			=	array();
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Construct
 	
@@ -394,6 +399,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		static $autorized	=	array(
 									'access'=>'',
 									'author'=>'',
+									'author_object'=>'',
 									'created_at'=>'',
 									'context'=>'',
 									'contexts'=>'',
@@ -402,6 +408,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 									'modified_at'=>'',
 									'ordering'=>'',
 									'parent'=>'',
+									'parent_object'=>'',
 									/*'routes'=>'',*/
 									'status'=>'',
 									'table'=>'',
