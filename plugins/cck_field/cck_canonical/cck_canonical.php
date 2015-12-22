@@ -39,46 +39,26 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 
 		// Process
 		if ( $field->state ) {
-			$app		=	JFactory::getApplication();
-			$doc		=	JFactory::getDocument();
-			$postpone	=	false;
-
-			if ( count( $doc->_links ) ) {
-				foreach ( $doc->_links as $k=>$link ) {
-					if ( $link['relation'] == 'canonical' ) {
-						unset( $doc->_links[$k] );
-					}
-				}
-			}
 			if ( $field->options2 != '' ) {
 				$fieldname		=	'';
 				$fieldname2		=	'';
 				$options2		=	new JRegistry( $field->options2 );
 				$location		=	( $config['location'] ) ? $config['location'] : 'joomla_article';
+				
 				if ( $options2->get( 'content' ) == '2' ) {				
-					$postpone	=	true;
 					$fieldname	=	$options2->get( 'content_fieldname' );
 				}
 				if ( $options2->get( 'itemid' ) == '-2' ) {
 					$fieldname2	=	$options2->get( 'itemid_fieldname' );
 					$itemId		=	$config['Itemid'];
-					$postpone	=	true;
 				} else {
 					$itemId		=	$options2->get( 'itemid', $config['Itemid'] );
 				}
-				if ( $postpone !== false ) {
-					parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ) );
-				} elseif ( $config['pk'] ) {
-					$uri		=	JUri::getInstance();
-					$domain		=	$uri->toString( array( 'scheme', 'host', 'port' ) );
-					$link		=	JCck::callFunc_Array( 'plgCCK_Storage_Location'.$location, 'getRoute', array( $config['pk'], $options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ), $options2->get( 'itemid', $config['Itemid'] ), $config ) );
-					$doc->addHeadLink( $domain.$link, 'canonical' );
-					$app->cck_canonical_url	=	$link;
-				}
+
+				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ) );
 			}
-			$app->cck_canonical	=	true;
 		}
-		
+
 		$field->display	=	0;
 		$field->value	=	'';
 	}
@@ -147,6 +127,15 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 
 		$domain	=	$uri->toString( array( 'scheme', 'host', 'port' ) );
 		$pk		=	$config['pk'];
+		
+		if ( count( $doc->_links ) ) {
+			foreach ( $doc->_links as $k=>$link ) {
+				if ( $link['relation'] == 'canonical' ) {
+					unset( $doc->_links[$k] );
+				}
+			}
+		}
+
 		if ( $process['fieldname'] && isset( $fields[$process['fieldname']] ) && $fields[$process['fieldname']]->value ) {
 			$pk	=	$fields[$process['fieldname']]->value;
 		}
@@ -158,9 +147,12 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 			$itemId	=	$process['itemId'];
 		}
 		$link	=	JCck::callFunc_Array( 'plgCCK_Storage_Location'.$process['location'], 'getRoute', array( $pk, $process['sef'], $itemId, $config ) );
-
-		$doc->addHeadLink( $domain.$link, 'canonical' );
-		$app->cck_canonical_url	=	$link;
+		
+		if ( $process['mode'] == '0' || ( $process['mode'] == '1' && $doc->getBase() != $domain.$link ) ) {
+			$doc->addHeadLink( $domain.$link, 'canonical' );
+			$app->cck_canonical_url	=	$link;
+			$app->cck_canonical		=	true;	
+		}
 	}
 }
 ?>
