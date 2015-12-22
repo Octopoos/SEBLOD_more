@@ -15,23 +15,30 @@ JLoader::register('RedirectTableLink', JPATH_ADMINISTRATOR .'/components/com_red
 // Plugin
 class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 {
-	protected static $type		=	'joomla_redirection';
-	protected static $table		=	'#__redirect_links';
-	protected static $key		=	'id';
+	protected static $type			=	'joomla_redirection';
+	protected static $table			=	'#__redirect_links';
+	protected static $table_object	=	array( 'Link', 'RedirectTable' );
+	protected static $key			=	'id';
 
-	protected static $access	=	'';
-	protected static $author	=	'';
-	protected static $custom	=	'';
-	protected static $parent	=	'';
-	protected static $status	=	'published';
-	protected static $to_route	=	'a.id as pk, a.old_url';
+	protected static $access		=	'';
+	protected static $author		=	'';
+	protected static $author_object	=	'';
+	protected static $created_at	=	'created_date';
+	protected static $custom		=	'';
+	protected static $modified_at	=	'modified_date';
+	protected static $parent		=	'';
+	protected static $parent_object	=	'';
+	protected static $status		=	'published';
+	protected static $to_route		=	'a.id as pk, a.old_url';
 
-	protected static $context	=	'com_redirect.link';
-	protected static $contexts	=	array('com_redirect.link');
-	protected static $error		=	false;
-	protected static $ordering	=	array( 'alpha'=>'old_url ASC', 'newest'=>'created_date DESC', 'oldest'=>'created_date ASC', 'popular'=>'hits DESC' );
-	protected static $pk		=	0;
-	protected static $sef		=	array();
+	protected static $context		=	'com_redirect.link';
+	protected static $contexts		=	array('com_redirect.link');
+	protected static $error			=	false;
+	protected static $ordering		=	array( 'alpha'=>'old_url ASC', 'newest'=>'created_date DESC', 'oldest'=>'created_date ASC', 'popular'=>'hits DESC' );
+	protected static $ordering2		=	array();
+	protected static $pk			=	0;
+	protected static $routes		=	array();
+	protected static $sef			=	array();
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Construct
 
@@ -69,6 +76,24 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		}
 	}
 
+	// onCCK_Storage_LocationPrepareDelete
+	public function onCCK_Storage_LocationPrepareDelete( &$field, &$storage, $pk = 0, &$config = array() )
+	{
+		if ( self::$type != $field->storage_location ) {
+			return;
+		}
+		
+		// Init
+		$table	=	$field->storage_table;
+		
+		// Set
+		if ( $table == self::$table ) {
+			$storage	=	self::_getTable( $pk );
+		} else {
+			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
+		}
+	}
+
 	// onCCK_Storage_LocationPrepareForm
 	public function onCCK_Storage_LocationPrepareForm( &$field, &$storage, $pk = 0, &$config = array() )
 	{
@@ -85,45 +110,6 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		} else {
 			$storage = parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
-	}
-
-	// onCCK_Storage_LocationPrepareSearch
-	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
-	{
-		if ( self::$type != $type ) {
-			return;
-		}
-
-        // Prepare
-        if ( ! isset( $tables[self::$table] ) ) {
-            $tables[self::$table] = array(
-                '_'=>'t'.$t++,
-                'fields' => array(),
-                'join' => 1,
-                'location'=> self::$type
-            );
-        }
-
-        // Set
-        $t_pk	=	$tables[self::$table]['_'];
-        if ( ! isset( $tables[self::$table]['fields']['published'] ) ) {
-            $query->where( $t_pk.'.published = 1' );
-        }
-	}
-
-	// onCCK_Storage_LocationPrepareOrder
-	public function onCCK_Storage_LocationPrepareOrder( $type, &$order, &$tables, &$config = array() )
-	{
-		if ( self::$type != $type ) {
-			return;
-		}
-
-		$order	=	( isset( self::$ordering[$order] ) ) ? $tables[self::$table]['_'] .'.'. self::$ordering[$order] : '';
-	}
-
-	// onCCK_Storage_LocationPrepareList
-	public static function onCCK_Storage_LocationPrepareList( &$params )
-	{
 	}
 
 	// onCCK_Storage_LocationPrepareItems
@@ -150,37 +136,75 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		}
 	}
 
+	// onCCK_Storage_LocationPrepareList
+	public static function onCCK_Storage_LocationPrepareList( &$params )
+	{
+	}
+
+	// onCCK_Storage_LocationPrepareOrder
+	public function onCCK_Storage_LocationPrepareOrder( $type, &$order, &$tables, &$config = array() )
+	{
+		if ( self::$type != $type ) {
+			return;
+		}
+
+		$order	=	( isset( self::$ordering[$order] ) ) ? $tables[self::$table]['_'] .'.'. self::$ordering[$order] : '';
+	}
+
+	// onCCK_Storage_LocationPrepareSearch
+	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
+	{
+		if ( self::$type != $type ) {
+			return;
+		}
+
+		// Prepare
+		if ( ! isset( $tables[self::$table] ) ) {
+			$tables[self::$table]	=	array( '_'=>'t'.$t++,
+												'fields' => array(),
+											   'join' => 1,
+											   'location'=> self::$type
+										);
+		}
+
+		// Set
+		$t_pk	=	$tables[self::$table]['_'];
+		if ( ! isset( $tables[self::$table]['fields']['published'] ) ) {
+			$query->where( $t_pk.'.published = 1' );
+		}
+	}
+
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Store
 
 	// onCCK_Storage_LocationDelete
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
-        $app		=	JFactory::getApplication();
-        $dispatcher	=	JDispatcher::getInstance();
-        $table		=	self::_getTable( $pk );
+		$app		=	JFactory::getApplication();
+		$dispatcher	=	JDispatcher::getInstance();
+		$table		=	self::_getTable( $pk );
 
-        if ( !$table ) {
-            return false;
-        }
+		if ( !$table ) {
+			return false;
+		}
 
-        // Check
-        $user 			=	JCck::getUser();
-        $canDelete		=	$user->authorise( 'core.delete', 'com_cck.form.'.$config['type_id'] );
-        $canDeleteOwn	=	$user->authorise( 'core.delete.own', 'com_cck.form.'.$config['type_id'] );
-        if ( !$canDelete && !$canDeleteOwn ) {
-            $app->enqueueMessage( JText::_( 'COM_CCK_ERROR_DELETE_NOT_PERMITTED' ), 'error' );
-            return;
-        }
+		// Check
+		$user 			=	JCck::getUser();
+		$canDelete		=	$user->authorise( 'core.delete', 'com_cck.form.'.$config['type_id'] );
+		$canDeleteOwn	=	$user->authorise( 'core.delete.own', 'com_cck.form.'.$config['type_id'] );
+		if ( !$canDelete && !$canDeleteOwn ) {
+			$app->enqueueMessage( JText::_( 'COM_CCK_ERROR_DELETE_NOT_PERMITTED' ), 'error' );
+			return;
+		}
 
-        // Process
-        $result	=	$dispatcher->trigger( 'onContentBeforeDelete', array( self::$context, $table ) );
-        if ( in_array( false, $result, true ) ) {
-            return false;
-        }
+		// Process
+		$result	=	$dispatcher->trigger( 'onContentBeforeDelete', array( self::$context, $table ) );
+		if ( in_array( false, $result, true ) ) {
+			return false;
+		}
         if ( !$table->delete( $pk ) ) {
-            return false;
-        }
-        $dispatcher->trigger( 'onContentAfterDelete', array( self::$context, $table ) );
+			return false;
+		}
+		$dispatcher->trigger( 'onContentAfterDelete', array( self::$context, $table ) );
 
         return true;
 	}
@@ -227,7 +251,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 
 		// Prepare
 		$table->bind( $data );
-        $table->check();
+		$table->check();
 		self::_completeTable( $table, $data, $config );
 
 		// Store
@@ -247,7 +271,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
-		$table = JTable::getInstance('Link', 'RedirectTable');
+		$table	=	JTable::getInstance( 'Link', 'RedirectTable' );
 
 		if ( $pk > 0 ) {
 			$table->load( $pk );
@@ -328,30 +352,50 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		if ( !$pk ) {
 			return false;
 		}
-
+		
 		$table	=	self::_getTable( $pk );
-
+		
 		return parent::g_checkIn( $table );
 	}
-
+	
 	// getId
 	public static function getId( $config )
 	{
 		return JCckDatabase::loadResult( 'SELECT id FROM #__cck_core WHERE storage_location="'.self::$type.'" AND pk='.(int)$config['pk'] );
 	}
-
+	
 	// getStaticProperties
 	public static function getStaticProperties( $properties )
 	{
+		static $autorized	=	array(
+									'access'=>'',
+									'author'=>'',
+									'author_object'=>'',
+									'created_at'=>'',
+									'context'=>'',
+									'contexts'=>'',
+									'custom'=>'',
+									'key'=>'',
+									'modified_at'=>'',
+									'ordering'=>'',
+									'parent'=>'',
+									'parent_object'=>'',
+									'routes'=>'',
+									'status'=>'',
+									'table'=>'',
+									'table_object'=>'',
+									'to_route'=>''
+								);
+		
 		if ( count( $properties ) ) {
 			foreach ( $properties as $i=>$p ) {
-				if ( $p == 'key' || $p == 'table' || $p == 'access' || $p == 'custom' || $p == 'status' || $p == 'to_route' || $p == 'contexts' ) {
+				if ( isset( $autorized[$p] ) ) {
 					$properties[$p]	=	self::${$p};
 				}
 				unset( $properties[$i] );
 			}
 		}
-
+		
 		return $properties;
 	}
 }
