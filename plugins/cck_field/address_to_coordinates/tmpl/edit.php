@@ -25,6 +25,11 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
         echo JCckDev::renderForm( 'more_address_to_coordinates_types', @$options2['types'], $config );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['longitude'], $config, array( 'label'=>'Longitude Field', 'storage_field'=>'json[options2][longitude]', 'required'=>'required' ) );
 		echo JCckDev::renderForm( 'more_address_to_coordinates_restrictions_country', @$options2['restrictions_country'], $config );
+        echo '<li><label>'.JText::_( 'COM_CCK_COUNTRY_FIELD' ).'</label>'
+         .   JCckDev::getForm( 'core_dev_text', @$options2['country'], $config, array( 'label'=>'', 'storage_field'=>'json[options2][country]', 'css'=>'input-small', 'required'=>'' ) )
+         .   JCckDev::getForm( 'core_dev_select', @$options2['country_type'], $config, array( 'label'=>'', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'Full=1||Short=0', 'storage_field'=>'json[options2][country_type]' ) )
+         .   '</li>';
+        echo JCckDev::renderForm( 'core_dev_select', @$options2['bypass'], $config, array( 'label'=>'Bypass', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'No=0||Yes=optgroup||Countries=1||Countries and Regions=2', 'storage_field'=>'json[options2][bypass]' ) );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['city'], $config, array( 'label'=>'City Field', 'storage_field'=>'json[options2][city]', 'required'=>'required' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
@@ -36,7 +41,6 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     $('#sortable_core_options').isVisibleWhen('bool','0');
-    $('#json_options2_types,#json_options2_restrictions_country').isVisibleWhen('bool','1');
-    $('#json_options2_city').isVisibleWhen('json_options2_types','(cities)');
+    $('#json_options2_types,#json_options2_restrictions_country,#json_options2_bypass,#json_options2_country').isVisibleWhen('bool','1');
 });
 </script>
