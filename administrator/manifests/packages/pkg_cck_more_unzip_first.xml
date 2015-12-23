@@ -11,5 +11,65 @@
 	<version>1.0.0</version>
 	
 	<files folder="extensions">
+		<file type="plugin" id="address_to_coordinates" group="cck_field">plg_cck_field_address_to_coordinates.zip</file>
+		<file type="plugin" id="author" group="cck_field">plg_cck_field_author.zip</file>
+		<file type="plugin" id="button_cancel" group="cck_field">plg_cck_field_button_cancel.zip</file>
+		<file type="plugin" id="button_reset" group="cck_field">plg_cck_field_button_reset.zip</file>
+		<file type="plugin" id="captcha_recaptcha" group="cck_field">plg_cck_field_captcha_recaptcha.zip</file>
+		<file type="plugin" id="cck_break" group="cck_field">plg_cck_field_cck_break.zip</file>
+		<file type="plugin" id="cck_canonical" group="cck_field">plg_cck_field_cck_canonical.zip</file>
+		<file type="plugin" id="checkbox_dynamic" group="cck_field">plg_cck_field_checkbox_dynamic.zip</file>
+		<file type="plugin" id="checkbox_numeric" group="cck_field">plg_cck_field_checkbox_numeric.zip</file>
+		<file type="plugin" id="div_clear" group="cck_field">plg_cck_field_div_clear.zip</file>
+		<file type="plugin" id="folder" group="cck_field">plg_cck_field_folder.zip</file>
+		<file type="plugin" id="form_html" group="cck_field">plg_cck_field_form_html.zip</file>
+		<file type="plugin" id="iframe" group="cck_field">plg_cck_field_iframe.zip</file>
+		<file type="plugin" id="radio_numeric" group="cck_field">plg_cck_field_radio_numeric.zip</file>
+		<file type="plugin" id="search_pagination" group="cck_field">plg_cck_field_search_pagination.zip</file>
+		<file type="plugin" id="search_total" group="cck_field">plg_cck_field_search_total.zip</file>
+		<file type="plugin" id="search_variables" group="cck_field">plg_cck_field_search_variables.zip</file>
+		<file type="plugin" id="video_dailymotion" group="cck_field">plg_cck_field_video_dailymotion.zip</file>
+		<file type="plugin" id="video_vimeo" group="cck_field">plg_cck_field_video_vimeo.zip</file>
+		<file type="plugin" id="video_youtube" group="cck_field">plg_cck_field_video_youtube.zip</file>
+
+		<file type="plugin" id="custom" group="cck_field_link">plg_cck_field_link_custom.zip</file>
+		<file type="plugin" id="custom_js" group="cck_field_link">plg_cck_field_link_custom_js.zip</file>
+		<file type="plugin" id="download" group="cck_field_link">plg_cck_field_link_download.zip</file>
+		<file type="plugin" id="history_back_js" group="cck_field_link">plg_cck_field_link_history_back_js.zip</file>
+		<file type="plugin" id="joomla_menuitem" group="cck_field_link">plg_cck_field_link_joomla_menuitem.zip</file>
+		<file type="plugin" id="joomla_print" group="cck_field_link">plg_cck_field_link_joomla_print.zip</file>
+		<file type="plugin" id="cck_search_js" group="cck_field_link">plg_cck_field_link_cck_search_js.zip</file>
+
+		<file type="plugin" id="datetime" group="cck_field_live">plg_cck_field_live_datetime.zip</file>
+		<file type="plugin" id="lorem_ipsum" group="cck_field_live">plg_cck_field_live_lorem_ipsum.zip</file>
+		<file type="plugin" id="random_number" group="cck_field_live">plg_cck_field_live_random_number.zip</file>
+		<file type="plugin" id="random_option" group="cck_field_live">plg_cck_field_live_random_option.zip</file>
+		<file type="plugin" id="random_uniqid" group="cck_field_live">plg_cck_field_live_random_uniqid.zip</file>
+		<file type="plugin" id="cck_site" group="cck_field_live">plg_cck_field_live_cck_site.zip</file>
+		<file type="plugin" id="url" group="cck_field_live">plg_cck_field_live_url.zip</file>
+
+		<file type="plugin" id="joomla_language" group="cck_field_restriction">plg_cck_field_restriction_joomla_language.zip</file>
+		<file type="plugin" id="joomla_user" group="cck_field_restriction">plg_cck_field_restriction_joomla_user.zip</file>
+		<file type="plugin" id="mobile_device" group="cck_field_restriction">plg_cck_field_restriction_mobile_device.zip</file>
+		<file type="plugin" id="search_total" group="cck_field_restriction">plg_cck_field_restriction_search_total.zip</file>
+		<file type="plugin" id="url_variable" group="cck_field_restriction">plg_cck_field_restriction_url_variable.zip</file>
+
+		<file type="plugin" id="highlight" group="cck_field_typography">plg_cck_field_typography_highlight.zip</file>
+		<file type="plugin" id="list" group="cck_field_typography">plg_cck_field_typography_list.zip</file>
+		<file type="plugin" id="php_string" group="cck_field_typography">plg_cck_field_typography_php_string.zip</file>
+		<file type="plugin" id="pre" group="cck_field_typography">plg_cck_field_typography_pre.zip</file>
+
+		<file type="plugin" id="checkbox" group="cck_field_validation">plg_cck_field_validation_checkbox.zip</file>
+		<file type="plugin" id="date" group="cck_field_validation">plg_cck_field_validation_date.zip</file>
+		<file type="plugin" id="function" group="cck_field_validation">plg_cck_field_validation_function.zip</file>
+		<file type="plugin" id="ipv4" group="cck_field_validation">plg_cck_field_validation_ipv4.zip</file>
+		<file type="plugin" id="phone" group="cck_field_validation">plg_cck_field_validation_phone.zip</file>
+		<file type="plugin" id="regex" group="cck_field_validation">plg_cck_field_validation_regex.zip</file>
+		<file type="plugin" id="zip_code" group="cck_field_validation">plg_cck_field_validation_zip_code.zip</file>
+
+		<file type="plugin" id="joomla_menu_item" group="cck_storage_location">plg_cck_storage_location_joomla_menu_item.zip</file>
+		<file type="plugin" id="joomla_redirection" group="cck_storage_location">plg_cck_storage_location_joomla_redirection.zip</file>
+		<file type="plugin" id="joomla_tag" group="cck_storage_location">plg_cck_storage_location_joomla_tag.zip</file>
+		<file type="plugin" id="joomla_user_note" group="cck_storage_location">plg_cck_storage_location_joomla_user_note.zip</file>
 	</files>
 </extension>
