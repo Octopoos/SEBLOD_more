@@ -30,7 +30,6 @@
 		<file type="plugin" id="search_variables" group="cck_field">plg_cck_field_search_variables.zip</file>
 		<file type="plugin" id="video_dailymotion" group="cck_field">plg_cck_field_video_dailymotion.zip</file>
 		<file type="plugin" id="video_vimeo" group="cck_field">plg_cck_field_video_vimeo.zip</file>
-		<file type="plugin" id="video_youtube" group="cck_field">plg_cck_field_video_youtube.zip</file>
 
 		<file type="plugin" id="custom" group="cck_field_link">plg_cck_field_link_custom.zip</file>
 		<file type="plugin" id="custom_js" group="cck_field_link">plg_cck_field_link_custom_js.zip</file>
@@ -54,10 +53,10 @@
 		<file type="plugin" id="search_total" group="cck_field_restriction">plg_cck_field_restriction_search_total.zip</file>
 		<file type="plugin" id="url_variable" group="cck_field_restriction">plg_cck_field_restriction_url_variable.zip</file>
 
-		<file type="plugin" id="highlight" group="cck_field_typography">plg_cck_field_typography_highlight.zip</file>
-		<file type="plugin" id="list" group="cck_field_typography">plg_cck_field_typography_list.zip</file>
-		<file type="plugin" id="php_string" group="cck_field_typography">plg_cck_field_typography_php_string.zip</file>
-		<file type="plugin" id="pre" group="cck_field_typography">plg_cck_field_typography_pre.zip</file>
+		<file type="plugin" id="highlight" group="cck_field_typo">plg_cck_field_typo_highlight.zip</file>
+		<file type="plugin" id="list" group="cck_field_typo">plg_cck_field_typo_list.zip</file>
+		<file type="plugin" id="php_string" group="cck_field_typo">plg_cck_field_typo_php_string.zip</file>
+		<file type="plugin" id="pre" group="cck_field_typo">plg_cck_field_typo_pre.zip</file>
 
 		<file type="plugin" id="checkbox" group="cck_field_validation">plg_cck_field_validation_checkbox.zip</file>
 		<file type="plugin" id="date" group="cck_field_validation">plg_cck_field_validation_date.zip</file>
@@ -65,7 +64,7 @@
 		<file type="plugin" id="ipv4" group="cck_field_validation">plg_cck_field_validation_ipv4.zip</file>
 		<file type="plugin" id="phone" group="cck_field_validation">plg_cck_field_validation_phone.zip</file>
 		<file type="plugin" id="regex" group="cck_field_validation">plg_cck_field_validation_regex.zip</file>
-		<file type="plugin" id="zip_code" group="cck_field_validation">plg_cck_field_validation_zip_code.zip</file>
+		<file type="plugin" id="zipcode" group="cck_field_validation">plg_cck_field_validation_zipcode.zip</file>
 
 		<file type="plugin" id="joomla_menu_item" group="cck_storage_location">plg_cck_storage_location_joomla_menu_item.zip</file>
 		<file type="plugin" id="joomla_redirection" group="cck_storage_location">plg_cck_storage_location_joomla_redirection.zip</file>
