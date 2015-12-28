@@ -24,6 +24,7 @@
 		<file type="plugin" id="folder" group="cck_field">plg_cck_field_folder.zip</file>
 		<file type="plugin" id="form_html" group="cck_field">plg_cck_field_form_html.zip</file>
 		<file type="plugin" id="iframe" group="cck_field">plg_cck_field_iframe.zip</file>
+		<file type="plugin" id="message_redirection" group="cck_field">plg_cck_field_message_redirection.zip</file>
 		<file type="plugin" id="radio_numeric" group="cck_field">plg_cck_field_radio_numeric.zip</file>
 		<file type="plugin" id="search_pagination" group="cck_field">plg_cck_field_search_pagination.zip</file>
 		<file type="plugin" id="search_total" group="cck_field">plg_cck_field_search_total.zip</file>
@@ -39,14 +40,17 @@
 		<file type="plugin" id="joomla_print" group="cck_field_link">plg_cck_field_link_joomla_print.zip</file>
 		<file type="plugin" id="cck_search_js" group="cck_field_link">plg_cck_field_link_cck_search_js.zip</file>
 
+		<file type="plugin" id="cck_site" group="cck_field_live">plg_cck_field_live_cck_site.zip</file>
 		<file type="plugin" id="datetime" group="cck_field_live">plg_cck_field_live_datetime.zip</file>
+		<file type="plugin" id="joomla_menu_item" group="cck_field_live">plg_cck_field_live_joomla_menu_item.zip</file>
 		<file type="plugin" id="lorem_ipsum" group="cck_field_live">plg_cck_field_live_lorem_ipsum.zip</file>
+		<file type="plugin" id="mobile_device" group="cck_field_live">plg_cck_field_live_mobile_device.zip</file>
 		<file type="plugin" id="random_number" group="cck_field_live">plg_cck_field_live_random_number.zip</file>
 		<file type="plugin" id="random_option" group="cck_field_live">plg_cck_field_live_random_option.zip</file>
 		<file type="plugin" id="random_uniqid" group="cck_field_live">plg_cck_field_live_random_uniqid.zip</file>
-		<file type="plugin" id="cck_site" group="cck_field_live">plg_cck_field_live_cck_site.zip</file>
 		<file type="plugin" id="url" group="cck_field_live">plg_cck_field_live_url.zip</file>
 
+		<file type="plugin" id="clear" group="cck_field_restriction">plg_cck_field_restriction_clear.zip</file>
 		<file type="plugin" id="joomla_language" group="cck_field_restriction">plg_cck_field_restriction_joomla_language.zip</file>
 		<file type="plugin" id="joomla_user" group="cck_field_restriction">plg_cck_field_restriction_joomla_user.zip</file>
 		<file type="plugin" id="mobile_device" group="cck_field_restriction">plg_cck_field_restriction_mobile_device.zip</file>
