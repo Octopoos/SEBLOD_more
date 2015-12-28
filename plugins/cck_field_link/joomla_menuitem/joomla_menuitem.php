@@ -48,7 +48,8 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		$link_rel			=	$link->get( 'rel', '' );
 		$link_target		=	$link->get( 'target', '' );
 		$tmpl				=	$link->get( 'tmpl', '' );
-		$tmpl				=	$tmpl ? 'tmpl='.$tmpl : '';
+		$tmpl				=	( $tmpl == '-1' ) ? $app->input->getCmd( 'tmpl', '' ) : $tmpl;
+		$tmpl				=	( $tmpl ) ? 'tmpl='.$tmpl : '';
 		$vars				=	$tmpl;
 		$custom				=	parent::g_getCustomVars( self::$type, $field, $custom, $config );
 		
