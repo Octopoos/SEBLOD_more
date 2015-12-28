@@ -45,7 +45,8 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 		$link_title		=	$link->get( 'title', '' );
 		$link_title2	=	$link->get( 'title_custom', '' );
 		$tmpl			=	$link->get( 'tmpl', '' );
-		$tmpl			=	$tmpl ? 'tmpl='.$tmpl : '';
+		$tmpl			=	( $tmpl == '-1' ) ? $app->input->getCmd( 'tmpl', '' ) : $tmpl;
+		$tmpl			=	( $tmpl ) ? 'tmpl='.$tmpl : '';
 		$vars			=	$tmpl;
 		
 		if ( is_array( $field->value ) ) {
