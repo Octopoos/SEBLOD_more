@@ -66,10 +66,22 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		// Prepare
 		$divider			=	( $field->divider != '' ) ? $field->divider : ',';
 		$field->options		=	self::_getOptionsList( $options2, $field->bool2 );
+		if ( is_array( $value ) ) {
+			$value					=	implode( $divider, $value );
+		}
 
 		// Set
 		$field->text		=	parent::g_getOptionText( $value, $field->options, $divider, $config );		
 		$field->value		=	$value;
+
+		$texts				=	explode( $divider, $field->text );
+		$values				=	explode( $divider, $field->value );
+		if ( count( $values ) ) {
+			$field->values			=	array();
+			foreach ( $values as $k=>$v ) {
+				$field->values[$k]	=	(object)array( 'text'=>$texts[$k], 'typo_target'=>'text', 'value'=>$v );
+			}
+		}
 		$field->typo_target	=	'text';
 	}
 	
@@ -205,6 +217,15 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			parent::g_getDisplayVariation( $field, $field->variation, $value, $field->text, $form, $id, $name, '<input' );
 		}
 		$field->value	=	$value;
+		
+		$texts						=	( isset( $field->text ) ) ? explode( $divider, $field->text ) : array();
+		$values						=	( is_string( $field->value ) ) ? explode( $divider, $field->value ) : $field->value;
+		if ( count( $values ) ) {
+			$field->values			=	array();
+			foreach ( $values as $k=>$v ) {
+				$field->values[$k]	=	(object)array( 'text'=>@$texts[$k], 'value'=>$v );
+			}
+		}
 		
 		// Return
 		if ( $return === true ) {
