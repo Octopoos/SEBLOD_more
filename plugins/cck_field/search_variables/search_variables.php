@@ -44,6 +44,7 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 		if ( self::$type != $field->type ) {
 			return;
 		}
+		parent::g_onCCK_FieldPrepareForm( $field, $config );
 
 		// Prepare
 		$app		=	JFactory::getApplication();
@@ -61,7 +62,6 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 			}
 		}
 		$field->form	=	$form;
-		$field->state	=	1;
 		$field->value	=	'';
 
 		// Return
@@ -76,7 +76,8 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 		if ( self::$type != $field->type ) {
 			return;
 		}
-		
+		parent::g_onCCK_FieldPrepareForm( $field, $config );
+
 		// Prepare
 		$app		=	JFactory::getApplication();
 		$form		=	'';
@@ -93,7 +94,6 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 			}
 		}
 		$field->form	=	$form;
-		$field->state	=	1;
 		$field->value	=	'';
 		
 		// Return
