@@ -30,13 +30,15 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 		if ( $target2 ) {
 			$target	=	$target2;
 		}
-		$value		=	parent::g_hasLink( $field, $typo, $field->$target );
+		$value		=	$field->$target;
 		
 		// Set
 		if ( $field->typo_label ) {
 			$field->label	=	self::_typo( $typo, $field, $field->label, $config );
 		}
 		$field->typo		=	self::_typo( $typo, $field, $value, $config );
+		$field->typo		=	parent::g_hasLink( $field, $typo, $field->typo );
+		$field->typo_mode	=	1;
 	}
 	
 	// _typo
