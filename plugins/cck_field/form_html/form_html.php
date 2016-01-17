@@ -28,7 +28,7 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 	}
 	
 	// onCCK_FieldConstruct_SearchSearch
-	public static function onCCK_FieldConstruct_SearchSearch( &$field, $style, $data = array() )
+	public static function onCCK_FieldConstruct_SearchSearch( &$field, $style, $data = array(), $config = array() )
 	{
 		$data['markup']		=	NULL;
 		$data['validation']	=	NULL;
@@ -37,7 +37,7 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 	}
 	
 	// onCCK_FieldConstruct_TypeForm
-	public static function onCCK_FieldConstruct_TypeForm( &$field, $style, $data = array() )
+	public static function onCCK_FieldConstruct_TypeForm( &$field, $style, $data = array(), $config = array() )
 	{
 		$data['markup']		=	NULL;
 		$data['validation']	=	NULL;
