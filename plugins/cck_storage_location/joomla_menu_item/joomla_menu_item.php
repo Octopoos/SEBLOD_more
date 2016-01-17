@@ -19,7 +19,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 	protected static $table			=	'#__menu';
 	protected static $table_object	=	array( 'Menu', 'JTable' );
 	protected static $key			=	'id';
-
+	
 	protected static $access		=	'access';
 	protected static $author		=	'';
 	protected static $author_object	=	'';
@@ -30,7 +30,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 	protected static $parent_object	=	'joomla_menu_item';
 	protected static $status		=	'published';
 	protected static $to_route		=	'a.id as pk, a.title, a.alias, a.language';
-
+	
 	protected static $context		=	'com_menus.item';
 	protected static $contexts		=	array('com_menus.item');
 	protected static $error			=	false;
@@ -43,7 +43,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 											   '3'=>'full', '32'=>'id', '33'=>'alias',
 											   '4'=>'full', '42'=>'id', '43'=>'alias'
 										);
-
+	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Construct
 	
 	// onCCK_Storage_LocationConstruct
