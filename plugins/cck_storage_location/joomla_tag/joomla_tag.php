@@ -31,8 +31,8 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	protected static $status		=	'published';
 	protected static $to_route		=	'a.id as pk, a.title, a.alias';
 	
-	protected static $context		=	''; //TODO
-	protected static $contexts		=	array(); //TODO
+	protected static $context		=	'com_tags.tag'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'title ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC', 'ordering'=>'lft ASC', 'popular'=>'hits DESC' );
 	protected static $ordering2		=	array();
@@ -247,10 +247,10 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
 		if ( ! $config['id'] ) {
-			$isNew	=	true;
+			$isNew			=	true;
 			$config['id']	=	parent::g_onCCK_Storage_LocationPrepareStore();
 		} else {
-			$isNew	=	false;
+			$isNew			=	false;
 		}
 		
 		// Init
@@ -260,6 +260,8 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 		
@@ -274,7 +276,17 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		
 		// Store
 		$dispatcher	=	JDispatcher::getInstance();
-		$table->store();
+		$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
+		if ( !$table->store() ) {
+			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
+
+			if ( $isNew ) {
+				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
+			}
+			$config['error']	=	true;
+
+			return false;
+		}
 		
 		// Rebuild the path for the tag:
 		if ( !$table->rebuildPath( $table->id ) ) {
@@ -297,6 +309,7 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		$config['parent']	=	$table->{self::$parent};
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
+		$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 	
 	// _getTable
