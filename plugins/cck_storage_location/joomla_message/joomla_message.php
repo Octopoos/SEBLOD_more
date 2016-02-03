@@ -31,8 +31,8 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 	protected static $status		=	'state';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	'';
-	protected static $contexts		=	array();
+	protected static $context		=	'com_messages.message'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'subject ASC', 'newest'=>'date_time DESC', 'oldest'=>'date_time ASC' );
 	protected static $ordering2		=	array();
@@ -142,6 +142,17 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 					$storages[self::$table]	=	JCckDatabase::loadObjectList( 'SELECT * FROM '.self::$table.' WHERE '.self::$key.' IN ('.$config['pks'].')', self::$key );
 				}
 			}
+			if ( count( $storages[self::$table] ) ) {
+				$items	=	$storages[self::$table];
+				krsort( $items );
+				$item	=	current( $items );
+				
+				if ( $item->message_id == JCckDatabase::loadResult( 'SELECT message_id FROM #__messages WHERE folder_id ='.(int)$item->folder_id.' ORDER BY message_id DESC' ) ) {
+					if ( $item->user_id_to == JFactory::getUser()->get( 'id' ) ) {
+						self::_updateState( $item->folder_id, '0' );
+					}
+				}
+			}
 		}
 		$config['author']	=	$storages[self::$table][$config['pk']]->{self::$author};
 	}
@@ -186,8 +197,34 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 	// onCCK_Storage_LocationDelete
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
-		// todo		
-		return false;
+		$app		=	JFactory::getApplication();
+		$dispatcher	=	JDispatcher::getInstance();
+		$table		=	self::_getTable( $pk );
+
+		if ( !$table ) {
+			return false;
+		}
+
+		// Check
+		$user 			=	JCck::getUser();
+		$canDelete		=	$user->authorise( 'core.delete', 'com_cck.form.'.$config['type_id'] );
+		$canDeleteOwn	=	$user->authorise( 'core.delete.own', 'com_cck.form.'.$config['type_id'] );
+		if ( !$canDelete && !$canDeleteOwn ) {
+			$app->enqueueMessage( JText::_( 'COM_CCK_ERROR_DELETE_NOT_PERMITTED' ), 'error' );
+			return;
+		}
+
+		// Process
+		$result	=	$dispatcher->trigger( 'onContentBeforeDelete', array( self::$context, $table ) );
+		if ( in_array( false, $result, true ) ) {
+			return false;
+		}
+        if ( !$table->delete( $pk ) ) {
+			return false;
+		}
+		$dispatcher->trigger( 'onContentAfterDelete', array( self::$context, $table ) );
+
+        return true;
 	}
 	
 	// onCCK_Storage_LocationStore
@@ -224,6 +261,8 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 		
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 		
@@ -234,17 +273,42 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 		$table->check();
 		self::_completeTable( $table, $data, $config );
 		
+		// Check if the user is allowed to reply
+		if ( $isNew ) {
+			if ( $table->folder_id ) {
+				$parent	=	JCckDatabase::loadObject( 'SELECT user_id_from, user_id_to FROM #__messages WHERE message_id ='.(int)$table->folder_id );
+
+				if ( is_object( $parent ) ) {
+					if ( !( $table->user_id_from == $parent->user_id_from || $table->user_id_from == $parent->user_id_to ) ) {
+						JFactory::getApplication()->enqueueMessage( JText::_( 'COM_CCK_NO_ACCESS' ), 'error' );
+						
+						$config['error']	=	true;
+
+						return false;
+					}
+				}
+			}	
+		}
+
 		// Store
 		if ( !$table->store() ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
+
 			if ( $isNew ) {
 				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
 			}
+			$config['error']	=	true;
+
 			return false;
 		}
-		if ( $isNew && !$table->folder_id ) {
-			$table->folder_id	=	$table->message_id;
-			$table->store();
+		if ( $isNew ) {
+			if ( !$table->folder_id ) {
+				$table->folder_id	=	$table->message_id;
+				$table->state		=	1;
+				$table->store();	
+			} elseif ( $table->from != JFactory::getUser()->get( 'id' ) ) {
+				self::_updateState( $table->folder_id, '1' );
+			}
 		}
 		
 		self::$pk	=	$table->{self::$key};
@@ -252,7 +316,7 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 			$config['pk']	=	self::$pk;
 		}
 		
-		// todo:: sendMail cf model
+		// todo:: sendMail cf model?
 		
 		$config['author']	=	$table->user_id_from;
 		
@@ -342,6 +406,12 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 	}
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff
+
+	// _updateState
+	public static function _updateState( $pk, $state )
+	{
+		JCckDatabase::execute( 'UPDATE '.self::$table.' SET state = '.$state.' WHERE message_id = '.(int)$pk );
+	}
 
 	// checkIn
 	public static function checkIn( $pk = 0 )
