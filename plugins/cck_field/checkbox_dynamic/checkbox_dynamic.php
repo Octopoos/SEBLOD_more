@@ -63,6 +63,11 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		$options2	=	JCckDev::fromJSON( $field->options2 );
 		$divider	=	'';
 		
+		/* tmp */
+		$jtext						=	$config['doTranslation'];
+		$config['doTranslation']	=	0;
+		/* tmp */
+
 		// Prepare
 		$divider			=	( $field->divider != '' ) ? $field->divider : ',';
 		$field->options		=	self::_getOptionsList( $options2, $field->bool2 );
@@ -83,6 +88,10 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			}
 		}
 		$field->typo_target	=	'text';
+
+		/* tmp */
+		$config['doTranslation']	=	$jtext;
+		/* tmp */
 	}
 	
 	// onCCK_FieldPrepareForm
@@ -229,6 +238,11 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		$attr			=	'class="'.$class.'"' . ( $field->attributes ? ' '.$field->attributes : '' );
 		$form			=	'<fieldset id="'.$id.'" '.$attr.'>'.$form.'</fieldset>';
 		
+		/* tmp */
+		$jtext						=	$config['doTranslation'];
+		$config['doTranslation']	=	0;
+		/* tmp */
+
 		// Set
 		if ( ! $field->variation ) {
 			$field->form	=	$form;
@@ -253,6 +267,10 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			}
 		}
 		
+		/* tmp */
+		$config['doTranslation']	=	$jtext;
+		/* tmp */
+
 		// Return
 		if ( $return === true ) {
 			return $field;
@@ -300,12 +318,18 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			$name	=	$field->name;
 		}
 
-		// Set or Return
+		// Prepare
 		$divider	=	( $field->divider != '' ) ? $field->divider : ',';
 		$nb 		=	count( $value );
 		if ( is_array( $value ) && $nb > 0 ) {
 			$value	=	implode( $divider, $value );
 		}
+
+		/* tmp */
+		$jtext						=	$config['doTranslation'];
+		$config['doTranslation']	=	0;
+		/* tmp */
+
 		$options2			=	JCckDev::fromJSON( $field->options2 );
 		$field->options		=	self::_getOptionsList( $options2, $field->bool2 );
 		
@@ -313,6 +337,10 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		$text	=	parent::g_getOptionText( $value, $field->options, $divider, $config );
 		parent::g_onCCK_FieldPrepareStore_Validation( $field, $name, $value, $config );
 		
+		/* tmp */
+		$config['doTranslation']	=	$jtext;
+		/* tmp */
+
 		// Set or Return
 		if ( $return === true ) {
 			return $value;
