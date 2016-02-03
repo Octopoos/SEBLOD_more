@@ -31,10 +31,10 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 	protected static $status		=	'published';
 	protected static $to_route		=	'a.id as pk, a.title, a.alias, a.language';
 	
-	protected static $context		=	'com_menus.item';
-	protected static $contexts		=	array('com_menus.item');
+	protected static $context		=	'com_menus.item'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
-	protected static $ordering		=	array('alpha'=>'title ASC', 'ordering'=>'lft ASC');
+	protected static $ordering		=	array( 'alpha'=>'title ASC', 'ordering'=>'lft ASC' );
 	protected static $ordering2		=	array();
 	protected static $pk			=	0;
 	protected static $routes		=	array();
@@ -259,10 +259,10 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
 		if ( ! $config['id'] ) {
-			$isNew	=	true;
+			$isNew			=	true;
 			$config['id']	=	parent::g_onCCK_Storage_LocationPrepareStore();
 		} else {
-			$isNew	=	false;
+			$isNew			=	false;
 		}
 
 		// Init
@@ -272,6 +272,8 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 
@@ -292,7 +294,6 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 
 			if ( 'com_content.article' === $menuItemType ) {
 				$component		=	'com_content';
-
 				$table->link	= 	sprintf(
 										'index.php?option=com_content&view=article&id=%s',
 										$config['storages'][$storeTable]['article']
@@ -344,16 +345,21 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 
 		// Store
 		$dispatcher	=	JDispatcher::getInstance();
-
+		$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
         if ( !$table->store() ) {
-            JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
-        }
+			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
 
+			if ( $isNew ) {
+				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
+			}
+			$config['error']	=	true;
+
+			return false;
+		}
+		
 		// Rebuild the tree path.
 		if ( !$table->rebuildPath( $table->id ) ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
-
-			return false;
 		}
 
 		// Checkin
@@ -366,6 +372,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		$config['parent']	=	$table->{self::$parent};
 
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
+		$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 
 	// _getTable
