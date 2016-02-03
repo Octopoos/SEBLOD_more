@@ -31,8 +31,8 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	protected static $status		=	'published';
 	protected static $to_route		=	'a.id as pk, a.old_url';
 
-	protected static $context		=	'com_redirect.link';
-	protected static $contexts		=	array('com_redirect.link');
+	protected static $context		=	'com_redirect.link'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'old_url ASC', 'newest'=>'created_date DESC', 'oldest'=>'created_date ASC', 'popular'=>'hits DESC' );
 	protected static $ordering2		=	array();
@@ -233,10 +233,10 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
 		if ( ! $config['id'] ) {
-			$isNew	=	true;
+			$isNew			=	true;
 			$config['id']	=	parent::g_onCCK_Storage_LocationPrepareStore();
 		} else {
-			$isNew	=	false;
+			$isNew			=	false;
 		}
 
 		// Init
@@ -246,6 +246,8 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 
@@ -256,7 +258,17 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 
 		// Store
 		$dispatcher	=	JDispatcher::getInstance();
-		$table->store();
+		$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
+		if ( !$table->store() ) {
+			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
+
+			if ( $isNew ) {
+				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
+			}
+			$config['error']	=	true;
+
+			return false;
+		}
 
 		// Checkin
 		// parent::g_checkIn( $table );
@@ -266,6 +278,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		}
 
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
+		$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 
 	// _getTable
