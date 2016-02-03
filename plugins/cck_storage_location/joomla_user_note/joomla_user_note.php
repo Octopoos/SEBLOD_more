@@ -31,8 +31,8 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	protected static $status		=	'state';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	'com_users.note';
-	protected static $contexts		=	array();
+	protected static $context		=	'com_users.note'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'subject ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC' );
 	protected static $ordering2		=	array();
@@ -240,10 +240,10 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
 		if ( ! $config['id'] ) {
-			$isNew	=	true;
+			$isNew			=	true;
 			$config['id']	=	parent::g_onCCK_Storage_LocationPrepareStore();
 		} else {
-			$isNew	=	false;
+			$isNew			=	false;
 		}
 		
 		// Init
@@ -253,11 +253,16 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 		
 		// Prepare
 		if ( is_array( $data ) ) {
+			if ( isset( $data['created_time'] ) && empty( $data['created_time'] ) ) {
+				unset( $data['created_time'] );
+			}
 			$table->bind( $data );
 		}
 		$table->check();
@@ -265,14 +270,20 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		
 		// Store
 		$dispatcher	=	JDispatcher::getInstance();
+		$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
 		if ( $isNew === true && parent::g_isMax( $table->{self::$author}, $table->{self::$parent}, $config ) ) {
+			$config['error']	=	true;
+
 			return;
 		}
 		if ( !$table->store() ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
+
 			if ( $isNew ) {
 				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
 			}
+			$config['error']	=	true;
+			
 			return false;
 		}
 		
@@ -288,6 +299,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		$config['parent']	=	$table->{self::$parent};
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
+		$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 	
 	// _getTable
