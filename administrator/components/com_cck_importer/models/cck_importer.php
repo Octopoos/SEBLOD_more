@@ -224,7 +224,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		}
 		
 		// -------- -------- -------- -------- -------- -------- -------- -------- // Store
-        
+
 		$config				=	array(
 									'auto_inc'=>0,
 									'component'=>'com_cck_importer',
@@ -247,7 +247,12 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 
 		$config['type']		=	$options['content_type'];
 		$inc				=	(int)JCckDatabase::loadResult( 'SELECT MAX(id) FROM '.$sto_table );
+		$processing			=	array();
 		
+		if ( JCckToolbox::getConfig()->get( 'processing', 0 ) ) {
+			$processing		=	JCckDatabaseCache::loadObjectListArray( 'SELECT type, scriptfile, options FROM #__cck_more_processings WHERE published = 1 ORDER BY ordering', 'type' );
+		}
+
 		//manipu for field names and contents.
 		$count	=	count( $fieldnames );
 		for ( $i = 0; $i < $count; $i++ ) {
@@ -277,7 +282,8 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			$config['pk']		=	0;
 			$config['log']		=	'';
 			$config['error']	=	false;
-			$core				=	array();
+			$config['isNew']	=	1;
+			$fields				=	array();
 			$more				=	array();
 
 			// Prepare
@@ -290,66 +296,130 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 				}
 				if ( $data1[$i]['sto_table'] == $sto_table ) {
 					if ( $fieldnames1[$i]['storage'] == 'standard') {
-						$core[$fieldnames[$i]]	=	$c[$i];
+						if ( $fieldnames[$i] != '' ) {
+							$config['storages'][$sto_table][$fieldnames[$i]]	=  	$c[$i];
+						}
+					} else {
+						$field_storage	=	$fieldnames1[$i]['storage'];
+						if ( $sto_location_custom != '' ) {
+							$config['storages'][$sto_table][$sto_location_custom]	.=	JCck::callFunc_Array( 'plgCCK_Storage'.$field_storage, 'onCCK_StoragePrepareImport', array( $obj[$i], $c[$i], &$config ) );
+						}
 					}
-					$field_storage	=	$fieldnames1[$i]['storage'];
-					if ( $field_storage != 'standard' ) {
-						$core[$sto_location_custom]	.=	JCck::callFunc_Array( 'plgCCK_Storage'.$field_storage, 'onCCK_StoragePrepareImport', array( $obj[$i], $c[$i], &$config ) );
-					}
-					$core['_']			=	new stdClass;
-					$core['_']->table	=	$sto_table;
-					$core['_']->location	=	$storage_location;
-					if ( $fieldnames1[$i]['storage'] == 'standard' ) {
-						$config['storages'][$sto_table][$fieldnames[$i]]	=  	$core[$fieldnames[$i]];
-					}
-					$config['storages'][$sto_table][$sto_location_custom]	=	$core[$sto_location_custom];
+					$config['storages'][$sto_table]['_']				=	new stdClass;
+					$config['storages'][$sto_table]['_']->table			=	$sto_table;
+					$config['storages'][$sto_table]['_']->location		=	$storage_location;
 				} else {
-					$storage_table											=	( isset( $fieldnames1[$i]['storage_table'] ) ) ? $fieldnames1[$i]['storage_table'] : $table;
-					if ( !isset( $more[$storage_table] ) ) {
-						$more[$storage_table]['_']							= 	new stdClass;
-						$more[$storage_table]['_']->table					=	$storage_table;
-						$more[$storage_table]['_']->location				=	$storage_location;
+					$storage_table										=	( isset( $fieldnames1[$i]['storage_table'] ) ) ? $fieldnames1[$i]['storage_table'] : $table;
+					if ( $storage_table == '' ) {
+						$storage_table									=	'none';
 					}
-					$more[$storage_table][$fieldnames[$i]]					=	$c[$i];
+					if ( !isset( $config['storages'][$storage_table]['_'] ) ) {
+						$config['storages'][$storage_table]['_']			= 	new stdClass;
+						$config['storages'][$storage_table]['_']->table		=	$storage_table;
+						$config['storages'][$storage_table]['_']->location	=	$storage_location;
+					}
+					if ( !isset( $more[$storage_table] ) ) {
+						$more[$storage_table]								=	'';
+					}
 					$storage_field											=	( isset( $fieldnames1[$i]['storage_field'] ) ) ? $fieldnames1[$i]['storage_field'] : $fieldnames[$i];
-					$config['storages'][$storage_table][$storage_field]		=	$more[$storage_table][$fieldnames[$i]];
+					
+					$config['storages'][$storage_table][$storage_field]		=	$c[$i];
+
+					$fields[$fieldnames[$i]]								=	new stdClass;
+					$fields[$fieldnames[$i]]->value							=	$c[$i];
 				}
 			}
-			
-			// Get :: More Key
-			if ( $config['key_table'] && $config['key_column'] ) {
-				if ( count( $more ) ) {
-					foreach ( $more as $m ) {
-						if ( isset( $m[$config['key']] ) && $m[$config['key']] != '' ) {
-							$pk		=	JCckDatabase::loadResult( 'SELECT id FROM '.$config['key_table'].' WHERE '.$config['key_column'].' = "'.$m[$config['key']].'"' );
+
+			if ( count( $more ) ) {
+				foreach ( $more as $t=>$m ) {
+					// Get :: More Key		
+					if ( $config['key_table'] && $config['key_column'] ) {
+						if ( isset( $config['storages'][$t][$config['key']] ) && $config['storages'][$t][$config['key']] != '' ) {
+							$pk		=	(int)JCckDatabase::loadResult( 'SELECT id FROM '.$config['key_table'].' WHERE '.$config['key_column'].' = "'.$config['storages'][$t][$config['key']].'"' );
 							break;
 						}
 					}
 				}
 			}
 			
-			// Process :: Core
-			JCck::callFunc_Array( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'onCCK_Storage_LocationImport', array( $core, &$config, $pk ) );
+			// BeforeImport
+			$event	=	'onCckPreBeforeImport';
+			if ( isset( $processing[$event] ) ) {
+				foreach ( $processing[$event] as $p ) {
+					if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
+						$options	=	new JRegistry( $p->options );
 
-			// Process :: Log
+						include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+					}
+				}
+			}
+
+			/*
+			TODO: beforeImport
+			*/
+
+			$event	=	'onCckPostBeforeImport';
+			if ( isset( $processing[$event] ) ) {
+				foreach ( $processing[$event] as $p ) {
+					if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
+						$options	=	new JRegistry( $p->options );
+
+						include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+					}
+				}
+			}
+
+			// Import Core
+			JCck::callFunc_Array( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'onCCK_Storage_LocationImport', array( $config['storages'][$sto_table], &$config, $pk ) );
+			
+			// Log
 			$log[$config['log']]++;
 			$log['all'][]				=	$config['pk'];
 			$log_buffer[$config['log']]	.=	str_putcsv( $content[$j], $options['separator'] )."\n";
 			
-			// Process :: More
 			if ( !$config['error'] ) {
+				// Import More
 				if ( count( $more ) ) {
-					foreach ( $more as $m ) {
-						JCck::callFunc_Array( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'onCCK_Storage_LocationImport', array( $m, &$config, $config['pk'] ) );
+					foreach ( $more as $t=>$m ) {
+						if ( $config['storages'][$t]['_']->table != 'none' ) {
+							JCck::callFunc_Array( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'onCCK_Storage_LocationImport', array( $config['storages'][$t], &$config, $config['pk'] ) );
+						}
 					}
 				}
+
+				// AfterImport
+				$event	=	'onCckPreAfterImport';
+				if ( isset( $processing[$event] ) ) {
+					foreach ( $processing[$event] as $p ) {
+						if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
+							$options	=	new JRegistry( $p->options );
+
+							include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+						}
+					}
+				}
+
+				/*
+				TODO: afterImport
+				*/
+
+				$event	=	'onCckPostAfterImport';
+				if ( isset( $processing[$event] ) ) {
+					foreach ( $processing[$event] as $p ) {
+						if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
+							$options	=	new JRegistry( $p->options );
+
+							include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+						}
+					}
+				}				
 			}
-			
+
 			unset( $c[$i] );
 			$j++;
 		}
 		
-		JCck::callFunc_Array( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'onCCK_Storage_LocationAfterImport', array( array(), &$config ) );
+		JCck::callFunc_Array( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'onCCK_Storage_LocationAfterImports', array( array(), &$config ) );
 
 		if ( $config['auto_inc'] > 0 && $config['auto_inc'] >= $inc ) {
 			$config['auto_inc']++;

@@ -131,7 +131,7 @@ class Helper_Import
 	// findFieldStorage
 	public static function findFieldStorage( $fieldname )
 	{
-		$query 		=	" SELECT s.storage FROM #__cck_core_fields AS s WHERE s.name='$fieldname' ";
+		$query 		=	'SELECT s.storage FROM #__cck_core_fields AS s WHERE s.name = "'.$fieldname.'"';
 		$storage	=	JCckDatabase::loadResult( $query );
 		
 		return $storage; 
@@ -140,7 +140,7 @@ class Helper_Import
 	// findFieldStorageById
 	public static function findFieldStorageById( $id )
 	{
-		$query 		=	"SELECT s.storage, s.storage_table, s.storage_field FROM #__cck_core_fields AS s WHERE s.id=$id ";
+		$query 		=	'SELECT s.storage, s.storage_table, s.storage_field FROM #__cck_core_fields AS s WHERE s.id = '.(int)$id;
 		$storage	=	JCckDatabase::loadObject( $query );
 		
 		return $storage; 
@@ -149,7 +149,7 @@ class Helper_Import
 	// findFieldById
 	public static function findFieldById( $id )
 	{
-		$query 		=	"SELECT s.* FROM #__cck_core_fields AS s WHERE s.id=$id "; //#
+		$query 		=	'SELECT s.* FROM #__cck_core_fields AS s WHERE s.id = '.(int)$id; //#
 		$field		=	JCckDatabase::loadObject( $query );
 		
 		return $field; 
