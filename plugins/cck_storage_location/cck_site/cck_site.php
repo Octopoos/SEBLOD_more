@@ -20,7 +20,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	protected static $table_object	=	array( 'Site', 'CCK_Table' );
 	protected static $key			=	'id';
 	
-	protected static $access		=	'';
+	protected static $access		=	'access';
 	protected static $author		=	'';
 	protected static $author_object	=	'';
 	protected static $created_at	=	'';
@@ -31,8 +31,8 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	protected static $status		=	'published';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	''; //TODO
-	protected static $contexts		=	array(); //TODO
+	protected static $context		=	'com_cck.site';
+	protected static $contexts		=	array();
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'title ASC' );
 	protected static $ordering2		=	array();
@@ -163,10 +163,23 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		}
 		
 		// Prepare
-		// TODO
+		if ( ! isset( $tables[self::$table] ) ) {
+			$tables[self::$table]	=	array( '_'=>'t'.$t++,
+											   'fields'=>array(),
+											   'join'=>1,
+											   'location'=>self::$type
+										);
+		}
 		
 		// Set
-		// TODO
+		$t_pk	=	$tables[self::$table]['_'];
+		if ( ! isset( $tables[self::$table]['fields']['published'] ) ) {
+			$query->where( $t_pk.'.published = 1' );
+		}
+		if ( ! isset( $tables[self::$table]['fields']['access'] ) ) {
+			$access	=	implode( ',', $user->getAuthorisedViewLevels() );
+			$query->where( $t_pk.'.access IN ('.$access.')' );
+		}
 	}
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Store
@@ -174,9 +187,36 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	// onCCK_Storage_LocationDelete
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
-		// TODO
+		$app		=	JFactory::getApplication();
+		$dispatcher	=	JDispatcher::getInstance();
+		$table		=	self::_getTable( $pk );	
 		
-		return false;
+		if ( !$table ) {
+			return false;
+		}
+		
+		// Check
+		$user 			=	JCck::getUser();
+		$canDelete		=	$user->authorise( 'core.delete', 'com_cck.form.'.$config['type_id'] );
+		$canDeleteOwn	=	$user->authorise( 'core.delete.own', 'com_cck.form.'.$config['type_id'] );
+		if ( ( !$canDelete && !$canDeleteOwn ) ||
+			 ( !$canDelete && $canDeleteOwn && $config['author'] != $user->get( 'id' ) ) ||
+			 ( $canDelete && !$canDeleteOwn && $config['author'] == $user->get( 'id' ) ) ) {
+			$app->enqueueMessage( JText::_( 'COM_CCK_ERROR_DELETE_NOT_PERMITTED' ), 'error' );
+			return;
+		}
+		
+		// Process
+		$result	=	$dispatcher->trigger( 'onCckConstructionBeforeDelete', array( self::$context, $table ) );
+		if ( in_array( false, $result, true ) ) {
+			return false;
+		}
+		if ( !$table->delete( $pk ) ) {
+			return false;
+		}
+		$dispatcher->trigger( 'onCckConstructionAfterDelete', array( self::$context, $table ) );
+		
+		return true;
 	}
 	
 	// onCCK_Storage_LocationStore
@@ -203,10 +243,10 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
 		if ( ! $config['id'] ) {
-			$isNew	=	true;
+			$isNew			=	true;
 			$config['id']	=	parent::g_onCCK_Storage_LocationPrepareStore();
 		} else {
-			$isNew	=	false;
+			$isNew			=	false;
 		}
 		
 		// Init
@@ -216,6 +256,8 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 		
@@ -226,7 +268,26 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		
 		// Store
 		$dispatcher	=	JDispatcher::getInstance();
-		$table->store();
+		JPluginHelper::importPlugin( 'content' );
+		if ( $isNew ) {
+			$groups	=	@$table->groups;
+		}
+		$dispatcher->trigger( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
+		if ( $isNew ) {
+			if ( $groups != '' && $groups == $table->groups ) {
+				$table->groups	=	'';
+			}
+		}
+		if ( !$table->store() ) {
+			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
+			
+			if ( $isNew ) {
+				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
+			}
+			$config['error']	=	true;
+
+			return false;
+		}
 		
 		// Checkin
 		// parent::g_checkIn( $table );
@@ -236,6 +297,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		}
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
+		$dispatcher->trigger( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 	
 	// _getTable
