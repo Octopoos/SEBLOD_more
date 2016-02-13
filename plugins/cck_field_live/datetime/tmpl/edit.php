@@ -22,6 +22,7 @@ JCckDev::initScript( 'live', $this->item );
 								  'storage_field'=>'format' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Free Format', 'storage_field'=>'format_custom' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Modifier', 'storage_field'=>'modify' ) );
+		echo JCckDev::renderForm( 'core_bool', '', $config, array( 'label'=>'Apply Time Zone', 'defaultvalue'=>'0', 'storage_field'=>'timezone' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.JText::_( 'COM_CCK_GENERIC' ).')</span>' );
 		echo JCckDev::renderForm( 'core_dev_textarea', '', $config, array( 'label'=>'Return JText', 'cols'=>50, 'rows'=>1, 'storage_field'=>'return_jtext' ), array(), 'w100' );

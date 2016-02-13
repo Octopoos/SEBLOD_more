@@ -30,18 +30,24 @@ class plgCCK_Field_LiveDateTime extends JCckPluginLive
 		$wrapper	=	$options->get( 'return_jtext', '' );
 		
 		// Prepare
+		$doTimezone	=	(int)$options->get( 'timezone', '0' );
 		$format		=	$options->get( 'format', 'Y-m-d H-i-s' );
 		$modify		=	$options->get( 'modify', '' );
+		$now		=	JFactory::getDate()->toSql();
+
 		if ( $format == -1 ) {
 			$format	=	$options->get( 'format_custom', 'Y-m-d H-i-s' );
 		}
 		if ( strpos( $format, 'COM_CCK_' ) !== false || strpos( $format, 'DATE_FORMAT_' ) !== false ) {
 			$format	=	JText::_( $format );
 		}
+		if ( $doTimezone ) {
+			$now	=	JHtml::_( 'date', $now, 'Y-m-d H:i:s' );
+		}
 		if ( $modify != '' ) {
-			$live	=	 JFactory::getDate()->modify( $modify )->format( $format );
+			$live	=	 JFactory::getDate( $now )->modify( $modify )->format( $format );
 		} else {
-			$live	=	 JFactory::getDate()->format( $format );
+			$live	=	 JFactory::getDate( $now )->format( $format );
 		}
 		
 		// Set
