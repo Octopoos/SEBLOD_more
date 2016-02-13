@@ -23,17 +23,17 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 			if ( !$pk ) {
 				if ( isset( $config['key'] ) && $config['key'] ) {
 					if ( isset( $data[$config['key']] ) && $data[$config['key']] != '' ) {
-						$pk		=	JCckDatabase::loadResult( 'SELECT '.self::$key.' FROM '.self::$table.' WHERE '.$config['key'].' = "'.$data[$config['key']].'"' );
+						$pk		=	(int)JCckDatabase::loadResult( 'SELECT '.self::$key.' FROM '.self::$table.' WHERE '.$config['key'].' = "'.$data[$config['key']].'"' );
 					}
 					$pk		=	( $pk > 0 ) ? $pk : 0;
 				} else {
-					$pk		=	( isset( $data[self::$key] ) && $data[self::$key] > 0 ) ? $data[self::$key] : 0;
+					$pk		=	( isset( $data[self::$key] ) && (int)$data[self::$key] > 0 ) ? (int)$data[self::$key] : 0;
 				}
 			}
 			$table	=	self::_getTable( $pk );
 			$isNew	=	( $table->{self::$key} > 0 ) ? false : true;
 			$iPk	=	0;
-			
+
 			if ( $isNew ) {
 				if ( isset( $data[self::$key] ) ) {
 					$iPk	=	$data[self::$key];
@@ -60,6 +60,10 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 			self::_completeTable( $table, $data, $config );
 			
 			// Store
+			$dispatcher	=	JDispatcher::getInstance();
+			JPluginHelper::importPlugin( 'content' );
+			$dispatcher->trigger( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
+
 			if ( !$table->store() ) {
 				$config['error']	=	true;
 				$config['log']		=	'cancelled';
@@ -67,6 +71,7 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
 				return false;
 			}
+			$dispatcher->trigger( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
 			
 			// Tweak
 			if ( $iPk > 0 ) {
@@ -77,8 +82,9 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 			}
 			
 			if ( !$config['pk'] ) {
-				$config['pk']	=	$table->{self::$key};
+				$config['pk']	=	(int)$table->{self::$key};
 			}
+			$config['isNew']	=	(int)$isNew;
 		}
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, $config['pk'], $config );
@@ -87,7 +93,7 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 	}
 
 	// onCCK_Storage_LocationAfterImport
-	public static function onCCK_Storage_LocationAfterImport( $fields, &$config = array() )
+	public static function onCCK_Storage_LocationAfterImports( $fields, &$config = array() )
 	{
 	}
 }
