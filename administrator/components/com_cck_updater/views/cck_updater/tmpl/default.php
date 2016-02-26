@@ -148,7 +148,7 @@ Helper_Display::quickCopyright();
 </form>
 <div class="modal modal-small hide fade" id="collapseModal">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">x</button>
+        <button type="button" class="close" data-dismiss="modal">×</button>
         <h3><?php echo JText::_( 'COM_CCK_COPY_PASTE_ITEMS'); ?></h3>
     </div>
     <div class="modal-body">
