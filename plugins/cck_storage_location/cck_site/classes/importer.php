@@ -85,6 +85,7 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 				$config['pk']	=	(int)$table->{self::$key};
 			}
 			$config['isNew']	=	(int)$isNew;
+			$config['author']	=	$table->{self::$author};
 		}
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, $config['pk'], $config );

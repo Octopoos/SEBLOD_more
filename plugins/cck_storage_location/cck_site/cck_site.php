@@ -21,9 +21,9 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	protected static $key			=	'id';
 	
 	protected static $access		=	'access';
-	protected static $author		=	'';
-	protected static $author_object	=	'';
-	protected static $created_at	=	'';
+	protected static $author		=	'created_user_id';
+	protected static $author_object	=	'joomla_user';
+	protected static $created_at	=	'created_date';
 	protected static $custom		=	'';
 	protected static $modified_at	=	'';
 	protected static $parent		=	'';
@@ -72,9 +72,12 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage			=	self::_getTable( $pk );
+
+			$config['author']	=	$storage->{self::$author};
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareContent( $table, $pk );
 			if ( ! isset( $config['storages'][self::$table] ) ) {
+				$config['author']	=	$config['storages'][self::$table]->{self::$author};
 			}
 		}
 	}
@@ -110,6 +113,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage			=	self::_getTable( $pk );
+			$config['author']	=	$storage->{self::$author};
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
@@ -137,6 +141,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 				}
 			}
 		}
+		$config['author']	=	(int)$storages[self::$table][$config['pk']]->{self::$author};
 	}
 
 	// onCCK_Storage_LocationPrepareList
@@ -295,6 +300,8 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		if ( !$config['pk'] ) {
 			$config['pk']	=	self::$pk;
 		}
+		
+		$config['author']	=	$table->{self::$author};
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
 		$dispatcher->trigger( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
