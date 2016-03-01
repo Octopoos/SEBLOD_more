@@ -15,10 +15,189 @@ require_once JPATH_SITE.'/plugins/cck_storage_location/cck_site/cck_site.php';
 // Class
 class plgCCK_Storage_LocationCck_Site_Exporter extends plgCCK_Storage_LocationCck_Site
 {
+	protected static $columns_excluded	=	array( 'guest', 'guest_only_group', 'guest_only_viewlevel', 'groups', 'viewlevels' );
+	protected static $columns_ignored	=	array( 'id', 'guest', 'guest_only_group', 'guest_only_viewlevel', 'groups', 'viewlevels', 'checked_out', 'checked_out_time' );
+
+	// getColumnsToExport
+	public static function getColumnsToExport()
+	{
+		$table		=	self::_getTable();
+		$columns	=	$table->getProperties();
+		
+		foreach ( self::$columns_excluded as $column ) {
+			if ( array_key_exists( $column, $columns ) ) {
+				unset( $columns[$column] );
+			}
+		}
+		
+		return array_keys( $columns );
+	}
+
 	// onCCK_Storage_LocationExport
 	public static function onCCK_Storage_LocationExport( $items, &$config = array() )
 	{
-		// TODO
+		// Init
+		$excluded2	=	array( 'cck'=>'' );
+		$tables		=	array();
+		$user		=	JFactory::getUser();
+		
+		// Prepare
+		$table		=	self::_getTable();
+		$fields		=	$table->getProperties();
+		if ( isset( $config['fields'] ) && $config['fields'] === false ) {
+			$fields	=	array();
+		} elseif ( isset( $config['fields'] ) && count( $config['fields'] ) ) {
+			$fields	=	$config['fields'];
+		} else {
+			if ( count( self::$columns_ignored ) ) {
+				foreach ( self::$columns_ignored as $exclude ) {
+					unset( $fields[$exclude] );
+				}
+			}
+		}
+		
+		if ( count( $config['fields2'] ) ) {
+			foreach ( $config['fields2'] as $k=>$field ) {
+				if ( $field->storage_table == '' ) {
+					continue;
+				}
+				if ( !isset( $storages[$field->storage_table] ) ) {
+					$tables[$field->storage_table]	=	JCckDatabase::loadObjectList( 'SELECT * FROM '.$field->storage_table, 'id' );
+				}
+				if ( $config['component'] == 'com_cck_exporter' ) {
+					$key		=	$field->name;
+				} else {
+					$key		=	( $field->label2 ) ? $field->label2 : ( ( $field->label ) ? $field->label : $field->name );
+				}
+				$fields[$key]	=	'';
+			}
+		}
+		$fields	=	array_keys( $fields );
+		if ( $config['ftp'] == '1' ) {
+			$config['buffer']	.=	str_putcsv( $fields, $config['separator'] )."\n";
+		} else {
+			fputcsv( $config['handle'], $fields, $config['separator'] );
+		}
+		
+		// Set
+		if ( $config['prepare_output'] ) {
+			JPluginHelper::importPlugin( 'cck_field' );
+			$dispatcher	=	JDispatcher::getInstance();
+		}
+		if ( count( $items ) ) {
+			foreach ( $items as $item ) {
+				// Check Permissions?
+				if ( $config['authorise'] == 0  ) {
+					continue;
+				} elseif ( $config['authorise'] == 2 ) {
+					if ( !isset( $config['types'][$item->cck] ) ) {
+						$config['types'][$item->cck]	=	JCckDatabase::loadResult( 'SELECT id FROM #__cck_core_types WHERE name = "'.$item->cck.'"' );
+					}
+					if ( !$user->authorise( 'core.export', 'com_cck.form.'.$config['types'][$item->cck] ) ) {
+						continue;
+					}
+				}
+
+				// Core
+				$table	=	self::_getTable( $item->pk );
+				if ( isset( $config['fields'] ) && $config['fields'] === false ) {
+					$fields	=	array();
+				} elseif ( isset( $config['fields'] ) && count( $config['fields'] ) ) {
+					$fields	=	array();
+					if ( $config['prepare_output'] ) {
+						foreach ( $config['fields'] as $name=>$field ) {
+							// DISPATCH --> EXPORT
+							$val			=	@$table->$name;
+							$dispatcher->trigger( 'onCCK_FieldPrepareExport', array( &$field, $val, &$config ) );
+							$fields[$name]	=	$field->output;
+						}
+					} else {
+						$vars 	=	get_object_vars( $table );
+						foreach ( $vars as $key=>$val ) {
+							if ( isset( $config['fields'][$key] ) ) {
+								$fields[$key]	=	$val;
+							}
+						}
+					}
+				} else {
+					$fields	=	$table->getProperties();
+					if ( count( self::$columns_ignored ) ) {
+						foreach ( self::$columns_ignored as $exclude ) {
+							unset( $fields[$exclude] );
+						}
+					}
+				}
+
+				// Core > Custom
+				if ( self::$custom && isset( $fields[self::$custom] ) ) {
+					preg_match_all( CCK_Content::getRegex(), $fields[self::$custom], $values );
+					$tables[self::$table][$item->pk]->{self::$custom}	=	array();
+					$fields[self::$custom]								=	'';
+					if ( count( $values[1] ) ) {
+						foreach ( $values[1] as $k=>$v ) {
+							if ( $v == self::$custom ) {
+								// DISPATCH --> EXPORT
+								$fields[self::$custom]	=	$values[2][$k];
+							} elseif ( !isset( $excluded2[$v] ) ) {
+								$tables[self::$table][$item->pk]->{self::$custom}[$v]	=	$values[2][$k];
+							}	
+						}
+					}
+				}
+
+				// More
+				if ( count( $config['fields2'] ) ) {
+					foreach ( $config['fields2'] as $name=>$field ) {
+						if ( $field->storage_table == '' ) {
+							continue;
+						}
+						if ( $field->storage == 'standard' ) {
+							if ( $config['component'] == 'com_cck_exporter' ) {
+								$key		=	$field->name;
+							} else {
+								$key		=	( $field->label2 ) ? $field->label2 : ( ( $field->label ) ? $field->label : $field->name );
+							}
+							// DISPATCH --> EXPORT
+							if ( $config['prepare_output'] ) {
+								$val			=	@$tables[$field->storage_table][$item->pk]->{$field->storage_field};
+								$dispatcher->trigger( 'onCCK_FieldPrepareExport', array( &$field, $val, &$config ) );
+								$fields[$key]	=	$field->output;
+							} else {
+								$val			=	@$tables[$field->storage_table][$item->pk]->{$field->storage_field};
+								$fields[$key]	=	$val;
+							}
+						} else {
+							$name			=	$field->storage_field2 ? $field->storage_field2 : $name;
+							if ( $config['component'] == 'com_cck_exporter' ) {
+								$key		=	$field->name;
+							} else {
+								$key		=	( $field->label2 ) ? $field->label2 : ( ( $field->label ) ? $field->label : $field->name );
+							}
+							if ( !isset( $tables[$field->storage_table][$item->pk]->{$field->storage_field} ) ) {
+								$tables[$field->storage_table][$item->pk]->{$field->storage_field}	=	array();	// TODO
+							}
+							// DISPATCH --> EXPORT
+							if ( $config['prepare_output'] ) {
+								$val			=	( is_array( $tables[$field->storage_table][$item->pk]->{$field->storage_field} ) && isset( $tables[$field->storage_table][$item->pk]->{$field->storage_field}[$name] ) ) ? $tables[$field->storage_table][$item->pk]->{$field->storage_field}[$name] : $tables[$field->storage_table][$item->pk]->{$field->storage_field};
+								$dispatcher->trigger( 'onCCK_FieldPrepareExport', array( &$field, $val, &$config ) );
+								$fields[$key]	=	$field->output;
+							} else {
+								$val			=	( is_array( $tables[$field->storage_table][$item->pk]->{$field->storage_field} ) && isset( $tables[$field->storage_table][$item->pk]->{$field->storage_field}[$name] ) ) ? $tables[$field->storage_table][$item->pk]->{$field->storage_field}[$name] : $tables[$field->storage_table][$item->pk]->{$field->storage_field};
+								$fields[$key]	=	$val;
+							}
+						}
+					}
+				}
+				
+				// Export
+				if ( $config['ftp'] == '1' ) {
+					$config['buffer']	.=	str_putcsv( $fields, $config['separator'] )."\n";
+				} else {
+					fputcsv( $config['handle'], $fields, $config['separator'] );
+				}
+				$config['count']++;
+			}
+		}
 	}
 }
 ?>

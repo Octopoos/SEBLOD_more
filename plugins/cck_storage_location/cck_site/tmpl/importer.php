@@ -11,8 +11,12 @@
 defined( '_JEXEC' ) or die;
 ?>
 
-<ul class="adminformlist">
-	<?php
-	//
-	?>
-</ul>
+<div class="seblod cck-padding-top-0 cck-padding-bottom-0">
+	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_UPDATE' ) ); ?>
+	<ul class="adminformlist adminformlist-2cols">
+		<?php
+		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Update By Key', 'defaultvalue'=>'', 'selectlabel'=>'None',
+								  'options'=>'ID=id', 'storage_field'=>'options[key]' ) );
+        ?>
+	</ul>
+</div>
