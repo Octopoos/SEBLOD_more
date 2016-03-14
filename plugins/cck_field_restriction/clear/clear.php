@@ -56,6 +56,14 @@ class plgCCK_Field_RestrictionClear extends JCckPluginRestriction
 	// _authorise
 	protected static function _authorise( $restriction, &$field, &$config )
 	{
+		$behaviour	=	(int)$restriction->get( 'behaviour', '0' );
+
+		if ( $behaviour == -2 ) {
+			$field->restriction	=	'unset';
+		}
+		$field->display	=	0;
+		$field->state	=	0;
+		
 		return false;
 	}
 }
