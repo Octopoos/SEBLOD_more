@@ -30,10 +30,27 @@ class plgCCK_Field_LiveCck_Site extends JCckPluginLive
 		
 		// Prepare
 		$property	=	$options->get( 'property' );
-		if ( $property && JCck::isSite() ) {
-			$site			=	JCck::getSite();
-			$site_options	=	( is_object( $site ) ) ? new JRegistry( $site->options ) : new JRegistry;
-			$live			=	$site_options->get( $property, '' );
+		$target		=	$options->get( 'target' );
+
+		if ( $target == '' ) {
+			$target	=	'options';
+		}
+		if ( JCck::isSite() ) {
+			if ( $property ) {
+				$site			=	JCck::getSite();
+
+				if ( is_object( $site ) ) {
+					if ( $target == 'options' ) {
+						$site_options	=	new JRegistry( $site->options );
+						$live			=	$site_options->get( $property, '' );
+					} elseif ( $target == 'configuration' ) {
+						$site_config	=	new JRegistry( $site->configuration );
+						$live			=	$site_config->get( $property, '' );
+					} elseif ( isset( $site->$property ) ) {
+						$live			=	$site->$property;	
+					}
+				}
+			}
 		}
 		
 		// Set

@@ -17,6 +17,7 @@ JCckDev::initScript( 'live', $this->item );
 	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_LIVE_'.$this->item->name.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
+        echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Target', 'selectlabel'=>'', 'options'=>'Property=property||Options=optgroup||Basic=configuration||Custom=', 'storage_field'=>'target' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Property', 'required'=>'required', 'storage_field'=>'property' ) );
 		?>
     </ul>
