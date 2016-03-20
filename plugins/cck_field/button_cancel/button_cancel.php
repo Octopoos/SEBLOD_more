@@ -50,7 +50,7 @@ class plgCCK_FieldButton_Cancel extends JCckPluginField
 			$data['variation']									=	$config['construction']['variation'][self::$type];
 		}
 
-		parent::onCCK_FieldConstruct_TypeForm( $field, $style, $data, &$config );
+		parent::onCCK_FieldConstruct_TypeForm( $field, $style, $data, $config );
 	}
 	
 	// onCCK_FieldConstruct_SearchSearch
@@ -77,7 +77,7 @@ class plgCCK_FieldButton_Cancel extends JCckPluginField
 			$data['variation']									=	$config['construction']['variation'][self::$type];
 		}
 
-		parent::onCCK_FieldConstruct_SearchSearch( $field, $style, $data, &$config );
+		parent::onCCK_FieldConstruct_SearchSearch( $field, $style, $data, $config );
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Prepare
