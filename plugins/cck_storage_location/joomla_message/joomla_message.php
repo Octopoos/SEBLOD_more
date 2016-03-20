@@ -147,9 +147,11 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 				krsort( $items );
 				$item	=	current( $items );
 				
-				if ( $item->message_id == JCckDatabase::loadResult( 'SELECT message_id FROM #__messages WHERE folder_id ='.(int)$item->folder_id.' ORDER BY message_id DESC' ) ) {
-					if ( $item->user_id_to == JFactory::getUser()->get( 'id' ) ) {
-						self::_updateState( $item->folder_id, '0' );
+				if ( $item->folder_id == JFactory::getApplication()->input->get( 't' ) ) {
+					if ( $item->message_id == JCckDatabase::loadResult( 'SELECT message_id FROM #__messages WHERE folder_id ='.(int)$item->folder_id.' ORDER BY message_id DESC' ) ) {
+						if ( $item->user_id_to == JFactory::getUser()->get( 'id' ) ) {
+							self::_updateState( $item->message_id, '0' );
+						}
 					}
 				}
 			}
@@ -291,6 +293,7 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 		}
 
 		// Store
+		$table->state			=	1;
 		if ( !$table->store() ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
 
@@ -304,10 +307,7 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 		if ( $isNew ) {
 			if ( !$table->folder_id ) {
 				$table->folder_id	=	$table->message_id;
-				$table->state		=	1;
-				$table->store();	
-			} elseif ( $table->from != JFactory::getUser()->get( 'id' ) ) {
-				self::_updateState( $table->folder_id, '1' );
+				$table->store();
 			}
 		}
 		
