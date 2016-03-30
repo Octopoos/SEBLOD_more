@@ -131,136 +131,176 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		}
 		
 		// Prepare
-		$options2	=	JCckDev::fromJSON( $field->options2 );
-		$opts		=	array();
-		if ( $field->bool2 == 0 ) {
-			$opt_table			=	isset( $options2['table'] ) ? ' FROM '.$options2['table'] : '';
-			$opt_name			=	isset( $options2['name'] ) ? $options2['name'] : '';
-			$opt_value			=	isset( $options2['value'] ) ? $options2['value'] : '';
-			$opt_where			=	( isset( $options2['where'] ) && trim( $options2['where'] ) != '' ) ? ' WHERE '.$options2['where']: '';
-			$opt_orderby		=	( isset( $options2['orderby'] ) && trim( $options2['orderby'] ) != '' ) ? ' ORDER BY '.$options2['orderby'].' '.( ( @$options2['orderby_direction'] != '' ) ? $options2['orderby_direction'] : 'ASC' ) : '';
-			$opt_limit			=	( isset( $options2['limit'] ) && $options2['limit'] > 0 ) ? ' LIMIT '.$options2['limit'] : '';
-			
-			if ( $opt_name && $opt_value && $opt_table ) {
-				$query			=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where.$opt_orderby.$opt_limit;
-				$query			=	JCckDevHelper::replaceLive( $query );
-				$items			=	JCckDatabase::loadObjectList( $query );
+		if ( parent::g_isStaticVariation( $field, $field->variation, true ) ) {
+			if ( is_array( $value ) ) {
+				$value		=	implode( $divider, $value );
 			}
+			$form			=	'';
+			$field->text	=	'';
+			parent::g_getDisplayVariation( $field, $field->variation, $value, $field->text, $form, $id, $name, '<input', '', '', $config );
 		} else {
-			if ( @$options2['query'] != '' ) {
-				// Language Detection
-				$lang_code		=	'';
-				//self::_languageDetection( $lang_code, $value, $options2 );
-				$query	=	str_replace( '[lang]', $lang_code, $options2['query'] );
-				$query	=	JCckDevHelper::replaceLive( $query );
-				if ( ( strpos( $query, ' value ' ) != false ) || ( strpos( $query, ' value,' ) != false ) ) {
-					$items	=	JCckDatabase::loadObjectList( $query );
-				} else {
-					$opts2	=	JCckDatabase::loadColumn( $query );
-					if ( count( $opts2 ) ) {
-						$opts2	=	array_combine( array_values( $opts2 ), $opts2 );
-					}
-					$opts	=	array_merge( $opts, $opts2 );
+			$options2	=	JCckDev::fromJSON( $field->options2 );
+			$opts		=	array();
+			if ( $field->bool2 == 0 ) {
+				$opt_table			=	isset( $options2['table'] ) ? ' FROM '.$options2['table'] : '';
+				$opt_name			=	isset( $options2['name'] ) ? $options2['name'] : '';
+				$opt_value			=	isset( $options2['value'] ) ? $options2['value'] : '';
+				$opt_where			=	( isset( $options2['where'] ) && trim( $options2['where'] ) != '' ) ? ' WHERE '.$options2['where']: '';
+				$opt_orderby		=	( isset( $options2['orderby'] ) && trim( $options2['orderby'] ) != '' ) ? ' ORDER BY '.$options2['orderby'].' '.( ( @$options2['orderby_direction'] != '' ) ? $options2['orderby_direction'] : 'ASC' ) : '';
+				$opt_limit			=	( isset( $options2['limit'] ) && $options2['limit'] > 0 ) ? ' LIMIT '.$options2['limit'] : '';
+				
+				if ( $opt_name && $opt_value && $opt_table ) {
+					$query			=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where.$opt_orderby.$opt_limit;
+					$query			=	JCckDevHelper::replaceLive( $query );
+					$items			=	JCckDatabase::loadObjectList( $query );
 				}
-			}
-			$opt_name	=	'text';
-			$opt_value	=	'value';
-			$opt_group	=	'optgroup';
-		}
-		
-		if ( count( $items ) ) {
-			foreach ( $items as $item ) {
-				$o_name		=	isset( $opt_name ) ? $item->$opt_name : $item->text;
-				$o_value	=	isset( $opt_value ) ? $item->$opt_value : $item->value;
-				$opts[]		=	JHtml::_( 'select.option', $o_value, $o_name, 'value', 'text' );
-			}
-		}
-
-		$count	=	count( $opts );
-		$count2	=	0;
-		$form	=	'';
-		if ( $field->bool ) {
-			$orientation	=	' vertical';
-			$field->bool5	=	( !$field->bool5 ) ? 1 : $field->bool5;
-			$modulo			=	$count % $field->bool5;
-			$columns		=	(int)( $count / ( !$field->bool5 ? 1 : $field->bool5 ) );
-		} else {
-			$orientation	=	'';
-		}
-		
-		$attr			=	'class="inputbox checkbox'.$validate.'" size="1"';
-		if ( $field->bool && $field->bool5 > 1 && $count > 1 ) {
-			$k	=	0;
-			foreach ( $opts as $i=>$o ) {
-				if ( $i == 0 ) {
-					$form	.=	'<div class="cck-fl">';
-				} elseif ( ( $modulo && ( $k % ($columns+1) == 0 ) )
-						|| ( $modulo <= 0 && ( $k % $columns == 0 ) ) ) {
-					$form	.=	'</div><div class="cck-fl">';
-					$modulo--;
-					$k	=	0;
-				}
-				$k++;
-				$attr2		=	'';
-				if ( in_array( (string)$o->value, (array)$value ) ) {
-					$checked	=	' checked="checked" ';
-					$count2++;
-				} else {
-					$checked	=	'';
-				}
-				$form		.=	'<input type="checkbox" id="'.$id.$i.'" name="'.$name.'[]" value="'.$o->value.'" '.$checked.$attr.$attr2.' />';
-
-				$form		.=	'<label for="'.$id.$i.'">'.$o->text.'</label>';
-			}
-			$form		.=	'</div>';
-		} else {
-			foreach ( $opts as $i=>$o ) {
-				if ( in_array( (string)$o->value, (array)$value ) ) {
-					$checked	=	 ' checked="checked" ';
-					$count2++;
-				} else {
-					$checked	=	'';
-				}
-				$form		.=	'<input type="checkbox" id="'.$id.$i.'" name="'.$name.'[]" value="'.$o->value.'" '.$checked.$attr.' />';
-				$form		.=	'<label for="'.$id.$i.'">'.$o->text.'</label>';
-			}
-		}
-		if ( $field->bool7 ) {
-			$checked	=	( $count == $count2 ? '1' : '' ) ? 'checked="checked" ' : '';
-			$attr		=	'onclick="Joomla.checkAll(this,\''.$id.'\');"';
-			$check_all	=	'<input type="checkbox" id="'.$id.'_toggle'.'" name="'.$name.'_toggle" value="" '.$checked.$attr.' />'
-						.	'<label for="'.$id.'_toggle">'.JText::_( 'COM_CCK_CHECK_ALL' ).'</label>';
-
-			if ( $field->bool && $field->bool5 > 1 && $count > 1 ) {
-				$check_all	=	'<div class="cck-clrfix">'.$check_all.'</div>';
-			}
-			if ( $field->bool7 == 2 ) {
-				$form	.=	$check_all;
 			} else {
-				$form	=	$check_all.$form;
+				if ( @$options2['query'] != '' ) {
+					// Language Detection
+					$lang_code		=	'';
+					//self::_languageDetection( $lang_code, $value, $options2 );
+					$query	=	str_replace( '[lang]', $lang_code, $options2['query'] );
+					$query	=	JCckDevHelper::replaceLive( $query );
+					if ( ( strpos( $query, ' value ' ) != false ) || ( strpos( $query, ' value,' ) != false ) ) {
+						$items	=	JCckDatabase::loadObjectList( $query );
+					} else {
+						$opts2	=	JCckDatabase::loadColumn( $query );
+						if ( count( $opts2 ) ) {
+							$opts2	=	array_combine( array_values( $opts2 ), $opts2 );
+						}
+						$opts	=	array_merge( $opts, $opts2 );
+					}
+				}
+				$opt_name	=	'text';
+				$opt_value	=	'value';
+				$opt_group	=	'optgroup';
 			}
-		}
-		$class			=	'checkboxes'.$orientation . ( $field->css ? ' '.$field->css : '' );
-		$attr			=	'class="'.$class.'"' . ( $field->attributes ? ' '.$field->attributes : '' );
-		$form			=	'<fieldset id="'.$id.'" '.$attr.'>'.$form.'</fieldset>';
-		
-		/* tmp */
-		$jtext						=	$config['doTranslation'];
-		$config['doTranslation']	=	0;
-		/* tmp */
+			
+			if ( count( $items ) ) {
+				foreach ( $items as $item ) {
+					$o_name		=	isset( $opt_name ) ? $item->$opt_name : $item->text;
+					$o_value	=	isset( $opt_value ) ? $item->$opt_value : $item->value;
+					$opts[]		=	JHtml::_( 'select.option', $o_value, $o_name, 'value', 'text' );
+				}
+			}
 
-		// Set
-		if ( ! $field->variation ) {
-			$field->form	=	$form;
-			if ( $field->variation != 'hidden' ){
-				self::_addStyle();
+			$count	=	count( $opts );
+			$count2	=	0;
+			$form	=	'';
+			if ( $field->bool ) {
+				$orientation	=	' vertical';
+				$field->bool5	=	( !$field->bool5 ) ? 1 : $field->bool5;
+				$modulo			=	$count % $field->bool5;
+				$columns		=	(int)( $count / ( !$field->bool5 ? 1 : $field->bool5 ) );
+			} else {
+				$orientation	=	'';
 			}
-		} else {
-			if ( $field->variation == 'form_filter' ){
-				self::_addStyle();
+			
+			$attr			=	'class="inputbox checkbox'.$validate.'" size="1"';
+			if ( $field->bool && $field->bool5 > 1 && $count > 1 ) {
+				$k	=	0;
+				foreach ( $opts as $i=>$o ) {
+					if ( $i == 0 ) {
+						$form	.=	'<div class="cck-fl">';
+					} elseif ( ( $modulo && ( $k % ($columns+1) == 0 ) )
+							|| ( $modulo <= 0 && ( $k % $columns == 0 ) ) ) {
+						$form	.=	'</div><div class="cck-fl">';
+						$modulo--;
+						$k	=	0;
+					}
+					$k++;
+					$attr2		=	'';
+					if ( in_array( (string)$o->value, (array)$value ) ) {
+						$checked	=	' checked="checked" ';
+						$count2++;
+					} else {
+						$checked	=	'';
+					}
+					$form		.=	'<input type="checkbox" id="'.$id.$i.'" name="'.$name.'[]" value="'.$o->value.'" '.$checked.$attr.$attr2.' />';
+
+					$form		.=	'<label for="'.$id.$i.'">'.$o->text.'</label>';
+				}
+				$form		.=	'</div>';
+			} else {
+				foreach ( $opts as $i=>$o ) {
+					if ( in_array( (string)$o->value, (array)$value ) ) {
+						$checked	=	 ' checked="checked" ';
+						$count2++;
+					} else {
+						$checked	=	'';
+					}
+					$form		.=	'<input type="checkbox" id="'.$id.$i.'" name="'.$name.'[]" value="'.$o->value.'" '.$checked.$attr.' />';
+					$form		.=	'<label for="'.$id.$i.'">'.$o->text.'</label>';
+				}
 			}
-			$field->text	=	parent::g_getOptionText( $value, $field->options, $divider, $config );
-			parent::g_getDisplayVariation( $field, $field->variation, $value, $field->text, $form, $id, $name, '<input' );
+			if ( $field->bool7 ) {
+				$checked	=	( $count == $count2 ? '1' : '' ) ? 'checked="checked" ' : '';
+				$attr		=	'onclick="Joomla.checkAll(this,\''.$id.'\');"';
+				$check_all	=	'<input type="checkbox" id="'.$id.'_toggle'.'" name="'.$name.'_toggle" value="" '.$checked.$attr.' />'
+							.	'<label for="'.$id.'_toggle">'.JText::_( 'COM_CCK_CHECK_ALL' ).'</label>';
+
+				if ( $field->bool && $field->bool5 > 1 && $count > 1 ) {
+					$check_all	=	'<div class="cck-clrfix">'.$check_all.'</div>';
+				}
+				if ( $field->bool7 == 2 ) {
+					$form	.=	$check_all;
+				} else {
+					$form	=	$check_all.$form;
+				}
+			}
+			$class			=	'checkboxes'.$orientation . ( $field->css ? ' '.$field->css : '' );
+			$attr			=	'class="'.$class.'"' . ( $field->attributes ? ' '.$field->attributes : '' );
+			$form			=	'<fieldset id="'.$id.'" '.$attr.'>'.$form.'</fieldset>';
+			
+			/* tmp */
+			$jtext						=	$config['doTranslation'];
+			$config['doTranslation']	=	0;
+			/* tmp */
+
+			// Set
+			if ( ! $field->variation ) {
+				$field->form	=	$form;
+				if ( $field->variation != 'hidden' ) {
+					self::_addStyle();
+				}
+			} else {
+				if ( $field->variation == 'form_filter' ) {
+					self::_addStyle();
+				}
+				$options_2			=	self::_getOptionsList( $options2, $field->bool2, $lang_code );
+
+				if ( $field->options ) {
+					if ( $field->bool4 == 3 ) {
+						$current		=	0;
+						$static_opts	=	explode( '||', $field->options );
+						$static_opts1	=	array();
+						$static_opts2	=	array();
+						
+
+						foreach ( $static_opts as $static_opt ) {
+							if ( $current < $half ) {
+								$static_opts1[]	=	$static_opt;
+							} else {
+								$static_opts2[]	=	$static_opt;
+							}
+							$current++;
+						}
+						$field->optionsList	=	implode( '||', $static_opts1 ).'||'.$options_2.'||'.implode( '||', $static_opts2 );
+					} elseif ( $field->bool4 == 2 ) {
+						$field->optionsList	=	$options_2.'||'.$field->options;
+					} else {
+						$field->optionsList	=	$field->options.'||'.$options_2;
+					}
+				} else {
+					$field->optionsList		=	$options_2;
+				}
+				if ( $field->bool4 ) {
+					$field->text	=	parent::g_getOptionText( $value, $field->optionsList, $divider, $config );
+				} else {
+					$field->text	=	parent::g_getOptionText( $value, $options_2, $divider, $config );
+				}
+				parent::g_getDisplayVariation( $field, $field->variation, $value, $field->text, $form, $id, $name, '<input', '', '', $config );
+			}
 		}
 		$field->value	=	$value;
 		
