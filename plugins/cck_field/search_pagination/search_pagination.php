@@ -27,6 +27,16 @@ class plgCCK_FieldSearch_Pagination extends JCckPluginField
 		parent::g_onCCK_FieldConstruct( $data );
 	}
 	
+	// onCCK_FieldConstruct_SearchSearch
+	public static function onCCK_FieldConstruct_SearchSearch( &$field, $style, $data = array(), &$config = array() )
+	{
+		$data['live']		=	NULL;
+		$data['match_mode']	=	NULL;
+		$data['validation']	=	NULL;
+		
+		parent::onCCK_FieldConstruct_SearchSearch( $field, $style, $data, $config );
+	}
+
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Prepare
 	
 	// onCCK_FieldPrepareContent
