@@ -930,12 +930,12 @@
 /administrator/language/en-GB/en-GB.mod_cck_quickicon.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_42.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_42.sys.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_button_free.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_button_free.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_button_submit.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_button_submit.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_calendar.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_calendar.sys.ini
-/administrator/language/en-GB/en-GB.plg_cck_field_captcha_math.ini
-/administrator/language/en-GB/en-GB.plg_cck_field_captcha_math.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_checkbox.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_checkbox.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_colorpicker.ini
@@ -988,8 +988,6 @@
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_user.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_usergroups.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_usergroups.sys.ini
-/administrator/language/en-GB/en-GB.plg_cck_field_joomla_article.ini
-/administrator/language/en-GB/en-GB.plg_cck_field_joomla_article.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_joomla_module.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_joomla_module.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_link_cck_form.ini
@@ -1012,6 +1010,10 @@
 /administrator/language/en-GB/en-GB.plg_cck_field_radio.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_restriction_cck_workflow.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_restriction_cck_workflow.sys.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_search_generic.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_search_generic.sys.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_search_ordering.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_search_ordering.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_select_dynamic.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_select_dynamic.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_select_multiple.ini
@@ -1042,6 +1044,8 @@
 /administrator/language/en-GB/en-GB.plg_cck_field_typo_image.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_typo_italic.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_typo_italic.sys.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_typo_joomla_jgrid.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_typo_joomla_jgrid.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_typo_underline.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_typo_underline.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_upload_file.ini
@@ -1060,8 +1064,6 @@
 /administrator/language/en-GB/en-GB.plg_cck_field_validation_required.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_validation_url.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_validation_url.sys.ini
-/administrator/language/en-GB/en-GB.plg_cck_field_video_youtube.ini
-/administrator/language/en-GB/en-GB.plg_cck_field_video_youtube.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_wysiwyg_editor.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_wysiwyg_editor.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_storage_custom.ini
@@ -1091,12 +1093,12 @@
 /administrator/language/fr-FR/fr-FR.mod_cck_quickicon.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_42.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_42.sys.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_button_free.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_button_free.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_button_submit.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_button_submit.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_calendar.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_calendar.sys.ini
-/administrator/language/fr-FR/fr-FR.plg_cck_field_captcha_math.ini
-/administrator/language/fr-FR/fr-FR.plg_cck_field_captcha_math.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_checkbox.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_checkbox.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_colorpicker.ini
@@ -1149,8 +1151,6 @@
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_user.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_usergroups.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_usergroups.sys.ini
-/administrator/language/fr-FR/fr-FR.plg_cck_field_joomla_article.ini
-/administrator/language/fr-FR/fr-FR.plg_cck_field_joomla_article.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_joomla_module.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_joomla_module.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_link_cck_form.ini
@@ -1173,6 +1173,10 @@
 /administrator/language/fr-FR/fr-FR.plg_cck_field_radio.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_restriction_cck_workflow.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_restriction_cck_workflow.sys.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_search_generic.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_search_generic.sys.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_search_ordering.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_search_ordering.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_select_dynamic.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_select_dynamic.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_select_multiple.ini
@@ -1203,6 +1207,8 @@
 /administrator/language/fr-FR/fr-FR.plg_cck_field_typo_image.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_typo_italic.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_typo_italic.sys.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_typo_joomla_jgrid.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_typo_joomla_jgrid.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_typo_underline.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_typo_underline.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_upload_file.ini
@@ -1221,8 +1227,6 @@
 /administrator/language/fr-FR/fr-FR.plg_cck_field_validation_required.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_validation_url.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_validation_url.sys.ini
-/administrator/language/fr-FR/fr-FR.plg_cck_field_video_youtube.ini
-/administrator/language/fr-FR/fr-FR.plg_cck_field_video_youtube.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_wysiwyg_editor.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_wysiwyg_editor.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_storage_custom.ini
@@ -1294,9 +1298,9 @@
 /modules/mod_cck_list/*
 /modules/mod_cck_search/*
 /plugins/cck_field/42/*
+/plugins/cck_field/button_free/*
 /plugins/cck_field/button_submit/*
 /plugins/cck_field/calendar/*
-/plugins/cck_field/captcha_math/*
 /plugins/cck_field/checkbox/*
 /plugins/cck_field/colorpicker/*
 /plugins/cck_field/div/*
@@ -1323,11 +1327,12 @@
 /plugins/cck_field/jform_timezone/*
 /plugins/cck_field/jform_user/*
 /plugins/cck_field/jform_usergroups/*
-/plugins/cck_field/joomla_article/*
 /plugins/cck_field/joomla_module/*
 /plugins/cck_field/link/*
 /plugins/cck_field/password/*
 /plugins/cck_field/radio/*
+/plugins/cck_field/search_generic/*
+/plugins/cck_field/search_ordering/*
 /plugins/cck_field/select_dynamic/*
 /plugins/cck_field/select_multiple/*
 /plugins/cck_field/select_numeric/*
@@ -1338,7 +1343,6 @@
 /plugins/cck_field/textarea/*
 /plugins/cck_field/upload_file/*
 /plugins/cck_field/upload_image/*
-/plugins/cck_field/video_youtube/*
 /plugins/cck_field/wysiwyg_editor/*
 /plugins/cck_field/index.html
 /plugins/cck_field_link/cck_form/*
@@ -1358,6 +1362,7 @@
 /plugins/cck_field_typo/html/*
 /plugins/cck_field_typo/image/*
 /plugins/cck_field_typo/italic/*
+/plugins/cck_field_typo/joomla_jgrid/*
 /plugins/cck_field_typo/underline/*
 /plugins/cck_field_typo/index.html
 /plugins/cck_field_validation/ajax_availability/*
