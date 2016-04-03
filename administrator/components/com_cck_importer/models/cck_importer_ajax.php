@@ -138,7 +138,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 			$count		=	count( $session['fieldnames'] );
 			$fields		=	array();
 			$ordering	=	1;
-			$type		=	Helper_Import::addContentType( $session['options']['content_type_new'] );
+			$type		=	Helper_Import::addContentType( $session['options']['content_type_new'], $session['location'] );
 			
 			// #__store_form_...
 			if( $session['storage'] == 'standard' ) {

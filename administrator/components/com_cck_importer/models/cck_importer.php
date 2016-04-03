@@ -96,7 +96,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			$count		=	count( $fieldnames );
 			$data1		=	array();
 			$ordering	=	1;
-			$type		=	Helper_Import::addContentType( $options['content_type_new'] );
+			$type		=	Helper_Import::addContentType( $options['content_type_new'], $storage_location );
 			
 			// #__store_form_...
 			if( $storage == 'standard' ) {

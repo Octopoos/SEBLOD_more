@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die;
 class Helper_Import 
 {
 	//addContentType
-	public static function addContentType( $title )
+	public static function addContentType( $title, $storage_location )
 	{
 		require JPATH_ADMINISTRATOR.'/components/com_cck/tables/type.php';
 		require JPATH_ADMINISTRATOR.'/components/com_cck/helpers/helper_workshop.php';
@@ -29,7 +29,12 @@ class Helper_Import
 		$table->template_content	=	$style->id;
 		$table->template_intro		=	$style->id;
 		$table->published			=	1;
-		$table->indexed				=	'intro';
+		$table->indexed				=	'none';
+
+		if ( $storage_location == '' ) {
+			$storage_location		=	'joomla_article';
+		}
+		$table->storage_location	=	$storage_location;
 		
 		$rules	=	array( 'core.create'=>array(),
 						   'core.create.max.parent'=>array( '8'=>"0" ),
