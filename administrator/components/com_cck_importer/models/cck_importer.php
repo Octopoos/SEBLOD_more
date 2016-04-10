@@ -101,7 +101,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			// #__store_form_...
 			if( $storage == 'standard' ) {
 				$table	=	'#__cck_store_form_'.$type->name;
-				JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table.' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;' );
+				JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table.' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;' );
 			}
 			
 			for ( $i = 0; $i < $count; $i++ ) {
@@ -171,7 +171,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			//created the table #__store_form_  	
 			$table	=	'#__cck_store_form_'.$options['content_type'];
 			
-			JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table.' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;' );
+			JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table.' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;' );
 			
 			$count		=	count( $fieldnames );	
 			for ( $i = 0;  $i < $count;  $i++ ) {
