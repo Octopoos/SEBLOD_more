@@ -41,4 +41,8 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Video Youtube Field Plug-in Updates">http://update.seblod.com/plg_cck_field_video_youtube.xml</server>
+	</updateservers>
 </extension>
