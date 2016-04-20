@@ -1030,6 +1030,8 @@
 /administrator/language/en-GB/en-GB.plg_cck_field_radio.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_restriction_cck_workflow.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_restriction_cck_workflow.sys.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_restriction_url_variable.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_restriction_url_variable.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_search_generic.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_search_generic.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_search_ordering.ini
@@ -1193,6 +1195,8 @@
 /administrator/language/fr-FR/fr-FR.plg_cck_field_radio.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_restriction_cck_workflow.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_restriction_cck_workflow.sys.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_restriction_url_variable.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_restriction_url_variable.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_search_generic.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_search_generic.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_search_ordering.ini
@@ -1374,6 +1378,7 @@
 /plugins/cck_field_live/url_variable/*
 /plugins/cck_field_live/index.html
 /plugins/cck_field_restriction/cck_workflow/*
+/plugins/cck_field_restriction/url_variable/*
 /plugins/cck_field_restriction/index.html
 /plugins/cck_field_typo/bold/*
 /plugins/cck_field_typo/clear/*
