@@ -29,7 +29,7 @@ define( 'CCK_WEBSITE',			'http://www.seblod.com' );
 
 define( 'CCK_LINK',				'index.php?option=com_'.CCK_NAME );
 
-$root	=	JURI::root( true );
+$root	=	JUri::root( true );
 define( 'JROOT_CCK',			$root );
 define( 'JROOT_MEDIA_CCK',		$root.'/media/cck' );
 define( 'JPATH_LIBRARIES_CCK',	JPATH_SITE.'/libraries/cck' );
