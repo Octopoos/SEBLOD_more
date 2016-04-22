@@ -24,7 +24,7 @@ $items			=	$cck->getItems();
 $images			=	'';
 $selector		=	$cck->getStyleParam( 'backstretch_selector', '' );
 $selector		=	( $selector == '$' || $selector == '' ) ? '$' : '$("'.$selector.'")';
-$root			=	JURI::root( true );
+$root			=	JUri::root( true );
 
 // -- Render
 foreach ( $items as $item ) {
