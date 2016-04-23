@@ -97,7 +97,7 @@ class plgCCK_FieldCaptcha_Recaptcha extends JCckPluginField
 		$doc->addScriptDeclaration( $opt );
 
 		$class	=	'inputbox text'.$validate;
-		$form	=	recaptcha_get_html( $publickey, $error, JUri::getInstance()->isSSL() );
+		$form	=	recaptcha_get_html( $publickey, $error, JUri::getInstance()->isSsl() );
 		$form	.=	'<script type="text/javascript">jQuery(document).ready(function($){ $("#recaptcha_response_field").addClass("'.$class.'"); });</script>';
 		
 		// Set
