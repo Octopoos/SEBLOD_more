@@ -317,7 +317,9 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	// getRoute
 	public static function getRoute( $item, $sef, $itemId, $config = array() )
 	{
-        return '';
+		$route		=	'';
+		
+		return JRoute::_( $route );
 	}
 
 	// getRouteByStorage
