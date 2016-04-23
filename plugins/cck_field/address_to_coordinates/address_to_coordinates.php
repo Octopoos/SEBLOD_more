@@ -86,11 +86,13 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			if ( $field->bool == 1 ) {
 				$options2	=	new JRegistry( $field->options2 );
 				self::_addScripts( $id, array(
-											'bypass'=>$options2->get( 'bypass', '0' ),
+											'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */,
 											'lat'=>$options2->get( 'latitude' ),
 											'lng'=>$options2->get( 'longitude' ),
+											'postal_code'=>$options2->get( 'postal_code' ),
 											'city'=>$options2->get( 'city' ),
 											'country'=>$options2->get( 'country' ),
+											'country_type'=>$options2->get( 'country_type', '0' ),
 											'r_type'=>$options2->get( 'types' ),
 											'r_country'=>$options2->get( 'restrictions_country' )
 										), $config );
@@ -220,10 +222,11 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 						var $lng2 = $("#_"+"'.$params['lng'].'");
 						var $country = $("#"+"'.@$params['country'].'");
 						var $city = $("#"+"'.@$params['city'].'");
-						
-						var target = "'.( $params['bypass'] == '2' ? 'short_name' : 'long_name' ).'";
+						var $zipcode = $("#"+"'.@$params['postal_code'].'");
 						
 						var autocomplete = new google.maps.places.Autocomplete($el,{'.$opts.'});
+						var country_target = "'.( $params['country_type'] == '1' ? 'long_name' : 'short_name' ).'";
+						
 						google.maps.event.addListener(autocomplete, "place_changed", function() {
 							var coor = '.$params['bypass'].';
 							var place = autocomplete.getPlace();
@@ -231,8 +234,8 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 								return;
 							}
 							var address = "";
-							/*console.log(place);*/
 							if (place.address_components) {
+								var len = place.address_components.length;
 								address = [
 									(place.address_components[0] && place.address_components[0].short_name || ""),
 									(place.address_components[1] && place.address_components[1].short_name || ""),
@@ -240,38 +243,30 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 									(place.address_components[3] && place.address_components[3].short_name || ""),
 									(place.address_components[4] && place.address_components[4].short_name || "")
 								].join(" ");
-								var len = place.address_components.length;
-								if (len == 1 && coor != -1) {
-									coor = 0;
+								var components_by_type = {};
+								for (var i = 0; i < place.address_components.length; i++) {
+									var c = place.address_components[i];
+									components_by_type[c.types[0]] = c;
 								}
-								if ($city.length && place.address_components[0] && place.address_components[0].short_name) {
-									$city.val(place.address_components[0].short_name);
-									coor = 1;
+								if ($zipcode.length) {
+									$zipcode.val(components_by_type["postal_code"].long_name);
 								}
-								if (place.address_components[len-1] && place.address_components[len-1][target]) {
-									if (coor == 0 && !$country.length) {
-										$ac.after(\'<input type="text" id="country_or_full_address" name="country_or_full_address" value="" />\');
-									}
-									if ($("#country_or_full_address").length) {
-										$("#country_or_full_address").val(place.address_components[len-1][target]);
-									}
+								if ($city.length) {
+									$city.val(components_by_type["locality"].long_name);
+								}
+								if ($country.length) {
+									$country.val(components_by_type["country"][country_target]);
 								}
 							}
-							if (coor != 0 && place.geometry.location) {
+							if (place.geometry.location) {
 								var latitude = place.geometry.location.lat();
 								var longitude = place.geometry.location.lng();
 							} else {
 								var latitude = "";
 								var longitude = "";
 							}
-							$lat.val(latitude);
-							$lng.val(longitude);
-							if ($lat2.length){
-								$lat2.text(latitude);
-							}
-							if ($lng2.length){
-								$lng2.text(longitude);
-							}
+							$lat.val(latitude); if ($lat2.length){ $lat2.text(latitude); }
+							$lng.val(longitude); if ($lng2.length){ $lng2.text(longitude); }
 						});
 					});
 					';

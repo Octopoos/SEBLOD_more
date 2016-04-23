@@ -31,6 +31,8 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
          .   '</li>';
         echo JCckDev::renderForm( 'core_dev_select', @$options2['bypass'], $config, array( 'label'=>'Bypass', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'No=0||Yes=optgroup||Countries=1||Countries and Regions=2', 'storage_field'=>'json[options2][bypass]' ) );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['city'], $config, array( 'label'=>'City Field', 'storage_field'=>'json[options2][city]', 'required'=>'required' ) );
+        echo JCckDev::renderBlank();
+        echo JCckDev::renderForm( 'core_dev_text', @$options2['postal_code'], $config, array( 'label'=>'Postal Code Field', 'storage_field'=>'json[options2][postal_code]', 'required'=>'required' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
@@ -42,5 +44,6 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 jQuery(document).ready(function($) {
     $('#sortable_core_options').isVisibleWhen('bool','0');
     $('#json_options2_types,#json_options2_restrictions_country,#json_options2_bypass,#json_options2_country').isVisibleWhen('bool','1');
+    $('#json_options2_bypass').prop('disabled',true);
 });
 </script>
