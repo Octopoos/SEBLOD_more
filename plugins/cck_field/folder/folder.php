@@ -90,15 +90,15 @@ class plgCCK_FieldFolder extends JCckPluginField
 		}
 		if ( $folders ) {
 			foreach( $folders as $val ) {
-				$ext = substr( $val , strrpos( $val, '.' ) +1 );
-				$val = str_replace( '\\', '/', $val );
-				$val = substr( strstr( $val, $options2['path'] ), strlen( $options2['path'] ) );
+				$ext	=	substr( $val , strrpos( $val, '.' ) +1 );
+				$val	=	str_replace( '\\', '/', $val );
+				$val	=	substr( strstr( $val, $options2['path'] ), strlen( $options2['path'] ) );
 				if ( $path == 'administrator/language' || $path == 'language' ) {
 					if ( strpos( $val, '-' ) !== false ) {
-						$opts[] = JHtml::_( 'select.option', $val, $val );
+						$opts[]	=	JHtml::_( 'select.option', $val, $val );
 					}
 				} else {
-					$opts[] = JHtml::_( 'select.option', $val, $val );
+					$opts[]	=	JHtml::_( 'select.option', $val, $val );
 				}
 			}
 		}
@@ -107,11 +107,11 @@ class plgCCK_FieldFolder extends JCckPluginField
 			$name	=	$nameH.$inherit['xk'].']';
 		}
 		if ( $field->bool3 ) {
-			$sep			= ( $field->divider ) ? $field->divider : ',';
-			$selectedFolder = explode( $sep, $selectedFolder );
-			$form			= JHTML::_( 'select.genericlist', $opts, $name.'[]', 'class="inputbox select '.$validate.'" size="'.$field->rows.'" multiple="multiple"', 'value', 'text', $selectedFolder );
+			$sep			=	( $field->divider ) ? $field->divider : ',';
+			$selectedFolder =	explode( $sep, $selectedFolder );
+			$form			=	JHtml::_( 'select.genericlist', $opts, $name.'[]', 'class="inputbox select '.$validate.'" size="'.$field->rows.'" multiple="multiple"', 'value', 'text', $selectedFolder );
 		} else {
-			$form			= JHtml::_( 'select.genericlist', $opts, $name, 'class="inputbox select '.$validate.'" size="1"', 'value', 'text', $selectedFolder );
+			$form			=	JHtml::_( 'select.genericlist', $opts, $name, 'class="inputbox select '.$validate.'" size="1"', 'value', 'text', $selectedFolder );
 		}
 		
 		// Set
