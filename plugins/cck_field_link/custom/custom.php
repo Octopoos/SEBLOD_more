@@ -106,9 +106,9 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 						$variable	=	$matches[2][$k];
 						if ( $v == 'Current' || $v == 'CurrentUrl' || $v == 'EncodedUrl' ) {
 							if ( $v == 'CurrentUrl' || $v == 'EncodedUrl' || $variable == 'true' ) { 
-                                $request = JURI::getInstance()->toString();
+                                $request = JUri::getInstance()->toString();
                             } else {
-                                $request = JURI::current();
+                                $request = JUri::current();
                             }
                             if ( $v == 'EncodedUrl' ) {
                                 $request=   urlencode( $request );
