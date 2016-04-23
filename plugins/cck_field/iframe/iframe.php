@@ -50,7 +50,7 @@ class plgCCK_FieldIframe extends JCckPluginField
 				$value	=	'http://'.$value;
 			}
 			if ( $full_var ) {
-				$url	=	JURI::getInstance();
+				$url	=	JUri::getInstance();
 				$var	=	strstr( $url, '?' );
 			}
 			if ( $variable != '' && !$full_var ) {
