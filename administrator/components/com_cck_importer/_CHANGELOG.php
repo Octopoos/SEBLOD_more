@@ -25,12 +25,13 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.6.0 Initial Release [11-Feb-2016] -----------------
+-------------------- 1.6.0 Initial Release [25-Apr-2016] -----------------
 
 + "onCckPreBeforeImport", "onCckPostBeforeImport" events added.
 + "onCckPreAfterImport", "onCckPostAfterImport" events added.
 
-^ "onCCK_Storage_LocationAfterImport" replace by "onCCK_Storage_LocationAfterImports".
+^ CHARSET updated to "utf8mb4" and DEFAULT COLLATE to "utf8mb4_unicode_ci".
+^ "onCCK_Storage_LocationAfterImport" replaced by "onCCK_Storage_LocationAfterImports".
 
 # Data Consistency issues fixed.
 
