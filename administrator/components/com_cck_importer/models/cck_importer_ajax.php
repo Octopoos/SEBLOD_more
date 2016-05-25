@@ -66,14 +66,20 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$session['location']		=	$session['options']['storage_location'];
 		$session['storage']			=	$session['options']['storage'];
 
-		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$session['location'].'/classes/importer.php';
-		
 		if ( $file === false ) {
 			return false;
 		}
 
+		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$session['location'].'/classes/importer.php';
+
+		$allowed_columns	=	JCck::callFunc( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'getColumnsToImport' );
+
 		// CSV Process
-		$i	=	0;
+		$i							=	0;
+		$session['content']			=	array();
+		$session['fieldnames']		=	array();
+		$session['fieldnames_info']	=	array();
+
 		if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
 			while ( ( $data = fgetcsv( $handle, $params->get( 'csv_length', 1000 ), $session['options']['separator'] ) ) !== false ) {
 				if ( $i == 0 ) {
@@ -85,12 +91,34 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 			}
 			fclose( $handle );
 		}
-		if ( $session['fieldnames'][0] != '' ) {
-			$session['fieldnames'][0]	=	preg_replace( '/[^A-Za-z0-9_#\(\)\|]/', '', $session['fieldnames'][0] );
-		}
+		
 		if ( count( $session['fieldnames'] ) ) {
 			foreach ( $session['fieldnames'] as $k=>$fieldname ) {
-				$session['fieldnames'][$k]	=	strtolower( $fieldname );
+				$info	=	null;
+				$pos	=	strpos( $fieldname, '{' );
+
+				// Get More Info
+				if ( $pos !== false ) {
+					$info		=	substr( $fieldname, $pos );
+					$info		=	new JRegistry( $info );
+					$fieldname	=	substr( $fieldname, 0, $pos );
+				}
+
+				// Fix CSV issue
+				if ( $k == 0 ) {
+					$fieldname	=	preg_replace( '/[^A-Za-z0-9_#\(\)\|]/', '', $fieldname );
+				}
+
+				// Alter Case (when allowed)
+				if ( !in_array( $fieldname, $allowed_columns ) ) {
+					$fieldname	=	strtolower( $fieldname );
+				}
+				$session['fieldnames'][$k]	=	$fieldname;
+
+				// Set More Info
+				if ( is_object( $info ) ) {
+					$session['fieldnames_info'][$fieldname]	=	$info->toArray();
+				}
 			}
 		}
 		
@@ -163,16 +191,20 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 				//custom field exist or not
 				$query		= 	"SELECT COUNT(*) FROM #__cck_core_fields AS s WHERE s.name = '$fieldname' ";
 				$find		=	JCckDatabase::loadResult( $query );
-				
+				$data_type	=	'TEXT';
+
+				if ( isset( $session['fieldnames_info'][$fieldname]['data_type'] ) && $session['fieldnames_info'][$fieldname]['data_type'] != '' ) {
+					$data_type	=	$session['fieldnames_info'][$fieldname]['data_type'];
+				}
 				if ( $find == 0 ) {
 					//add field in the table #__store_form_.../or #__jos 
 					if ( $session['storage'] == 'standard' ) {
 						$session['data'][$i]['sto_table']	= $session['table2'];
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldname.' TEXT NOT NULL' );
+						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
 					} else { //custom or another
 						$session['data'][$i]['sto_table']	= $session['table'];
 					}
-					$fieldid							=	Helper_Import::addField( $fieldname , $session['data'][$i]['sto_table'] , $session['location'], $session['storage'], $session['custom']);
+					$fieldid							=	Helper_Import::addField( $fieldname, $session['data'][$i]['sto_table'], $session['location'], $session['storage'], $session['custom'], $session['fieldnames_info'] );
 					$storage_obj						=	Helper_Import::findFieldStorageById( $fieldid ); 
 					$session['fieldnames2'][$i]['storage']			=	$storage_obj->storage; 
 				} else {
@@ -183,7 +215,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 					$session['fieldnames2'][$i]['storage_field']	=	$storage_obj->storage_field;
 					$session['fieldnames2'][$i]['storage_table']	=	$storage_obj->storage_table;
 					if ( $session['fieldnames2'][$i]['storage'] == 'standard' && !$session['fieldnames2'][$i]['storage_table'] ) {
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
+						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
 					}
 					$session['data'][$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 				}
@@ -222,8 +254,13 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 					$session['fieldnames2'][$i]['storage']	=	( $fieldname == $session['custom'] ) ? 'custom': 'standard';
 					continue;  
 				} else {
+					$data_type	=	'TEXT';
 					$query		=	'DESCRIBE '.$session['table'].' '.$fieldname;  
 					$yes		=	JCckDatabase::loadResult( $query ); 
+
+					if ( isset( $session['fieldnames_info'][$fieldname]['data_type'] ) && $session['fieldnames_info'][$fieldname]['data_type'] != '' ) {
+						$data_type	=	$session['fieldnames_info'][$fieldname]['data_type'];
+					}
 					if ( !$yes ) {   
 						//if field doesn't exists
 						$query		= 	"SELECT COUNT(*) FROM #__cck_core_fields AS s WHERE s.name = '$fieldname' ";
@@ -231,14 +268,14 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 						if ( $find == 0 ) {  //field doesn't exist
 							if ( $session['storage'] == 'standard' ) {
 								$session['data'][$i]['sto_table']		=	$session['table2'];
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldname.' TEXT NOT NULL' );
+								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
 								$session['fieldnames2'][$i]['storage']	=	$session['storage'];
 							} else { 
 								$session['data'][$i]['sto_table']		=	$session['table'];
 								$session['fieldnames2'][$i]['storage']	=	$session['storage'];
 							}
 							//created the field
-							$fieldid	=	Helper_Import::addField( $fieldname , $session['data'][$i]['sto_table'] , $session['location'], $session['storage'], $session['custom'] );
+							$fieldid	=	Helper_Import::addField( $fieldname, $session['data'][$i]['sto_table'], $session['location'], $session['storage'], $session['custom'], $session['fieldnames_info'] );
 														
 							//association content type /field
 							$query	=	"SELECT MAX(ordering) FROM #__cck_core_type_field WHERE typeid = $ctypeid ";
@@ -253,7 +290,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 							$session['fieldnames2'][$i]['storage_field']	=	$storage_obj->storage_field;
 							$session['fieldnames2'][$i]['storage_table']	=	$storage_obj->storage_table;
 							if ( $session['fieldnames2'][$i]['storage'] == 'standard' && !$session['fieldnames2'][$i]['storage_table'] ) {
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
+								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
 							}
 							$session['data'][$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 						}

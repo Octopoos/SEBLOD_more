@@ -54,10 +54,10 @@ class Helper_Import
 	}
 	
 	// addField
-	public static function addField( $name , $sto_table, $sto_location, $sto, $custom )
+	public static function addField( $name , $sto_table, $sto_location, $sto, $custom, $overrides = array() )
 	{
 		$row					=	JTable::getInstance( 'field', 'CCK_Table' );
-		$row->title				=	ucfirst( str_replace( '_', ' ', $name ) );   
+		$row->title				=	ucwords( str_replace( '_', ' ', $name ) );   
 		$row->name				=	$name;
 		$row->folder			=	1;
 		$row->type				=	'text';
@@ -69,6 +69,14 @@ class Helper_Import
 		$row->display			=	3;
 		$row->published			=	1;
 		
+		if ( isset( $overrides[$name] ) && count( $overrides[$name] ) ) {
+			foreach ( $overrides[$name] as $k=>$v ) {
+				if ( property_exists( $row, $k ) ) {
+					$row->$k	=	$v;
+				}
+			}
+		}
+
 		$row->store() ;
 		
 		return $row->id;

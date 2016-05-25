@@ -41,19 +41,23 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		$file				=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', NULL, 'files', 'array' ) );
 		$storage			=	$options['storage'];
 		$storage_location	=	$options['storage_location'];
-		$output				=	Helper_Output::init( $options['storage_location'], 'csv', $params );
+		$output				=	Helper_Output::init( $storage_location, 'csv', $params );
 		$plugin_location	=	JPluginHelper::getPlugin( 'cck_storage_location', $storage_location );
 		
 		if ( $file === false ) {
 			return false;
 		}
 		
-		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$options['storage_location'].'/classes/importer.php';
+		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$storage_location.'/classes/importer.php';
 
+		$allowed_columns	=	JCck::callFunc( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'getColumnsToImport' );
+		
 		// CSV Process
-		$row 		=	0;
-		$content	=	array();
-		$fieldnames	=	array();
+		$row 				=	0;
+		$content			=	array();
+		$fieldnames			=	array();
+		$fieldnames_info	=	array();
+
 		if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
 			while ( ( $data = fgetcsv( $handle, $params->get( 'csv_length', 1000 ), $options['separator'] ) ) !== false ) {
 				if ( $row == 0 ) {
@@ -65,12 +69,34 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			}
 			fclose( $handle );
 		}
-		if ( $fieldnames[0] != '' ) {
-			$fieldnames[0]	=	preg_replace( '/[^A-Za-z0-9_#\(\)\|]/', '', $fieldnames[0] );
-		}
+
 		if ( count( $fieldnames ) ) {
 			foreach ( $fieldnames as $k=>$fieldname ) {
-				$fieldnames[$k]	=	strtolower( $fieldname );
+				$info	=	null;
+				$pos	=	strpos( $fieldname, '{' );
+				
+				// Get More Info
+				if ( $pos !== false ) {
+					$info		=	substr( $fieldname, $pos );
+					$info		=	new JRegistry( $info );
+					$fieldname	=	substr( $fieldname, 0, $pos );
+				}
+
+				// Fix CSV issue
+				if ( $k == 0 ) {
+					$fieldname	=	preg_replace( '/[^A-Za-z0-9_#\(\)\|]/', '', $fieldname );
+				}
+
+				// Alter Case (when allowed)
+				if ( !in_array( $fieldname, $allowed_columns ) ) {
+					$fieldname	=	strtolower( $fieldname );
+				}
+				$fieldnames[$k]	=	$fieldname;
+
+				// Set More Info
+				if ( is_object( $info ) ) {
+					$fieldnames_info[$fieldname]	=	$info->toArray();
+				}
 			}
 		}
 		$total		=	count( $content );
@@ -106,7 +132,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			
 			for ( $i = 0; $i < $count; $i++ ) {
 				$fieldname			=	str_replace( ' ', '_', $fieldnames[$i] );
-				$fieldnames[$i]		=	$fieldname;  
+				$fieldnames[$i]		=	$fieldname;
 				$isCore				=	Helper_Import::isCoreStorage_Location( $fieldname, $sto_table );
 				if ( $isCore ) {
 					$data1[$i]['sto_table']		=	$sto_table;	
@@ -121,16 +147,20 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 				//custom field exist or not
 				$query		= 	"SELECT COUNT(*) FROM #__cck_core_fields AS s WHERE s.name = '$fieldname' ";
 				$find		=	JCckDatabase::loadResult( $query );
-				
+				$data_type	=	'TEXT';
+
+				if ( isset( $fieldnames_info[$fieldname]['data_type'] ) && $fieldnames_info[$fieldname]['data_type'] != '' ) {
+					$data_type	=	$fieldnames_info[$fieldname]['data_type'];
+				}
 				if ( $find == 0 ) {
 					//add field in the table #__store_form_.../or #__jos 
 					if ( $storage == 'standard' ) {
 						$data1[$i]['sto_table']	= $table;
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldname.' TEXT NOT NULL' );
+						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
 					} else { //custom or another
 						$data1[$i]['sto_table']	= $sto_table;
 					}
-					$fieldid							=	Helper_Import::addField( $fieldname , $data1[$i]['sto_table'] , $storage_location, $storage, $sto_location_custom);
+					$fieldid							=	Helper_Import::addField( $fieldname, $data1[$i]['sto_table'], $storage_location, $storage, $sto_location_custom, $fieldnames_info );
 					$storage_obj						=	Helper_Import::findFieldStorageById( $fieldid ); 
 					$fieldnames1[$i]['storage']			=	$storage_obj->storage; 
 				} else {
@@ -141,7 +171,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					$fieldnames1[$i]['storage_field']	=	$storage_obj->storage_field;
 					$fieldnames1[$i]['storage_table']	=	$storage_obj->storage_table;
 					if ( $fieldnames1[$i]['storage'] == 'standard' && !$fieldnames1[$i]['storage_table'] ) {
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
+						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
 					}
 					$data1[$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 				}
@@ -183,8 +213,13 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					$fieldnames1[$i]['storage']	=	( $fieldname == $sto_location_custom ) ? 'custom': 'standard';
 					continue;  
 				} else {
-					$query		=	"DESCRIBE $sto_table $fieldname";  
-					$yes		=	JCckDatabase::loadResult( $query ); 
+					$data_type	=	'TEXT';
+					$query		=	"DESCRIBE $sto_table $fieldname";
+					$yes		=	JCckDatabase::loadResult( $query );
+
+					if ( isset( $fieldnames_info[$fieldname]['data_type'] ) && $fieldnames_info[$fieldname]['data_type'] != '' ) {
+						$data_type	=	$fieldnames_info[$fieldname]['data_type'];
+					}
 					if ( !$yes ) {   
 						//if field doesn't exists
 						$query		= 	"SELECT COUNT(*) FROM #__cck_core_fields AS s WHERE s.name = '$fieldname' ";
@@ -192,14 +227,14 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 						if ( $find == 0 ) {  //field doesn't exist
 							if ( $storage == 'standard' ) {
 								$data1[$i]['sto_table']		=	$table;
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldname.' TEXT NOT NULL' );
+								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
 								$fieldnames1[$i]['storage']	=	$storage;
 							} else { 
 								$data1[$i]['sto_table']		=	$sto_table;
 								$fieldnames1[$i]['storage']	=	$storage;
 							}
 							//created the field
-							$fieldid	=	Helper_Import::addField( $fieldname , $data1[$i]['sto_table'] , $storage_location, $storage, $sto_location_custom );
+							$fieldid	=	Helper_Import::addField( $fieldname, $data1[$i]['sto_table'], $storage_location, $storage, $sto_location_custom, $fieldnames_info );
 														
 							//association content type /field
 							$query	=	"SELECT MAX(ordering) FROM #__cck_core_type_field WHERE typeid = $ctypeid ";
@@ -214,7 +249,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 							$fieldnames1[$i]['storage_field']	=	$storage_obj->storage_field;
 							$fieldnames1[$i]['storage_table']	=	$storage_obj->storage_table;
 							if ( $fieldnames1[$i]['storage'] == 'standard' && !$fieldnames1[$i]['storage_table'] ) {
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
+								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
 							}
 							$data1[$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 						}

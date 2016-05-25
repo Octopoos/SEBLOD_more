@@ -72,19 +72,13 @@ $session->set( 'cck_importer_batch_ok', '' );
 					 .	 JCckDev::getForm( 'more_importer_content_type_new', '', $config )
 					 .	 '</li>';
 	                echo JCckDev::renderForm( 'more_importer_upload_file', '', $config );
-	                echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ',' ), $config );
+	                echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config );
 	                echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '1' ), $config );
 	                ?>
 	            </ul>
 	        </div>
 	        <div id="layer" class="cck-padding-top-0 cck-padding-bottom-0">
-	            <?php
-				$type	=	$app->input->getString( 'ajax_type', 'joomla_article' );
-	            $layer	=	JPATH_PLUGINS.'/cck_storage_location/'.$type.'/tmpl/importer.php';
-				if ( is_file( $layer ) ) {
-	            	include_once $layer;
-				}
-	            ?>
+	            <?php /* Loaded by AJAX */ ?>
 	        </div>
 	        <div class="seblod cck-padding-top-0 cck-overflow-visible">
 	            <ul class="adminformlist">
@@ -224,6 +218,9 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 	                	break;
                 }
 			});
+			if (typeof JCck.Dev.applyConditionalStates === 'function') {
+                JCck.Dev.applyConditionalStates();
+            }
 		},
 		submit: function(task) {
 			Joomla.submitbutton(task);
@@ -260,6 +257,8 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		if (JCck.Dev.ajaxTotal > 0) {
 			var uri = "index.php?option=com_cck_importer&task=importFromFileByAjax&format=raw";
 			JCck.Dev.ajaxLoopRequest(uri, 0, JCck.Dev.ajaxStep, JCck.Dev.ajaxStep, JCck.Dev.ajaxTotal);
+		} else {
+			JCck.Dev.ajaxLayer("cck_importer", "default2", "#layer", "&ajax_type="+$("#options_storage_location").val());
 		}
 		/* Ajax::end */
 	});

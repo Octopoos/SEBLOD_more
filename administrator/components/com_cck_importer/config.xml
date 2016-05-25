@@ -12,7 +12,7 @@
 			<option value="standard">COM_CCK_CONFIG_OPTION_STANDARD</option>
 			<option value="custom">COM_CCK_CONFIG_OPTION_CUSTOM</option>
 		</field>
-		<field name="separator" type="list" default="0" label="COM_CCK_CONFIG_SEPARATOR" description="COM_CCK_CONFIG_SEPARATOR_DESC" class="inputbox">
+		<field name="separator" type="list" default=";" label="COM_CCK_CONFIG_SEPARATOR" description="COM_CCK_CONFIG_SEPARATOR_DESC" class="inputbox">
 			<option value=",">COM_CCK_COMMA</option>
 			<option value=";">COM_CCK_SEMICOLON</option>
 			<option value="|">COM_CCK_VERTICAL_BAR</option>
