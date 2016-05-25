@@ -25,7 +25,18 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.6.0 Initial Release [25-Apr-2016] -----------------
+-------------------- 1.7.0 Upgrade Release [25-May-2016] -----------------
+
++ Additional info/details for Columns/Fields implemented.
+  >> "data_type" to force column creation to be INT(11), VARCHAR(255) or else
+  >> "label", "type", "options" or other attributes can be overriden for field creation.
+
+^ Default separator is now ";"
+
+# Conditional States fixed.
+# User Import issue fixed.
+
+-------------------- 1.6.0 Upgrade Release [25-Apr-2016] -----------------
 
 + "onCckPreBeforeImport", "onCckPostBeforeImport" events added.
 + "onCckPreAfterImport", "onCckPostAfterImport" events added.
@@ -35,7 +46,7 @@ $ -> Language fix or change
 
 # Data Consistency issues fixed.
 
--------------------- 1.5.2 Initial Release [19-Dec-2015] -----------------
+-------------------- 1.5.2 Upgrade Release [19-Dec-2015] -----------------
 
 ! Copyright Updated.
 ! Language constant updated for Updater Add-on.
