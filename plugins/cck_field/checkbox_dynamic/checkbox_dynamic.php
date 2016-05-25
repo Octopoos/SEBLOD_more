@@ -132,6 +132,11 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			$validate	=	( count( $field->validate ) ) ? ' validate['.implode( ',', $field->validate ).']' : '';
 		}
 		
+		/* tmp */
+		$jtext						=	$config['doTranslation'];
+		$config['doTranslation']	=	0;
+		/* tmp */
+
 		// Prepare
 		if ( parent::g_isStaticVariation( $field, $field->variation, true ) ) {
 			if ( is_array( $value ) ) {
@@ -253,11 +258,6 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			$class			=	'checkboxes'.$orientation . ( $field->css ? ' '.$field->css : '' );
 			$attr			=	'class="'.$class.'"' . ( $field->attributes ? ' '.$field->attributes : '' );
 			$form			=	'<fieldset id="'.$id.'" '.$attr.'>'.$form.'</fieldset>';
-			
-			/* tmp */
-			$jtext						=	$config['doTranslation'];
-			$config['doTranslation']	=	0;
-			/* tmp */
 
 			// Set
 			if ( ! $field->variation ) {
