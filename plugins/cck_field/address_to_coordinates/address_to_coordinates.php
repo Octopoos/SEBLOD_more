@@ -85,17 +85,10 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			$field->form	=	$form;
 			if ( $field->bool == 1 ) {
 				$options2	=	new JRegistry( $field->options2 );
-				self::_addScripts( $id, array(
-											'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */,
-											'lat'=>$options2->get( 'latitude' ),
-											'lng'=>$options2->get( 'longitude' ),
-											'postal_code'=>$options2->get( 'postal_code' ),
-											'city'=>$options2->get( 'city' ),
-											'country'=>$options2->get( 'country' ),
-											'country_type'=>$options2->get( 'country_type', '0' ),
-											'r_type'=>$options2->get( 'types' ),
-											'r_country'=>$options2->get( 'restrictions_country' )
-										), $config );
+
+				if ( $field->state ) {
+					parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'id'=>$id, 'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */, 'lat'=>$options2->get( 'latitude' ), 'lng'=>$options2->get( 'longitude' ), 'postal_code'=>$options2->get( 'postal_code' ), 'city'=>$options2->get( 'city' ), 'country'=>$options2->get( 'country' ), 'country_type'=>$options2->get( 'country_type', '0' ), 'r_type'=>$options2->get( 'types' ), 'r_country'=>$options2->get( 'restrictions_country' ) ) );
+				}
 			}
 			if ( $field->script ) {
 				parent::g_addScriptDeclaration( $field->script );
@@ -201,6 +194,28 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff & Script
 	
+	// onCCK_FieldBeforeRenderForm
+	public static function onCCK_FieldBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
+	{
+		$name	=	$process['name'];
+
+		if ( !$fields[$name]->state ) {
+			return;
+		}
+		
+		self::_addScripts( $process['id'], array(
+									'bypass'=>$process['bypass'],
+									'lat'=>$process['lat'],
+									'lng'=>$process['lng'],
+									'postal_code'=>$process['postal_code'],
+									'city'=>$process['city'],
+									'country'=>$process['country'],
+									'country_type'=>$process['country_type'],
+									'r_type'=>$process['r_type'],
+									'r_country'=>$process['r_country']
+								), $config );
+	}
+
 	// _addScripts
 	protected static function _addScripts( $id, $params = array(), &$config = array() )
 	{
@@ -275,7 +290,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 		if ( $loaded ) {
 			return;
 		}
-		$lib	=	JUri::getInstance()->getScheme().'://maps.googleapis.com/maps/api/js?sensor=false&language='.substr( JFactory::getLanguage()->getTag(), 0, 2 ).'&libraries=places';
+		$lib	=	JUri::getInstance()->getScheme().'://maps.googleapis.com/maps/api/js?language='.substr( JFactory::getLanguage()->getTag(), 0, 2 ).'&libraries=places';
 		$loaded	=	1;
 		
 		if ( method_exists( 'JCckDev', 'addScript' ) ) {
