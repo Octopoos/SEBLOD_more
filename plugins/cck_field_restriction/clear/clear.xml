@@ -39,4 +39,8 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Clear Restriction Plug-in Updates">http://update.seblod.com/plg_cck_field_restriction_clear.xml</server>
+	</updateservers>
 </extension>

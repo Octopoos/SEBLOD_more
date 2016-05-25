@@ -40,4 +40,8 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Joomla! Menu Item Live Plug-in Updates">http://update.seblod.com/plg_cck_field_live_joomla_menu_item.xml</server>
+	</updateservers>
 </extension>

@@ -40,4 +40,8 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="SEBLOD Route Link Plug-in Updates">http://update.seblod.com/plg_cck_field_link_cck_route.xml</server>
+	</updateservers>
 </extension>
