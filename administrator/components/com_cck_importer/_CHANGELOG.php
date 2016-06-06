@@ -25,6 +25,11 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.7.1 Upgrade Release [6-Jun-2016] ------------------
+
+^ Icon added on "Import" Button.
+^ Icon for "Session" updated.
+
 -------------------- 1.7.0 Upgrade Release [25-May-2016] -----------------
 
 + Additional info/details for Columns/Fields implemented.
