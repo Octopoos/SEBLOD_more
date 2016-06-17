@@ -325,10 +325,14 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 				$table->link	=	$link;
 			}
 
-			$table->component_id 	= 	JTable::getInstance( 'Extension' )->find( array(
-																					'name' => $component,
-																					'type' => 'component'
-																				  ) );
+			if ( $menuItemType == 'separator' ) {
+				$table->component_id	=	0;
+			} else {
+				$table->component_id 	= 	JTable::getInstance( 'Extension' )->find( array(
+																						'name' => $component,
+																						'type' => 'component'
+																					  ) );	
+			}
 		}
 
 		if ( !isset( $data['type'] ) ) {
