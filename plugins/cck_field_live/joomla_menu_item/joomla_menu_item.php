@@ -34,8 +34,8 @@ class plgCCK_Field_LiveJoomla_Menu_Item extends JCckPluginLive
 		// Prepare
 		$property	=	$options->get( 'property' );
 		$param		=	$options->get( 'param' );
-		
-		if ( $property == 'param' && $param != '' ) {
+
+		if ( $property == 'params' && $param != '' ) {
 			$live	=	$menu_item->params->get( $param, $options->get( 'default_value', '' ) );
 		} elseif ( isset( $menu_item->$property ) ) {
 			$live	=	$menu_item->$property;
