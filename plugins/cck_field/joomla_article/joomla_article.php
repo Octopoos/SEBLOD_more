@@ -32,7 +32,7 @@ class plgCCK_FieldJoomla_Article extends JCckPluginField
 		$data['divider']	=	'';
 		$prefix				=	JFactory::getConfig()->get( 'dbprefix' );
 		$table				=	'cck_store_join_'.( ( $data['storage_field2'] != '' ) ? $data['storage_field2'] : $data['storage_field'] );
-		JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$prefix.$table.' ( `id` int(11) NOT NULL, `id2` int(11) NOT NULL, PRIMARY KEY (`id`,`id2`) )'
+		JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$prefix.$table.' ( `id` int(10) UNSIGNED NOT NULL, `id2` int(10) UNSIGNED NOT NULL, PRIMARY KEY (`id`,`id2`) )'
 							 . ' ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;' );
 	}
 	
