@@ -8,7 +8,7 @@
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>January 2015</creationDate>
 	<description>SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com</description>
-	<version>2.2.0</version>
+	<version>2.3.0</version>
 	
 	<scriptfile>install/script.php</scriptfile>
 	
@@ -36,6 +36,10 @@
 				<field name="item_separator" type="radio" default="1" label="LIB_CCK_STORAGE_LOCATION_ITEM_SEPARATOR" description="LIB_CCK_STORAGE_LOCATION_ITEM_SEPARATOR_DESC" class="btn-group">
 					<option value="1">JSHOW</option>
 					<option value="0">JHIDE</option>
+				</field>
+				<field name="read_context" type="radio" default="2" label="PLG_CCK_STORAGE_LOCATION_JOOMLA_MESSAGE_READ_CONTEXT" description="PLG_CCK_STORAGE_LOCATION_JOOMLA_MESSAGE_READ_CONTEXT_DESC" class="btn-group">
+					<option value="1">PLG_CCK_STORAGE_LOCATION_JOOMLA_MESSAGE_READ_CONTEXT_OPTION_LATEST_MESSAGE</option>
+					<option value="2">PLG_CCK_STORAGE_LOCATION_JOOMLA_MESSAGE_READ_CONTEXT_OPTION_WHOLE_TREAD</option>
 				</field>
 			</fieldset>
 			

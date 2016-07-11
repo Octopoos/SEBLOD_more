@@ -143,14 +143,19 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 				}
 			}
 			if ( count( $storages[self::$table] ) ) {
-				$items	=	$storages[self::$table];
+				$items			=	$storages[self::$table];
 				krsort( $items );
-				$item	=	current( $items );
-				
+				$item			=	current( $items );
+				$read_context	=	$this->params->get( 'read_context', 2 );
+
 				if ( $item->folder_id == JFactory::getApplication()->input->get( 't' ) ) {
-					if ( $item->message_id == JCckDatabase::loadResult( 'SELECT message_id FROM #__messages WHERE folder_id ='.(int)$item->folder_id.' ORDER BY message_id DESC' ) ) {
-						if ( $item->user_id_to == JFactory::getUser()->get( 'id' ) ) {
-							self::_updateState( $item->message_id, '0' );
+					if ( $read_context == 2 ) {
+						JCckDatabase::execute( 'UPDATE '.self::$table.' SET state = 0 WHERE folder_id = '.(int)$item->folder_id.' AND user_id_to = '.JFactory::getUser()->get( 'id' ) );
+					} else {
+						if ( $item->message_id == JCckDatabase::loadResult( 'SELECT message_id FROM #__messages WHERE folder_id ='.(int)$item->folder_id.' ORDER BY message_id DESC' ) ) {
+							if ( $item->user_id_to == JFactory::getUser()->get( 'id' ) ) {
+								self::_updateState( $item->message_id, '0' );
+							}
 						}
 					}
 				}
