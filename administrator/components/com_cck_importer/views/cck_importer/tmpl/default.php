@@ -89,8 +89,8 @@ $session->set( 'cck_importer_batch_ok', '' );
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFile\');"';
 					}
 					echo '<li class="btn-group dropup flt-right">'
-					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ) );
-					echo JCck::on() ? '<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-unarchive"></span></a>' : '<img id="featured_session" src="components/com_cck/assets/images/16/icon-16-featured.png" />';
+					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ) );
+					echo '<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-unarchive"></span></a>';
 					echo '</li><li>&nbsp;</li>';
 	                ?>
 	            </ul>
@@ -238,17 +238,17 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		}
 	}
 	$(document).ready(function() {
-		$("#options_storage_location").live('change', function() {
+		$("#options_storage_location").on('change', function() {
 			var data = "&ajax_type="+$(this).val();
 			JCck.Dev.ajaxLayer("cck_importer", "default2", "#layer", data);
 		});
-		$("#featured_session").live("click", function() {
+		$("#featured_session").on("click", function() {
 			JCck.Dev.ajaxSessionSave();
 		});
-		$(".featured_sessions").live("click", function() {
+		$(".featured_sessions").on("click", function() {
 			JCck.Dev.ajaxSession($(this).attr("mydata2"), "options_storage_location", $(this).attr("mydata"));
 		});
-		$(".featured_sessions_del").live("click", function(e) {
+		$(".featured_sessions_del").on("click", function(e) {
 			e.preventDefault();
 			JCck.Dev.ajaxSessionDelete($(this).attr("mydata"));
 		});

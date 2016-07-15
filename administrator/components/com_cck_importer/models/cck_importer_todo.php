@@ -57,7 +57,7 @@ class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 					//add field in the table #__store_form_.../or #__jos 
 					if ( $session['storage'] == 'standard' ) {
 						$session['data'][$i]['sto_table']	= $session['table2'];
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldname.' TEXT NOT NULL' );
+						JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldname.' TEXT NOT NULL' );
 					} else { //custom or another
 						$session['data'][$i]['sto_table']	= $session['table'];
 					}
@@ -72,7 +72,7 @@ class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 					$session['fieldnames2'][$i]['storage_field']	=	$storage_obj->storage_field;
 					$session['fieldnames2'][$i]['storage_table']	=	$storage_obj->storage_table;
 					if ( $session['fieldnames2'][$i]['storage'] == 'standard' && !$session['fieldnames2'][$i]['storage_table'] ) {
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
+						JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
 					}
 					$session['data'][$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 				}
@@ -120,7 +120,7 @@ class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 						if ( $find == 0 ) {  //field doesn't exist
 							if ( $session['storage'] == 'standard' ) {
 								$session['data'][$i]['sto_table']		=	$session['table2'];
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldname.' TEXT NOT NULL' );
+								JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldname.' TEXT NOT NULL' );
 								$session['fieldnames2'][$i]['storage']	=	$session['storage'];
 							} else { 
 								$session['data'][$i]['sto_table']		=	$session['table'];
@@ -142,7 +142,7 @@ class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 							$session['fieldnames2'][$i]['storage_field']	=	$storage_obj->storage_field;
 							$session['fieldnames2'][$i]['storage_table']	=	$storage_obj->storage_table;
 							if ( $session['fieldnames2'][$i]['storage'] == 'standard' && !$session['fieldnames2'][$i]['storage_table'] ) {
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
+								JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldid->storage_field.' TEXT NOT NULL' );
 							}
 							$session['data'][$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 						}

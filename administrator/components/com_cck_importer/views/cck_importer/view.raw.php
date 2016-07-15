@@ -21,11 +21,8 @@ class CCK_ImporterViewCCK_Importer extends JCckBaseLegacyView
 		
 		require_once JPATH_ADMINISTRATOR.'/components/com_cck/helpers/toolbar/separator.php';
 		
-		if ( JCck::on() ) {
-			JToolBarHelper::title( CCK_LABEL, 'cck-seblod' );
-		} else {
-			JToolBarHelper::title( '&nbsp;', 'seblod.png' );
-		}
+		JToolBarHelper::title( CCK_LABEL, 'cck-seblod' );
+
 		if ( $canDo->get( 'core.admin' ) ) {
 			if ( JComponentHelper::getParams( 'com_cck_importer' )->get( 'output', 0 ) < 2 ) {
 				JToolBarHelper::custom( 'purge', 'delete', 'delete', 'COM_CCK_PURGE', false );

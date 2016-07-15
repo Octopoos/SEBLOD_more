@@ -22,10 +22,9 @@ class Helper_Include extends CommonHelper_Include
 		$script	=	( $tmpl == 'ajax' ) ? false : true;
 		
 		if ( $script === true ) {
-			if ( JCck::on() ) {
-				JHtml::_( 'bootstrap.tooltip' );
-				// JHtml::_( 'formbehavior.chosen', 'select:not(.no-chosen)' );
-			}
+			JHtml::_( 'bootstrap.tooltip' );
+			// JHtml::_( 'formbehavior.chosen', 'select:not(.no-chosen)' );
+			
 			JCck::loadjQuery( true, true, array( 'cck.dev-3.7.0.min.js', 'jquery.ui.effects.min.js', 'jquery.json.min.js' ) );
 		}
 		

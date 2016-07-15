@@ -156,7 +156,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					//add field in the table #__store_form_.../or #__jos 
 					if ( $storage == 'standard' ) {
 						$data1[$i]['sto_table']	= $table;
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
+						JCckDatabase::execute( 'ALTER TABLE '.$table.' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
 					} else { //custom or another
 						$data1[$i]['sto_table']	= $sto_table;
 					}
@@ -171,7 +171,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					$fieldnames1[$i]['storage_field']	=	$storage_obj->storage_field;
 					$fieldnames1[$i]['storage_table']	=	$storage_obj->storage_table;
 					if ( $fieldnames1[$i]['storage'] == 'standard' && !$fieldnames1[$i]['storage_table'] ) {
-						JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
+						JCckDatabase::execute( 'ALTER TABLE '.$table.' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
 					}
 					$data1[$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 				}
@@ -227,7 +227,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 						if ( $find == 0 ) {  //field doesn't exist
 							if ( $storage == 'standard' ) {
 								$data1[$i]['sto_table']		=	$table;
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
+								JCckDatabase::execute( 'ALTER TABLE '.$table.' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
 								$fieldnames1[$i]['storage']	=	$storage;
 							} else { 
 								$data1[$i]['sto_table']		=	$sto_table;
@@ -249,7 +249,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 							$fieldnames1[$i]['storage_field']	=	$storage_obj->storage_field;
 							$fieldnames1[$i]['storage_table']	=	$storage_obj->storage_table;
 							if ( $fieldnames1[$i]['storage'] == 'standard' && !$fieldnames1[$i]['storage_table'] ) {
-								JCckDatabase::execute( 'ALTER IGNORE TABLE '.$table.' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
+								JCckDatabase::execute( 'ALTER TABLE '.$table.' ADD '.$fieldid->storage_field.' '.$data_type.' NOT NULL' );
 							}
 							$data1[$i]['sto_table']	=	Helper_Import::findFieldById( $fieldid->id )->storage_table;
 						}
