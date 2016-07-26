@@ -119,18 +119,17 @@ class plgCCK_FieldButton_Reset extends JCckPluginField
 		$attr	=	'class="'.$class.'"'.$click . ( $field->attributes ? ' '.$field->attributes : '' );
 		if ( $field->bool ) {
 			$label	=	$value;
-			if ( JCck::on() ) {
-				if ( $field->bool6 == 3 ) {
-					$options2	=	JCckDev::fromJSON( $field->options2 );
-					$label		=	'<span class="icon-'.$options2['icon'].'"></span>';
-					$attr		.=	' title="'.$value.'"';
-				} elseif ( $field->bool6 == 2 ) {
-					$options2	=	JCckDev::fromJSON( $field->options2 );
-					$label		=	$value."\n".'<span class="icon-'.$options2['icon'].'"></span>';
-				} elseif ( $field->bool6 == 1 ) {
-					$options2	=	JCckDev::fromJSON( $field->options2 );
-					$label		=	'<span class="icon-'.$options2['icon'].'"></span>'."\n".$value;
-				}
+			
+			if ( $field->bool6 == 3 ) {
+				$options2	=	JCckDev::fromJSON( $field->options2 );
+				$label		=	'<span class="icon-'.$options2['icon'].'"></span>';
+				$attr		.=	' title="'.$value.'"';
+			} elseif ( $field->bool6 == 2 ) {
+				$options2	=	JCckDev::fromJSON( $field->options2 );
+				$label		=	$value."\n".'<span class="icon-'.$options2['icon'].'"></span>';
+			} elseif ( $field->bool6 == 1 ) {
+				$options2	=	JCckDev::fromJSON( $field->options2 );
+				$label		=	'<span class="icon-'.$options2['icon'].'"></span>'."\n".$value;
 			}
 			$type	=	( $field->bool7 == 1 ) ? 'submit' : 'button';
 			$form	=	'<button type="'.$type.'" id="'.$id.'" name="'.$name.'" '.$attr.'>'.$label.'</button>';
