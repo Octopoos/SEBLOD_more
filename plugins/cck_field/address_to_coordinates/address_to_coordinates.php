@@ -169,10 +169,6 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 	// onCCK_FieldBeforeStore
 	public static function onCCK_FieldBeforeStore( $process, &$fields, &$storages, &$config = array() )
 	{
-		if ( !JCck::on() ) {
-			return;
-		}
-
 		$map		=	new JGoogleEmbedMaps();
 		$address	=	'';
 		if ( count( $process['fieldnames'] ) && $process['latitude'] && $process['longitude'] ) {
