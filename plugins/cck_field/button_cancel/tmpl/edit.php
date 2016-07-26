@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die;
 
 JCckDev::forceStorage();
-$class		=	( JCck::on() ) ? '' : ' class="hide"';
+
 $options2	=	JCckDev::fromJSON( $this->item->options2 );
 ?>
 
@@ -20,7 +20,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
     <ul class="adminformlist adminformlist-2cols">
         <?php
 		echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
-		echo '<li'.$class.'><label>'.JText::_( 'COM_CCK_LABEL_ICON' ).'</label>'
+		echo '<li><label>'.JText::_( 'COM_CCK_LABEL_ICON' ).'</label>'
 		 .	 JCckDev::getForm( 'core_dev_select', $this->item->bool6, $config, array( 'label'=>'Label Icon', 'defaultvalue'=>'0', 'selectlabel'=>'',
 		 																			  'options'=>'Hide=0||Show=optgroup||Append=1||Prepend=2||Replace=3', 'storage_field'=>'bool6' ) )
 		 .	 JCckDev::getForm( 'core_icons', @$options2['icon'], $config, array( 'css'=>'max-width-150' ) )
