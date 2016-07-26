@@ -56,10 +56,10 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 jQuery(document).ready(function($) {
 	if ( $('#bool').val() != 0 ) { $('#json_options2_parent').hide(); }
 	if ( $('#bool2').val()  != 0 ) { $('#json_options2_child').hide();	}
-	$("#bool").live("change", function() {
+	$("#bool").on("change", function() {
 		if ( $('#bool').val() != 0 ) { $('#json_options2_parent').hide(); } else { $('#json_options2_parent').show(); }
 	});
-	$("#bool2").live("change", function() {
+	$("#bool2").on("change", function() {
 		if ( $('#bool2').val() != 0 ) { $('#json_options2_child').hide(); } else { $('#json_options2_child').show(); }
 	});
 	$("div#layer").on("click", "span.c_link", function() {
@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
 	if ( !$('#extended').val() ) {
 		$('#bool2, #json_options2_child_orderby, #json_options2_child_location, #json_options2_child_limit, #blank_li, #json_options2_child_language').parent().hide();
 	}
-	$("#extended").live("change", function() {
+	$("#extended").on("change", function() {
 		if ( !$('#extended').val() ) {
 			$('#bool2, #json_options2_child_orderby, #json_options2_child_location, #json_options2_child_limit, #blank_li, #json_options2_child_language').parent().hide();
 		} else {
