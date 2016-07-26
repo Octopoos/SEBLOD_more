@@ -26,7 +26,7 @@ if ( $cck->id_class != '' ) {
 	echo $cck->renderPosition( 'mainbody', '', $cck->h( 'mainbody' ) );
 }
 
-if ( $cck->countFields( 'modal' ) && JCck::on() ) {
+if ( $cck->countFields( 'modal' ) ) {
 	JHtml::_( 'bootstrap.modal', 'collapseModal' );
 	?>
 	<div class="modal hide fade" id="collapseModal">
