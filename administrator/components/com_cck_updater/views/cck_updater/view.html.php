@@ -18,11 +18,8 @@ class CCK_UpdaterViewCCK_Updater extends JCckBaseLegacyView
 	{
 		$canDo	=	Helper_Admin::getActions();
 		
-		if ( JCck::on() ) {
-			JToolBarHelper::title( CCK_LABEL, 'cck-seblod' );
-		} else {
-			JToolBarHelper::title( '&nbsp;', 'seblod.png' );
-		}
+		JToolBarHelper::title( CCK_LABEL, 'cck-seblod' );
+		
 		if ( $canDo->get( 'core.admin' ) ) {
 			JToolBarHelper::preferences( CCK_ADDON, 560, 840, 'JTOOLBAR_OPTIONS' );
 		}

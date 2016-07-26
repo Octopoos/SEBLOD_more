@@ -115,10 +115,8 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                 <?php
                 $attr   =   'onclick="if (document.adminForm.boxchecked.value==0){alert(\''.htmlspecialchars( addslashes( JText::_( 'JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST' ) ) ).'\');}else{ Joomla.submitbutton(\'update\')}"';
                 echo '<li class="btn-group dropup flt-right">'
-                 .   JCckDev::getForm( 'more_updater_submit', '', $config, array( 'label'=>'Update Now', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ) );
-                if ( JCck::on() ) {
-                    echo '<a href="javascript:void(0);" id="to_be_updated" class="btn btn-primary hasTooltip hasTip" data-toggle="modal" data-target="#collapseModal" title="'.JText::_( 'COM_CCK_COPY_PASTE_ITEMS' ).'"><span class="icon-copy"></span></a>';
-                }
+                 .   JCckDev::getForm( 'more_updater_submit', '', $config, array( 'label'=>'Update Now', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ) );
+                echo '<a href="javascript:void(0);" id="to_be_updated" class="btn btn-primary hasTooltip hasTip" data-toggle="modal" data-target="#collapseModal" title="'.JText::_( 'COM_CCK_COPY_PASTE_ITEMS' ).'"><span class="icon-copy"></span></a>';
                 echo '</li>';
                 ?>
             </ul>
