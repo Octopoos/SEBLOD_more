@@ -123,11 +123,8 @@ class plgCCK_FieldCheckbox_Numeric extends JCckPluginField
 		$class				=	'checkboxes'.$orientation . ( $field->css ? ' '.$field->css : '' );
 		$attr				=	'class="'.$class.'"' . ( $field->attributes ? ' '.$field->attributes : '' );
 		$form				=	'<fieldset id="'.$id.'" '.$attr.'>';
-		if ( JCck::on() ) {
-			$attr			=	'class="checkbox'.$validate.'" size="1"';
-		} else {
-			$attr			=	'class="inputbox checkbox'.$validate.'" size="1"';
-		}
+		$attr				=	'class="checkbox'.$validate.'" size="1"';
+
 		if ( $field->bool && $field->bool2 > 1 && $count > 1 ) {
 			$k	=	0;
 			foreach ( $opts as $i=>$o ) {
