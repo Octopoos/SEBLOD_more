@@ -56,7 +56,7 @@ Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
 				echo JCckDev::renderForm( 'more_developer_creation_date', $creation_date, $config );
 				echo JCckDev::renderForm( 'more_developer_description', $params->get( 'description', 'SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com' ), $config );
 				echo JCckDev::renderForm( 'more_developer_version', '', $config, array(), array(), 'w100' );
-				echo JCckDev::renderForm( 'more_developer_submit', '', $config, array(  'storage'=>'dev', 'attributes'=>$attr, 'css'=>( JCck::on() ? 'btn-primary' : 'inputbutton' ) ), array(), 'flt-right' );
+				echo JCckDev::renderForm( 'more_developer_submit', '', $config, array(  'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ), array(), 'flt-right' );
 				?>
             </ul>
         </div>
