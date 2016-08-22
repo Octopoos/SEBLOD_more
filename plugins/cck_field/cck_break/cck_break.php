@@ -92,21 +92,18 @@ class plgCCK_FieldCck_Break extends JCckPluginField
 		}
 		
 		// Init
-		if ( count( $inherit ) ) {
-			$name	=	( isset( $inherit['name'] ) && $inherit['name'] != '' ) ? $inherit['name'] : $field->name;
-		} else {
-			$name	=	$field->name;
+		$value	=	'';
+
+		// Set
+		if ( $field->state ) {
+			$config['error']	=	2;
 		}
-		
-		// Validate
-		parent::g_onCCK_FieldPrepareStore_Validation( $field, $name, $value, $config );
 		
 		// Set or Return
 		if ( $return === true ) {
 			return $value;
 		}
 		$field->value	=	$value;
-		parent::g_onCCK_FieldPrepareStore( $field, $name, $value, $config );
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Render
