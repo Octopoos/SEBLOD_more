@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 // Controller
 class CCK_UpdaterController extends JControllerLegacy
 {
@@ -40,7 +42,7 @@ class CCK_UpdaterController extends JControllerLegacy
 		$app	=	JFactory::getApplication();
 		$model	=	$this->getModel( 'cck_updater' );
 		$pks	=	$app->input->get( 'cid', array(), 'array' );
-		JArrayHelper::toInteger( $pks, array() );
+		$pks	=	ArrayHelper::toInteger( $pks );
 		
 		if ( $model->update( $pks ) ) {
 			$this->setRedirect( CCK_LINK );
