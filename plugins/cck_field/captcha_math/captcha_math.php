@@ -67,7 +67,7 @@ class plgCCK_FieldCaptcha_Math extends JCckPluginField
 		
 		// Captcha only for Guest
 		$user	=	JFactory::getUser();
-		if ( $user->get( 'id' ) > 0 && $user->guest != 1 ) { 
+		if ( $user->id > 0 && $user->guest != 1 ) { 
 			$field->form	=	'';
 			$field->value	=	'';
 			$field->display	=	0;
@@ -158,7 +158,7 @@ class plgCCK_FieldCaptcha_Math extends JCckPluginField
 		
 		// Captcha only for Guest
 		$user	=	JFactory::getUser();
-		if ( $user->get( 'id' ) > 0 && $user->guest != 1 ) { 
+		if ( $user->id > 0 && $user->guest != 1 ) { 
 			return;
 		}
 		
