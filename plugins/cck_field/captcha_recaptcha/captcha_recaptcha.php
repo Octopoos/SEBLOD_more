@@ -152,7 +152,7 @@ class plgCCK_FieldCaptcha_Recaptcha extends JCckPluginField
 		
 		// Captcha only for GUEST !
 		$user	=	JFactory::getUser();
-		if ( $user->get( 'id' ) > 0 && $user->guest != 1 ) {
+		if ( $user->id > 0 && $user->guest != 1 ) {
 			return;
 		}
 		
