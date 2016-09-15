@@ -53,7 +53,7 @@ class com_cck_updaterInstallerScript extends JCckInstallerScriptComponent
 		$v		=	substr( $reg->get( 'version', '2.0.0' ), 0, 5 );
 		
 		if ( version_compare( $v, '2.0.5', '<' ) ) {
-			$parent->getParent()->message	=	'Download SEBLOD 3.x here: <a target="_blank" href="http://www.seblod.com">www.seblod.com</a>';
+			$parent->getParent()->message	=	'Download SEBLOD 3.x here: <a target="_blank" href="https://www.seblod.com">www.seblod.com</a>';
 			$parent->getParent()->abort();
 			
 			$db->setQuery( 'SELECT extension_id FROM #__extensions WHERE type = "component" AND element = "com_'.$this->cck_name.'"' );

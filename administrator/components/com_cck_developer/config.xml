@@ -3,7 +3,7 @@
 	<fieldset name="main" label="COM_CCK_CONFIG_FIELDSET_MAIN" description="COM_CCK_CONFIG_FIELDSET_MAIN_DESC">
 		<field name="author" type="text" size="32" default="Octopoos" label="COM_CCK_CONFIG_AUTHOR" description="COM_CCK_CONFIG_AUTHOR_DESC" class="inputbox" />
 		<field name="author_email" type="text" size="32" default="contact@seblod.com" label="COM_CCK_CONFIG_AUTHOR_EMAIL" description="COM_CCK_CONFIG_AUTHOR_EMAIL_DESC" class="inputbox" />
-		<field name="author_url" type="text" size="32" default="http://www.seblod.com" label="COM_CCK_CONFIG_AUTHOR_URL" description="COM_CCK_CONFIG_AUTHOR_URL_DESC" class="inputbox" />
+		<field name="author_url" type="text" size="32" default="https://www.seblod.com" label="COM_CCK_CONFIG_AUTHOR_URL" description="COM_CCK_CONFIG_AUTHOR_URL_DESC" class="inputbox" />
 		<field name="copyright" type="text" size="64" default="Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved." label="COM_CCK_CONFIG_COPYRIGHT" description="COM_CCK_CONFIG_COPYRIGHT_DESC" class="inputbox" />
 		<field name="license" type="text" size="64" default="GNU General Public License version 2 or later." label="COM_CCK_CONFIG_LICENSE" description="COM_CCK_CONFIG_LICENSE_DESC" class="inputbox" />
 		<field name="COM_CCK_CONFIG_LEGEND_DEFAULT_VALUES" type="spacer" hr="false" />

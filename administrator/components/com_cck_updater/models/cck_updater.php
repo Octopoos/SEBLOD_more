@@ -51,7 +51,7 @@ class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 			}
 			if ( isset( $xml->update->downloads->downloadurl ) ) {
 				$url	=	(string)$xml->update->downloads->downloadurl;
-				if ( strpos( $url, 'http://www.seblod.com/' ) === false ) {
+				if ( strpos( $url, 'http://www.seblod.com/' ) === false || strpos( $url, 'https://www.seblod.com/' ) === false ) {
 					$count--;
 					continue;
 				}
@@ -126,7 +126,7 @@ class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 	{
 		if ( $proxy = (int)$params->get( 'proxy', '0' ) ) {
 			$proxy	=	Helper_Admin::getProxy( $params, 'proxy_segment2', true );
-			$url	=	str_replace( 'http://www.seblod.com', $proxy, $url );
+			$url	=	str_replace( array( 'http://www.seblod.com', 'https://www.seblod.com' ), $proxy, $url );
 		} else {
 			$url	=	str_replace( 'http://', 'https://', $url );
 		}

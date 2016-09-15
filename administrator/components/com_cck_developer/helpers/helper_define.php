@@ -25,7 +25,7 @@ define( 'CCK_LABEL',			JText::_( CCK_ADDON.'_ADDON' ) );
 define( 'CCK_COM',				'com_cck' );
 define( 'CCK_MODEL',			CCK_TITLE.'Model' );
 define( 'CCK_TABLE',			CCK_NAME.'_Table' );
-define( 'CCK_WEBSITE',			'http://www.seblod.com' );
+define( 'CCK_WEBSITE',			'https://www.seblod.com' );
 
 define( 'CCK_LINK',				'index.php?option=com_'.CCK_NAME );
 
