@@ -59,13 +59,14 @@ class plgCCK_FieldVideo_Youtube extends JCckPluginField
 			if ( $field->bool2 == 0 ) {
 				$video	=	'<iframe width="'.$width.'" height="'.$height.'" ';
 				$video	.=	'frameborder="0" allowfullscreen src="';
-				$video	.=	'http://www.youtube.com/embed/'.$v_tag;
+				$video	.=	'//www.youtube.com/embed/'.$v_tag;
 				$video	.=	'" ></iframe>';
 			} else {
+				$scheme	=	JUri::getInstance()->getScheme();
 				$video	= 	'<object width="'.$width.'" height="'.$height.'">';
 				$video	.=	'<param value="'.$value.'" name="movie"><param value="transparent" name="wmode">';
 				$video	.=	'<embed width="'.$width.'" height="'.$height.'" wmode="transparent" type="application/x-shockwave-flash" src="';
-				$video	.=	'http://www.youtube.com/v/'.$v_tag;
+				$video	.=	$scheme.'://www.youtube.com/v/'.$v_tag;
 				$video	.=	'"></object>';
 			}
 		}
@@ -108,20 +109,21 @@ class plgCCK_FieldVideo_Youtube extends JCckPluginField
 			$v_int	=	preg_match( '/\?v=.*/i', $value, $v_value );
 			if ( $v_int > 0 ){
 				$v_tag	=	str_replace( '?v=', '', $v_value[0] );
-			}else{
+			} else {
 				$v_tag	=	$value;
 			}
 			if ( isset( $v_tag ) && $v_tag != '' ) {
 				if ( $field->bool2 == 0 ) {
 					$video	.=	'<iframe width="'.$width.'" height="'.$height.'" ';
 					$video	.=	'frameborder="0" allowfullscreen src="';
-					$video	.=	'http://www.youtube.com/embed/'.$v_tag;
+					$video	.=	'//www.youtube.com/embed/'.$v_tag;
 					$video	.=	'" ></iframe>';
 				} else {
+					$scheme	=	JUri::getInstance()->getScheme();
 					$video	.=	'<object width="'.$width.'" height="'.$height.'">';
 					$video	.=	'<param value="'.$value.'" name="movie"><param value="transparent" name="wmode">';
 					$video	.=	'<embed width="'.$width.'" height="'.$height.'" wmode="transparent" type="application/x-shockwave-flash" src="';
-					$video	.=	'http://www.youtube.com/v/'.$v_tag;
+					$video	.=	$scheme.'://www.youtube.com/v/'.$v_tag;
 					$video	.=	'"></object>';
 				}
 				$video	.=	'<div class="clear"></div>';
