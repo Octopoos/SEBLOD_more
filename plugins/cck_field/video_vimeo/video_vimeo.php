@@ -187,12 +187,13 @@ class plgCCK_FieldVideo_Vimeo extends JCckPluginField
 				$video	 =	'<iframe src="//player.vimeo.com/video/'.$v_tag;
 				$video .=	'" width="'.$width.'" height="'.$height.'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 			} else {
+				$scheme	=	JUri::getInstance()->getScheme();
 				$video	= 	'<object width="'.$width.'" height="'.$height.'">';
 				$video	.=	'<param name="allowFullScreen" value="true"></param>';
 				$video	.=	'<param name="allowScriptAccess" value="always"></param>';
 				$video	.=	'<param name="wmode" value="transparent"></param>';
 				$video	.=	'<embed width="'.$width.'" height="'.$height.'" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="';
-				$video	.=	'http://vimeo.com/moogaloop.swf?clip_id='.$v_tag;
+				$video	.=	$scheme.'://vimeo.com/moogaloop.swf?clip_id='.$v_tag;
 				$video	.=	'&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=1&amp;show_portrait=0';
 				$video	.=	'&amp;color=229ba3&amp;fullscreen=1&amp;autoplay=0&amp;loop=0"';
 				$video	.=	'"></object>';
