@@ -363,7 +363,10 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 					$search		=	array( chr(145), chr(146), chr(147), chr(148), chr(149), chr(150), chr(151), chr(153) );
 					$replace	=	array( '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&bull;', '&ndash;', '&mdash;', '&#153;' );
 					$c[$i]		=	str_replace( $search, $replace, $c[$i] );
-					$c[$i]		=	utf8_encode( $c[$i] );
+
+					if ( mb_detect_encoding( $c[$i]) != 'UTF-8' ) {
+						$c[$i]	=	utf8_encode( $c[$i] );
+					}
 				}
 				if ( $session['data'][$i]['sto_table'] == $session['table'] ) {
 					if ( $session['fieldnames2'][$i]['storage'] == 'standard') {

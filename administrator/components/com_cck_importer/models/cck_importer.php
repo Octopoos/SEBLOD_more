@@ -327,7 +327,10 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					$search		=	array( chr(145), chr(146), chr(147), chr(148), chr(149), chr(150), chr(151), chr(153) );
 					$replace	=	array( '&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;', '&bull;', '&ndash;', '&mdash;', '&#153;' );
 					$c[$i]		=	str_replace( $search, $replace, $c[$i] );
-					$c[$i]		=	utf8_encode( $c[$i] );
+
+					if ( mb_detect_encoding( $c[$i]) != 'UTF-8' ) {
+						$c[$i]	=	utf8_encode( $c[$i] );
+					}
 				}
 				if ( $data1[$i]['sto_table'] == $sto_table ) {
 					if ( $fieldnames1[$i]['storage'] == 'standard') {
