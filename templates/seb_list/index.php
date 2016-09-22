@@ -27,7 +27,13 @@ $items			=	$cck->getItems();
 $fieldnames		=	$cck->getFields( 'element', '', false );
 $multiple		=	( count( $fieldnames ) > 1 ) ? true : false;
 $count			=	count( $items );
-$isRaw			=	( $count == 1 ) ? $cck->getStyleParam( 'auto_clean', 0 ) : 0;
+$auto_clean		=	(int)$cck->getStyleParam( 'auto_clean', 0 );
+
+if ( $auto_clean == 2 ) {
+	$isRaw		=	1;
+} else {
+	$isRaw		=	( $count == 1 ) ? $auto_clean : 0;
+}
 
 // Set
 $isMore			=	$cck->isLoadingMore();
@@ -48,7 +54,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 		if ( $display_mode == 2 ) {
 			foreach ( $items as $item ) {
 				$row	=	$item->renderPosition( 'element' );
-				if ( $row ) {
+				if ( $row && !$isRaw ) {
 					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
 				}
 				$html	.=	$row;
