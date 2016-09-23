@@ -39,11 +39,14 @@ class plgCCK_FieldFolder extends JCckPluginField
 		parent::g_onCCK_FieldPrepareContent( $field, $config );
 		
 		// Prepare
-		$options2		=	JCckDev::fromJSON( $field->options2 );
-		$path			=	$options2['path'];
+		if ( $field->bool ) {
+			$options2	=	JCckDev::fromJSON( $field->options2 );
+			$path		=	$options2['path'];
+			$value		=	$path.$value.'/';
+		}
 
 		// Set
-		$field->value	=	( $value ) ? $path.$value.'/' : '';
+		$field->value	=	$value;
 	}
 	
 	// onCCK_FieldPrepareForm
@@ -73,23 +76,22 @@ class plgCCK_FieldFolder extends JCckPluginField
 		}
 		
 		// Prepare
-		jimport('joomla.filesystem.folder');
+		jimport( 'joomla.filesystem.folder' );
 		$options2	=	JCckDev::fromJSON( $field->options2 );
 		if ( $value && strpos( $value, $options2['path'] ) !== false ) {
 			$value	=	str_replace( $options2['path'], '', $value );
 		}
-		$selectedFolder	= ( $value ) ? $value : '';
-		$path			=	substr( $options2['path'], 0, -1 );
-		$folders		=	JFolder::folders( JPATH_SITE.DIRECTORY_SEPARATOR.$path, '.', false, true );
-		$opts 			=	array();
-		if ( ! @$field->bool3 && trim( $field->selectlabel ) ) {
+		$path		=	substr( $options2['path'], 0, -1 );
+		$folders	=	JFolder::folders( JPATH_SITE.DIRECTORY_SEPARATOR.$path, '.', $field->bool2, true );
+		$opts 		=	array();
+		if ( trim( $field->selectlabel ) ) {
 			if ( $config['doTranslation'] ) {
 				$field->selectlabel	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $field->selectlabel ) ) );
 			}
 			$opts[]	=	JHtml::_( 'select.option',  '', '- '.$field->selectlabel.' -', 'value', 'text' );
 		}
 		if ( $folders ) {
-			foreach( $folders as $val ) {
+			foreach ( $folders as $val ) {
 				$ext	=	substr( $val , strrpos( $val, '.' ) +1 );
 				$val	=	str_replace( '\\', '/', $val );
 				$val	=	substr( strstr( $val, $options2['path'] ), strlen( $options2['path'] ) );
@@ -102,23 +104,25 @@ class plgCCK_FieldFolder extends JCckPluginField
 				}
 			}
 		}
-		if ( strpos( $name, '[]' ) !== false ) { //FieldX
-			$nameH	=	substr( $name, 0, -1 );
-			$name	=	$nameH.$inherit['xk'].']';
-		}
-		if ( $field->bool3 ) {
-			$sep			=	( $field->divider ) ? $field->divider : ',';
-			$selectedFolder =	explode( $sep, $selectedFolder );
-			$form			=	JHtml::_( 'select.genericlist', $opts, $name.'[]', 'class="inputbox select '.$validate.'" size="'.$field->rows.'" multiple="multiple"', 'value', 'text', $selectedFolder );
+		if ( $value != '' ) {
+			$selectedFolder		=	$value;
+
+			if ( $selectedFolder[strlen( $selectedFolder ) - 1] == '/' ) {
+				$selectedFolder	=	substr( $selectedFolder, 0, -1 );
+			}
 		} else {
-			$form			=	JHtml::_( 'select.genericlist', $opts, $name, 'class="inputbox select '.$validate.'" size="1"', 'value', 'text', $selectedFolder );
+			$selectedFolder		=	'';
 		}
+		$form		=	JHtml::_( 'select.genericlist', $opts, $name, 'class="inputbox select '.$validate.'"', 'value', 'text', $selectedFolder );
 		
 		// Set
 		if ( ! $field->variation ) {
 			$field->form	=	$form;
+			if ( $field->script ) {
+				parent::g_addScriptDeclaration( $field->script );
+			}
 		} else {
-			parent::g_getDisplayVariation( $field, $field->variation, $value, $value, $form, $id, $name, '<select' );
+			parent::g_getDisplayVariation( $field, $field->variation, $value, $value, $form, $id, $name, '<select', '', '', $config );
 		}
 		$field->value	=	$value;
 		
@@ -162,21 +166,11 @@ class plgCCK_FieldFolder extends JCckPluginField
 		parent::g_onCCK_FieldPrepareStore_Validation( $field, $name, $value, $config );
 		
 		// Set or Return
-		$options2	=	JCckDev::fromJSON( $field->options2 );
-		$location	=	$options2['path'];
-		if ( @$field->bool3 ) {
-			$nFile		= count( $value );
-			$valueFile	= $value;
-			if ( $nFile > 1 ) {
-				$sep	= ( $field->divider ) ? $field->divider : ',';
-				$value	= ( @$options2['include_path'] ) ? implode( $sep.$location, $valueFile ) : implode( $sep, $valueFile );
-			} else {
-				$value	= $valueFile[0];
-			}
-			$value	=	( $value ) ? ( ( @$options2['include_path'] ) ? $location.$value : $value ) : '';
-		} else {
-			$value	= 	( $value ) ? ( ( @$options2['include_path'] ) ? $location.$value : $value ) : '';
+		if ( $value != '' && !$field->bool ) {
+			$options2	=	JCckDev::fromJSON( $field->options2 );
+			$value		=	$options2['path'].$value.'/';
 		}
+		
 		if ( $return === true ) {
 			return $value;
 		}
