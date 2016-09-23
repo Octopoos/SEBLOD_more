@@ -39,7 +39,7 @@ class plgCCK_FieldFolder extends JCckPluginField
 		parent::g_onCCK_FieldPrepareContent( $field, $config );
 		
 		// Prepare
-		if ( $field->bool ) {
+		if ( $value != '' && $field->bool ) {
 			$options2	=	JCckDev::fromJSON( $field->options2 );
 			$path		=	$options2['path'];
 			$value		=	$path.$value.'/';
