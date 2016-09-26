@@ -19,6 +19,8 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_'.$this->item->type.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
+        echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
+        echo JcckDev::renderBlank( '<input type="hidden" id="blank_li" value="" />' );
         echo JCckDev::renderForm( 'core_dev_bool', $this->item->bool, $config, array( 'label'=>'Behavior', 'defaultvalue'=>'0', 'options'=>'Autocomplete=1||Concatenate=0', 'storage_field'=>'bool' ) );        
         echo JCckDev::renderForm( 'core_dev_text', @$options2['latitude'], $config, array( 'label'=>'Latitude Field', 'storage_field'=>'json[options2][latitude]', 'required'=>'required' ) );
 		echo JCckDev::renderForm( 'core_options', $options, $config, array( 'label'=>'Address', 'rows'=>1 ), array( 'after'=>$this->item->init['fieldPicker'] ) );
@@ -42,6 +44,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+    $('#label,#blank_li').isVisibleWhen('bool','1');
     $('#sortable_core_options').isVisibleWhen('bool','0');
     $('#json_options2_types,#json_options2_restrictions_country,#json_options2_bypass,#json_options2_country').isVisibleWhen('bool','1');
     $('#json_options2_bypass').prop('disabled',true);
