@@ -15,6 +15,23 @@ require_once JPATH_SITE.'/plugins/cck_storage_location/cck_site/cck_site.php';
 // Class
 class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCck_Site
 {
+	protected static $columns_excluded	=	array();
+	
+	// getColumnsToExport
+	public static function getColumnsToImport()
+	{
+		$table		=	self::_getTable();
+		$columns	=	$table->getProperties();
+		
+		foreach ( self::$columns_excluded as $column ) {
+			if ( array_key_exists( $column, $columns ) ) {
+				unset( $columns[$column] );
+			}
+		}
+
+		return array_keys( $columns );
+	}
+
 	// onCCK_Storage_LocationImport
 	public static function onCCK_Storage_LocationImport( $data, &$config = array(), $pk = 0 )
 	{
@@ -50,7 +67,9 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 			self::_initTable( $table, $data, $config, true );
 			
 			// Prepare
-			$table->bind( $data );
+			if ( !empty( $data ) ) {
+				$table->bind( $data );
+			}
 			if ( !@$table->title ) {
 				$table->title	=	JFactory::getDate()->format( 'Y-m-d-H-i-s' ) ;
 				$table->check();
