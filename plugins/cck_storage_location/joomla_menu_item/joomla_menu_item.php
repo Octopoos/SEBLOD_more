@@ -81,7 +81,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 			}
 		}
 	}
-
+	
 	// onCCK_Storage_LocationPrepareDelete
 	public function onCCK_Storage_LocationPrepareDelete( &$field, &$storage, $pk = 0, &$config = array() )
 	{
@@ -106,10 +106,10 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		if ( self::$type != $field->storage_location ) {
 			return;
 		}
-
+		
 		// Init
 		$table	=	$field->storage_table;
-
+		
 		// Set
 		if ( $table == self::$table ) {
 			$storage	=	self::_getTable( $pk );
@@ -117,7 +117,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
 	}
-
+	
 	// onCCK_Storage_LocationPrepareItems
 	public function onCCK_Storage_LocationPrepareItems( &$field, &$storages, $pks, &$config = array(), $load = false )
 	{
@@ -127,7 +127,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		
 		// Init
 		$table	=	$field->storage_table;
-
+		
 		// Prepare
 		if ( $load ) {
 			if ( $table == self::$table ) {
@@ -158,14 +158,14 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		
 		$order	=	( isset( self::$ordering[$order] ) ) ? $tables[self::$table]['_'] .'.'. self::$ordering[$order] : '';
 	}
-
+	
 	// onCCK_Storage_LocationPrepareSearch
 	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
 	{
 		if ( self::$type != $type ) {
 			return;
 		}
-
+		
 		// Prepare
 		if ( ! isset( $tables[self::$table] ) ) {
 			$tables[self::$table]	=	array( '_'=>'t'.$t++,
@@ -229,7 +229,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		if ( self::$type != $type ) {
 			return;
 		}
-
+		
 		if ( ! @$config['storages'][self::$table]['_']->pk ) {
 			self::_core( $config['storages'][self::$table], $config, $pk );
 			$config['storages'][self::$table]['_']->pk	=	self::$pk;
@@ -237,7 +237,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		if ( $data['_']->table != self::$table ) {
 			parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
 		}
-
+		
 		return self::$pk;
 	}
 
@@ -252,9 +252,9 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 
 		return true;
 	}
-
+	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Protected
-
+	
 	// _core
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
@@ -264,19 +264,19 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		} else {
 			$isNew			=	false;
 		}
-
+		
 		// Init
 		$table	=	self::_getTable( $pk );
 		$isNew	=	( $pk > 0 ) ? false : true;
 		self::_initTable( $table, $data, $config );
-
+		
 		// Check Error
 		if ( self::$error === true ) {
 			$config['error']	=	true;
-
+			
 			return false;
 		}
-
+		
 		// Prepare
 		if ( !$isNew ) {
 			if ( $table->parent_id == $data['parent_id'] ) {
@@ -365,32 +365,32 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		if ( !$table->rebuildPath( $table->id ) ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
 		}
-
+		
 		// Checkin
 		// parent::g_checkIn( $table );
 		self::$pk	=	$table->{self::$key};
 		if ( !$config['pk'] ) {
 			$config['pk']	=	self::$pk;
 		}
-
+		
 		$config['parent']	=	$table->{self::$parent};
-
+		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
 		$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
-
+	
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
 		$table	=	JTable::getInstance( 'Menu', 'MenusTable' );
-
+		
 		if ( $pk > 0 ) {
 			$table->load( $pk );
 		}
-
+		
 		return $table;
 	}
-
+	
 	// _initTable
 	protected function _initTable( &$table, &$data, &$config, $force = false )
 	{
@@ -398,52 +398,52 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
 		}
 	}
-
+	
 	// _completeTable
 	protected function _completeTable( &$table, &$data, &$config )
 	{
 		if ( ! $table->{self::$key} ) {
 		}
-
+		
 		parent::g_completeTable( $table, self::$custom, $config );
 	}
-
+	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // SEF
 
 	// buildRoute
 	public static function buildRoute( &$query, &$segments, $config )
 	{
 	}
-
+	
 	// getRoute
 	public static function getRoute( $item, $sef, $itemId, $config = array() )
 	{
 		$route		=	'';
-
+		
 		return JRoute::_( $route );
 	}
-
+	
 	// getRouteByStorage
 	public static function getRouteByStorage( &$storage, $sef, $itemId, $config = array() )
 	{
 		if ( isset( $storage[self::$table]->_route ) ) {
 			return JRoute::_( $storage[self::$table]->_route );
 		}
-
+		
 		if ( $sef ) {
 			$storage[self::$table]->_route	=	'';
 		} else {
 			$storage[self::$table]->_route	=	'';
 		}
-
+		
 		return JRoute::_( $storage[self::$table]->_route );
 	}
-
+	
 	// parseRoute
 	public static function parseRoute( &$vars, $segments, $n, $config )
 	{
 	}
-
+	
 	// setRoutes
 	public static function setRoutes( $items, $sef, $itemId )
 	{
@@ -453,7 +453,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 			}
 		}
 	}
-
+	
 	// _getRoute
 	public static function _getRoute( $itemId, $id, $option = '' )
 	{
@@ -461,7 +461,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 	}
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff
-
+	
 	// checkIn
 	public static function checkIn( $pk = 0 )
 	{

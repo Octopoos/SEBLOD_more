@@ -31,8 +31,8 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	protected static $status		=	'published';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	'com_cck.site';
-	protected static $contexts		=	array();
+	protected static $context		=	'com_cck.site'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'title ASC' );
 	protected static $ordering2		=	array();

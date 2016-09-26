@@ -29,8 +29,8 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 	protected static $status		=	'published';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	''; //TODO
-	protected static $contexts		=	array(); //TODO
+	protected static $context		=	'com_modules.module'; /* used for Delete/Save events */
+	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'title ASC', 'ordering'=>'ordering ASC' );
 	protected static $ordering2		=	array();
@@ -41,7 +41,7 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 											   '3'=>'full', '32'=>'id', '33'=>'alias',
 											   '4'=>'full', '42'=>'id', '43'=>'alias'
 										);
-
+	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Construct
 	
 	// onCCK_Storage_LocationConstruct
@@ -139,7 +139,7 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 			}
 		}
 	}
-
+	
 	// onCCK_Storage_LocationPrepareList
 	public static function onCCK_Storage_LocationPrepareList( &$params )
 	{
@@ -179,7 +179,7 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 			$query->where( $t_pk.'.published = 1' );
 		}
 	}
-
+	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Store
 	
 	// onCCK_Storage_LocationDelete
