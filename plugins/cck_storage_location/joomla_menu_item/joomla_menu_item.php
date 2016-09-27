@@ -289,56 +289,74 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		}
 		$storeTable 	= 	'#__cck_store_item_menu';
 
+		if ( !( isset( $data['type'] ) && $data['type'] ) ) {
+			$data['type']	=	'component';
+		}
+
 		if ( isset( $config['storages'][$storeTable]['item_type'] ) ) {
-			$menuItemType		=	$config['storages'][$storeTable]['item_type'];
+			$menuItemType	=	$config['storages'][$storeTable]['item_type'];
 
-			if ( 'com_content.article' === $menuItemType ) {
-				$component		=	'com_content';
-				$table->link	= 	sprintf(
-										'index.php?option=com_content&view=article&id=%s',
-										$config['storages'][$storeTable]['article']
-									);
-
-			} else { // List & Search
-				$component	=	'com_cck';
-				$itemId		=	$config['storages'][$storeTable]['list_search'];
-				$search		=	(bool)$config['storages'][$storeTable]['search'];
-
-				$db 		= 	JFactory::getDbo();
-				$query 		= 	$db->getQuery( true )
-								   ->select( 'name' )
-								   ->from( '#__cck_core_searchs' )
-								   ->where( 'id = '.(int)$itemId
-								);
-
-				$db->setQuery( $query );
-				$searchName = 	$db->loadResult();
-
-				$link 		= 	sprintf( 'index.php?option=com_cck&view=list&search=%s', $searchName );
-
-				if ( $search ) {
-					$link	.=	'&task=search';
-				} else {
-					$link	.=	'&task=no';
-				}
-				
-				$table->link	=	$link;
+			if ( $menuItemType == 'separator' || $menuItemType == 'url' ) {
+				$data['type']	=	$menuItemType;
 			}
 
-			if ( $menuItemType == 'separator' ) {
-				$table->component_id	=	0;
-			} else {
-				$table->component_id 	= 	JTable::getInstance( 'Extension' )->find( array(
-																						'name' => $component,
-																						'type' => 'component'
-																					  ) );	
+			switch ( $data['type'] ) {
+				case 'component':
+					$component	=	'';
+
+					unset( $data['link'] );
+
+					switch ( $menuItemType ) {
+						case 'com_content.article':
+							$component		=	'com_content';
+							$table->link	= 	sprintf(
+													'index.php?option=com_content&view=article&id=%s',
+													$config['storages'][$storeTable]['article']
+												);
+							break;
+						case 'com_cck.list':
+							$component	=	'com_cck';
+							$itemId		=	$config['storages'][$storeTable]['list_search'];
+							$search		=	(bool)$config['storages'][$storeTable]['search'];
+
+							$db 		= 	JFactory::getDbo();
+							$query 		= 	$db->getQuery( true )
+											   ->select( 'name' )
+											   ->from( '#__cck_core_searchs' )
+											   ->where( 'id = '.(int)$itemId
+											);
+
+							$db->setQuery( $query );
+							$searchName = 	$db->loadResult();
+
+							$link 		= 	sprintf( 'index.php?option=com_cck&view=list&search=%s', $searchName );
+
+							if ( $search ) {
+								$link	.=	'&task=search';
+							} else {
+								$link	.=	'&task=no';
+							}
+							
+							$table->link	=	$link;
+							break;
+						default:
+							break;
+					}
+
+					$table->component_id 	= 	(int)JTable::getInstance( 'Extension' )->find( array( 'name'=>$component, 'type'=>'component' ) );
+					break;
+				case 'separator':
+					$table->component_id	=	0;
+					break;
+				case 'url':
+					$table->component_id	=	0;
+					$table->path			=	$table->alias;
+					break;
+				default:
+					break;
 			}
 		}
-
-		if ( !isset( $data['type'] ) ) {
-			$table->type 	= 	'component';
-		}
-
+		
 		$table->bind( $data );
 
 		if ( !$table->check() ) {
