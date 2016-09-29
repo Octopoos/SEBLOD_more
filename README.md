@@ -4,8 +4,7 @@ SEBLOD more
 This repository is dedicated to our FREE extensions for SEBLOD.
 All releases are available on SEBLOD Store.
 
-Add-ons for SEBLOD
-======
+| Add-on  | URL |
 | ------------- | ------------- |
 | Developer  | [https://www.seblod.com/store/extensions/8](https://www.seblod.com/store/extensions/8 "Developer Add-on")  |
 | Importer  | [https://www.seblod.com/store/extensions/7](https://www.seblod.com/store/extensions/7 "Importer Add-on")  |
