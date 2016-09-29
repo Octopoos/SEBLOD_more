@@ -6,6 +6,7 @@ All releases are available on SEBLOD Store.
 
 Add-ons for SEBLOD
 ======
+| ------------- | ------------- |
 | Developer  | [https://www.seblod.com/store/extensions/8](https://www.seblod.com/store/extensions/8 "Developer Add-on")  |
 | Importer  | [https://www.seblod.com/store/extensions/7](https://www.seblod.com/store/extensions/7 "Importer Add-on")  |
 | Updater  | [https://www.seblod.com/store/extensions/634](https://www.seblod.com/store/extensions/634 "Updater Add-on")  |
