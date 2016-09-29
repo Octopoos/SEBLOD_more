@@ -1,22 +1,14 @@
-SEBLOD
-======
+SEBLOD more
+==========
 
-SEBLOD is a Web Application Builder &amp; Content Construction Kit (CCK) for Joomla!
+This repository is for reporting issues with our FREE extensions for SEBLOD.
 
-Getting Started
-======
-- <a href="http://demo.seblod.com" target="_blank">Demo</a>
-- <a href="http://www.seblod.com" target="_blank">Download</a>
-- <a href="http://www.seblod.com/resources/manuals" target="_blank">Manuals</a>
-- <a href="http://www.seblod.com/resources/videos" target="_blank">Videos</a>
+| Extension  | URL |
+| ------------- | ------------- |
+| Backstretch  | [/store/extensions/11072](https://www.seblod.com/store/extensions/11072 "Backstretch Template")  |
+| Comparison  | [/store/extensions/40383](https://www.seblod.com/store/extensions/40383 "Comparison Template")  |
+| Html  | [/store/extensions/50](https://www.seblod.com/store/extensions/50 "Html Template")  |
+| List  | [/store/extensions/62](https://www.seblod.com/store/extensions/62 "List Template")  |
+| Minima  | [/store/extensions/52](https://www.seblod.com/store/extensions/52 "Minima Template")  |
 
-Going Further
-======
-- <a href="http://www.seblod.com/community/forums" target="_blank">Forums</a>
-- <a href="http://www.seblod.com/products/vip" target="_blank">Memberships</a>
-- <a href="http://www.seblod.com/products" target="_blank">Marketplace</a>
-- <a href="http://www.seblod.com/enterprise/support" target="_blank">Support</a>
-
-Get Involved?
-======
-Anyone that want to help & get involved in the development of SEBLOD should use the "Dev" branch, and Pull Request only to the "Dev" branch. Any PR to the "Master" or "Next" branches will be closed.
+Feel free to suggest feature requests for our extensions, report an issue, provide a fix... thanks!
