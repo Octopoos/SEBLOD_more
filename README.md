@@ -3,6 +3,33 @@ SEBLOD more
 
 This repository is for reporting issues with our FREE extensions for SEBLOD.
 
+| Add-on  | URL |
+| ------------- | ------------- |
+| Developer  | [https://www.seblod.com/store/extensions/8](https://www.seblod.com/store/extensions/8 "Developer Add-on")  |
+| Importer  | [https://www.seblod.com/store/extensions/7](https://www.seblod.com/store/extensions/7 "Importer Add-on")  |
+| Updater  | [https://www.seblod.com/store/extensions/634](https://www.seblod.com/store/extensions/634 "Updater Add-on")  |
+
+| Plug-in: Field  | URL |
+| ------------- | ------------- |
+
+| Plug-in: Link  | URL |
+| ------------- | ------------- |
+
+| Plug-in: Live  | URL |
+| ------------- | ------------- |
+
+| Plug-in: Object  | URL |
+| ------------- | ------------- |
+
+| Plug-in: Restriction  | URL |
+| ------------- | ------------- |
+
+| Plug-in: Typography  | URL |
+| ------------- | ------------- |
+
+| Plug-in: Validation  | URL |
+| ------------- | ------------- |
+
 | Template  | URL |
 | ------------- | ------------- |
 | Backstretch  | [https://www.seblod.com/store/extensions/11072](https://www.seblod.com/store/extensions/11072 "Backstretch Template")  |
