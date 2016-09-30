@@ -12,6 +12,27 @@ All releases are available on SEBLOD Store.
 
 | Plug-in: Field  | URL |
 | ------------- | ------------- |
+| Address to Coordinates  | [https://www.seblod.com/store/extensions/920](https://www.seblod.com/store/extensions/920 "Address to Coordinates Field Plug-in")  |
+| Author  | [https://www.seblod.com/store/extensions/10868](https://www.seblod.com/store/extensions/10868 "Author Field Plug-in")  |
+| Captcha Match  | [https://www.seblod.com/store/extensions/40325](https://www.seblod.com/store/extensions/40325 "Captcha Math Field Plug-in")  |
+| Captcha Recaptcha  | [https://www.seblod.com/store/extensions/606](https://www.seblod.com/store/extensions/606 "Captcha Recaptcha Field Plug-in")  |
+| Checkbox Dynamic  | [https://www.seblod.com/store/extensions/19156](https://www.seblod.com/store/extensions/19156 "Checkbox Dynamic Field Plug-in")  |
+| Checkbox Numeric  | [https://www.seblod.com/store/extensions/1691](https://www.seblod.com/store/extensions/1691 "Checkbox Numeric Field Plug-in")  |
+| Dailymotion  | [https://www.seblod.com/store/extensions/21342](https://www.seblod.com/store/extensions/21342 "Dailymotion Field Plug-in")  |
+| File  | [https://www.seblod.com/store/extensions/602](https://www.seblod.com/store/extensions/602 "File Field Plug-in")  |
+| Folder  | [https://www.seblod.com/store/extensions/603](https://www.seblod.com/store/extensions/603 "Folder Field Plug-in")  |
+| Form HTML  | [https://www.seblod.com/store/extensions/8075](https://www.seblod.com/store/extensions/8075 "Form HTML Field Plug-in")  |
+| IFrame  | [https://www.seblod.com/store/extensions/607](https://www.seblod.com/store/extensions/607 "IFrame Field Plug-in")  |
+| Joomla! Article  | [https://www.seblod.com/store/extensions/40326](https://www.seblod.com/store/extensions/40326 "Joomla! Article Field Plug-in")  |
+| Message & Redirection  | [https://www.seblod.com/store/extensions/40381](https://www.seblod.com/store/extensions/40381 "Message & Redirection Field Plug-in")  |
+| Radio Numeric  | [https://www.seblod.com/store/extensions/1692](https://www.seblod.com/store/extensions/1692 "Radio Numeric Field Plug-in")  |
+| Search Pagination  | [https://www.seblod.com/store/extensions/8077](https://www.seblod.com/store/extensions/8077 "Search Pagination Field Plug-in")  |
+| Search Total  | [https://www.seblod.com/store/extensions/8078](https://www.seblod.com/store/extensions/8078 "Search Total Field Plug-in")  |
+| Search Variables  | [https://www.seblod.com/store/extensions/923](https://www.seblod.com/store/extensions/923 "Search Variables Field Plug-in")  |
+| SEBLOD Break  | [https://www.seblod.com/store/extensions/25892](https://www.seblod.com/store/extensions/25892 "SEBLOD Break Field Plug-in")  |
+| SEBLOD Canonical  | [https://www.seblod.com/store/extensions/1850](https://www.seblod.com/store/extensions/1850 "SEBLOD Canonical Field Plug-in")  |
+| Vimeo  | [https://www.seblod.com/store/extensions/21341](https://www.seblod.com/store/extensions/21341 "Vimeo Field Plug-in")  |
+| Youtube  | [https://www.seblod.com/store/extensions/40324](https://www.seblod.com/store/extensions/40324 "Youtube Field Plug-in")  |
 
 | Plug-in: Link  | URL |
 | ------------- | ------------- |
