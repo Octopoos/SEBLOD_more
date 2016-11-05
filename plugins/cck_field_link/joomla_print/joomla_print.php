@@ -44,7 +44,7 @@ class plgCCK_Field_LinkJoomla_Print extends JCckPluginLink
 		$field->link			.=	'tmpl=component&print=1';
 		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
 		$field->link_rel		=	'nofollow';
-		$field->link_onclick	=	'window.open(this.href,\'win2\',\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\'); return false;';
+		$field->link_onclick	=	'window.open(\''.$field->link.'\',\'win2\',\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\'); return false;';
 	}
 }
 ?>
