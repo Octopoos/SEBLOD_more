@@ -25,6 +25,17 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.8.1 Upgrade Release [30-Sep-2016] -----------------
+
+# UTF-8 issue fixed.
+
+-------------------- 1.8.0 Upgrade Release [26-Aug-2016] -----------------
+
++ Extensive cleaning performed.
+  >> Deprecated Jquery stuff removed.
+  >> Deprecated SEBLOD stuff removed.
+  >> Joomla! 2.5 not supported anymore. :)
+
 -------------------- 1.7.1 Upgrade Release [6-Jun-2016] ------------------
 
 ^ Icon added on "Import" Button.
