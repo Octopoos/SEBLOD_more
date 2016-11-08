@@ -156,6 +156,15 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 				$opt_orderby		=	( isset( $options2['orderby'] ) && trim( $options2['orderby'] ) != '' ) ? ' ORDER BY '.$options2['orderby'].' '.( ( @$options2['orderby_direction'] != '' ) ? $options2['orderby_direction'] : 'ASC' ) : '';
 				$opt_limit			=	( isset( $options2['limit'] ) && $options2['limit'] > 0 ) ? ' LIMIT '.$options2['limit'] : '';
 				
+				// Language Detection
+				$lang_code			=	'';
+				self::_languageDetection( $lang_code, $value, $options2 );
+				$opt_value			=	str_replace( '[lang]', $lang_code, $opt_value );
+				$opt_name			=	str_replace( '[lang]', $lang_code, $opt_name );	
+				$opt_where			=	str_replace( '[lang]', $lang_code, $opt_where );
+				$opt_orderby		=	str_replace( '[lang]', $lang_code, $opt_orderby );
+				$opt_group			=	'';
+
 				if ( $opt_name && $opt_value && $opt_table ) {
 					$query			=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where.$opt_orderby.$opt_limit;
 					$query			=	JCckDevHelper::replaceLive( $query );
@@ -165,9 +174,9 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 				if ( @$options2['query'] != '' ) {
 					// Language Detection
 					$lang_code		=	'';
-					//self::_languageDetection( $lang_code, $value, $options2 );
-					$query	=	str_replace( '[lang]', $lang_code, $options2['query'] );
-					$query	=	JCckDevHelper::replaceLive( $query );
+					self::_languageDetection( $lang_code, $value, $options2 );
+					$query			=	str_replace( '[lang]', $lang_code, $options2['query'] );
+					$query			=	JCckDevHelper::replaceLive( $query );
 					if ( ( strpos( $query, ' value ' ) != false ) || ( strpos( $query, ' value,' ) != false ) ) {
 						$items	=	JCckDatabase::loadObjectList( $query );
 					} else {
@@ -413,7 +422,26 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff & Script
-	
+
+	// _languageDetection
+	protected static function _languageDetection( &$lang_code, &$value, $options2 )
+	{
+		if ( @$options2['geoip'] && function_exists( 'geoip_country_code_by_name' ) ) {
+			$lang_code	=	geoip_country_code_by_name( $_SERVER['REMOTE_ADDR'] );
+		} else {
+			jimport( 'joomla.language.helper' );
+			$languages	=	JLanguageHelper::getLanguages( 'lang_code' );
+			$lang_tag	=	JFactory::getLanguage()->getTag();
+			$lang_code	=	( isset( $languages[$lang_tag] ) ) ? strtoupper( $languages[$lang_tag]->sef ) : '';
+		}
+		$value			=	str_replace( '[lang]', $lang_code, $value );
+		$languages		=	explode( ',', @$options2['language_codes'] );
+		if ( ! in_array( $lang_code, $languages ) ) {
+			$lang_code	=	@$options2['language_default'] ? $options2['language_default'] : 'EN';
+		}
+		$lang_code		=	strtolower( $lang_code );
+	}
+
 	// isFriendly
 	public static function isFriendly()
 	{

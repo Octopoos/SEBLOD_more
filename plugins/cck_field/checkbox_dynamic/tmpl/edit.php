@@ -40,6 +40,13 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 		echo JCckDev::renderForm( 'core_options_limit', @$options2['limit'], $config );
 		echo JCckDev::renderForm( 'core_bool', $this->item->bool7, $config, array( 'label'=>'Check All Toggle', 'defaultvalue'=>'0', 'options'=>'Hide=0||Show=optgroup||Above=1||Below=2', 'storage_field'=>'bool7' ) );
 
+		// Language
+		echo JCckDev::renderForm( 'core_options_language_detection', @$options2['language_detection'], $config );
+		echo '<li><label>'.JText::_( 'COM_CCK_LANGUAGE_CODES_DEFAULT' ).'</label>'
+		 .	 JCckDev::getForm( 'core_options_language_codes', @$options2['language_codes'], $config, array( 'size' => 21 ) )
+		 .	 JCckDev::getForm( 'core_options_language_default', @$options2['language_default'], $config, array( 'size' => 5 ) )
+		 .	 '</li>';
+
         echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
         echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
         ?>
