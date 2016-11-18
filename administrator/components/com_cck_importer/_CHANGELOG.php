@@ -25,6 +25,10 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.8.2 Upgrade Release [18-Nov-2016] -----------------
+
+# Log issue fixed.
+
 -------------------- 1.8.1 Upgrade Release [30-Sep-2016] -----------------
 
 # UTF-8 issue fixed.
