@@ -27,6 +27,9 @@ $ -> Language fix or change
 
 -------------------- 1.8.2 Upgrade Release [18-Nov-2016] -----------------
 
++ Suffix forced for existing/identical "alias" on submission.
+  >> support added on Article/Category Object plug-ins (SEBLOD 3.11.0+)
+
 # Log issue fixed.
 
 -------------------- 1.8.1 Upgrade Release [30-Sep-2016] -----------------
