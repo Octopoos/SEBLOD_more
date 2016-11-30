@@ -13,5 +13,6 @@ defined( '_JEXEC' ) or die;
 // Script
 class pkg_seb_comparisonInstallerScript extends JCckInstallerScriptApp
 {
+	protected $template_placeholder	=	'seb_comparison';
 }
 ?>
