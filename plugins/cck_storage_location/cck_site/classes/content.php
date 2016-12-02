@@ -13,20 +13,5 @@ defined( '_JEXEC' ) or die;
 // JCckContent
 class JCckContentCck_Site extends JCckContent
 {
-	// getInstance
-	public static function getInstance( $identifier = '', $data = true )
-	{
-		if ( !$identifier ) {
-			return new JCckContentCck_Site;
-		}
-
-		$key	=	( is_array( $identifier ) ) ? implode( '_', $identifier ) : $identifier;
-		if ( !isset( self::$instances[$key] ) ) {
-			$instance	=	new JCckContentCck_Site( $identifier );
-			self::$instances[$key]	=	$instance;
-		}
-
-		return self::$instances[$key];
-	}
 }
 ?>
