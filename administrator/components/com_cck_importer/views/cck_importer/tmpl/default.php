@@ -224,6 +224,18 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		},
 		submit: function(task) {
 			Joomla.submitbutton(task);
+		},
+		toggleOptions: function(cur) {
+			$('#options_content_type option').show();
+			if (cur) {
+				var v = "";
+				$('#options_content_type option').each(function() {
+					v = $(this).attr("data-object");
+					if (v != "" && v !== undefined && v != cur) {
+						$(this).hide();
+					}
+				});
+			}
 		}
 	}
 	Joomla.submitbutton = function(task) {
@@ -238,8 +250,11 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		}
 	}
 	$(document).ready(function() {
+		JCck.Dev.toggleOptions($("#options_storage_location").val());
+
 		$("#options_storage_location").on('change', function() {
 			var data = "&ajax_type="+$(this).val();
+			JCck.Dev.toggleOptions($(this).val());
 			JCck.Dev.ajaxLayer("cck_importer", "default2", "#layer", data);
 		});
 		$("#featured_session").on("click", function() {
