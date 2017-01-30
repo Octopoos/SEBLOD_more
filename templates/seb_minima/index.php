@@ -28,8 +28,11 @@ if ( $cck->id_class != '' ) {
 
 if ( $cck->countFields( 'modal' ) ) {
 	JHtml::_( 'bootstrap.modal', 'collapseModal' );
+
+	$class = $cck->getPosition( 'modal' )->css;
+	$class = ( $class ) ? ' ' . $class : '';
 	?>
-	<div class="modal hide fade" id="collapseModal">
+	<div class="modal hide fade<?php echo $class; ?>" id="collapseModal">
 		<?php echo $cck->renderPosition( 'modal' ); ?>
 	</div>
 <?php }
