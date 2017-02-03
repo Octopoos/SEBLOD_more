@@ -56,8 +56,15 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$file						=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', NULL, 'files', 'array' ) );
 		$session['options']			=	$app->input->get( 'options', array(), 'array' );
 		$session['options']['key']	=	( isset( $session['options']['key'] ) ) ? $session['options']['key'] : '';
+
+		if ( @$session['options']['csv_length'] == '' ) {
+			$session['options']['csv_length']		=	1000;
+		}
+		if ( @$session['options']['encoding_list'] == '' ) {
+			$session['options']['encoding_list']	=	"7bit,8bit,ASCII,BASE64,HTML-ENTITIES,\r\nISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,\r\nISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,\r\nUTF-32,UTF-32BE,UTF-32LE,UTF-16,UTF-16BE,UTF-16LE,UTF-7,UTF7-IMAP,UTF-8,\r\nWindows-1252,Windows-1254";
+		}
 		if ( $session['options']['key'] == -1 && isset( $session['options']['key_fieldname'] ) && $session['options']['key_fieldname'] != '' ) {
-			$key_field				=	JCckDatabase::loadObject( 'SELECT storage_field, storage_table FROM #__cck_core_fields WHERE name = "'.$session['options']['key_fieldname'].'"' );
+			$key_field							=	JCckDatabase::loadObject( 'SELECT storage_field, storage_table FROM #__cck_core_fields WHERE name = "'.$session['options']['key_fieldname'].'"' );
 			$session['options']['key']			=	$session['options']['key_fieldname'];
 			$session['options']['key_column']	=	$key_field->storage_field;
 			$session['options']['key_table']	=	$key_field->storage_table;
@@ -80,8 +87,26 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$session['fieldnames']		=	array();
 		$session['fieldnames_info']	=	array();
 
+		$data				=	JFile::read( $file );
+		$encodings 			=	$session['options']['encoding_list'];
+
+		if ( trim( $encodings ) != '' ) {
+			$encodings		=	str_replace( array( "\r\n", "\r", "\n" ), ',', trim( $encodings ) );
+			$encodings		=	explode( ',', $encodings );
+			$encodings		=	array_diff( $encodings, array( '' ) );
+		}
+		
+		if ( is_array( $encodings ) && count( $encodings ) ) {
+			$encoding		=	mb_detect_encoding( $data, $encodings );
+
+			if ( !preg_match( '/./u', $data ) ) {
+				$data	=	iconv( $encoding, 'UTF-8', $data );
+				JFile::write( $file, $data );
+			}
+		}
+
 		if ( ( $handle = fopen( $file, "r" ) ) !== false ) {
-			while ( ( $data = fgetcsv( $handle, $params->get( 'csv_length', 1000 ), $session['options']['separator'] ) ) !== false ) {
+			while ( ( $data = fgetcsv( $handle, $session['options']['csv_length'], $session['options']['separator'] ) ) !== false ) {
 				if ( $i == 0 ) {
 					$session['fieldnames']	=	$data;
 				} else {
