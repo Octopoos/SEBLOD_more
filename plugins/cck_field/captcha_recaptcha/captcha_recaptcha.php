@@ -79,7 +79,7 @@ class plgCCK_FieldCaptcha_Recaptcha extends JCckPluginField
 		}
 
 		// Prepare
-		require_once dirname(__FILE__).'/assets/libraries/recaptchalib.php';
+		require_once __DIR__.'/assets/libraries/recaptchalib.php';
 		$publickey	=	$this->params->get('recaptcha_public_key',0);
 		
 		$options2	=	JCckDev::fromJSON( $field->options2 );
@@ -157,7 +157,7 @@ class plgCCK_FieldCaptcha_Recaptcha extends JCckPluginField
 		}
 		
 		// Validate Captcha
-		require_once dirname(__FILE__).'/assets/libraries/recaptchalib.php';
+		require_once __DIR__.'/assets/libraries/recaptchalib.php';
 		$privatekey	=	$this->params->get('recaptcha_private_key',0);
 		$resp		=	recaptcha_check_answer( $privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"] );
 		
