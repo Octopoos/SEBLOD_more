@@ -45,7 +45,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     $('#label,#blank_li').isVisibleWhen('bool','1');
-    $('#sortable_core_options').isVisibleWhen('bool','0');
+    $('#sortable_core_options,#json_options2_city,#json_options2_postal_code').isVisibleWhen('bool','0');
     $('#json_options2_types,#json_options2_restrictions_country,#json_options2_bypass,#json_options2_country').isVisibleWhen('bool','1');
     $('#json_options2_bypass').prop('disabled',true);
 });
