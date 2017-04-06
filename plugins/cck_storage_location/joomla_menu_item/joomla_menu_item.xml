@@ -46,11 +46,11 @@
 		</fields>
 	</config>
 
-    <cck_integration>
-        <component>com_menus</component>
-        <context>com_menus.item</context>
-        <options>{}</options>
-        <vars />
-        <view />
-    </cck_integration>
+	<cck_integration>
+		<component>com_menus</component>
+		<context>com_menus.item</context>
+		<options>{}</options>
+		<vars />
+		<view />
+	</cck_integration>
 </extension>

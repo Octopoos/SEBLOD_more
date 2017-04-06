@@ -23,6 +23,8 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	protected static $access		=	'';
 	protected static $author		=	'created_user_id';
 	protected static $author_object	=	'joomla_user';
+	protected static $bridge_object	=	'';
+	protected static $child_object	=	'';
 	protected static $created_at	=	'created_time';
 	protected static $custom		=	'body';
 	protected static $modified_at	=	'modified_time';
@@ -32,6 +34,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	protected static $to_route		=	'';
 	
 	protected static $context		=	'com_users.note'; /* used for Delete/Save events */
+	protected static $context2		=	'';
 	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'subject ASC', 'newest'=>'created_time DESC', 'oldest'=>'created_time ASC' );
@@ -403,41 +406,6 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	public static function getId( $config )
 	{
 		return JCckDatabase::loadResult( 'SELECT id FROM #__cck_core WHERE storage_location="'.self::$type.'" AND pk='.(int)$config['pk'] );
-	}
-	
-	// getStaticProperties
-	public static function getStaticProperties( $properties )
-	{
-		static $autorized	=	array(
-									'access'=>'',
-									'author'=>'',
-									'author_object'=>'',
-									'created_at'=>'',
-									'context'=>'',
-									'contexts'=>'',
-									'custom'=>'',
-									'key'=>'',
-									'modified_at'=>'',
-									'ordering'=>'',
-									'parent'=>'',
-									'parent_object'=>'',
-									/*'routes'=>'',*/
-									'status'=>'',
-									'table'=>'',
-									'table_object'=>'',
-									'to_route'=>''
-								);
-		
-		if ( count( $properties ) ) {
-			foreach ( $properties as $i=>$p ) {
-				if ( isset( $autorized[$p] ) ) {
-					$properties[$p]	=	self::${$p};
-				}
-				unset( $properties[$i] );
-			}
-		}
-		
-		return $properties;
 	}
 }
 ?>

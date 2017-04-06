@@ -45,4 +45,12 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<cck_integration>
+		<component>com_modules</component>
+		<context>com_modules.module</context>
+		<options>{}</options>
+		<vars />
+		<view />
+	</cck_integration>
 </extension>

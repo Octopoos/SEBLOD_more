@@ -50,11 +50,11 @@
 		</fields>
 	</config>
 
-    <cck_integration>
-        <component>com_cck</component>
-        <context>com_cck.site</context>
-        <options>{}</options>
-        <vars />
-        <view />
-    </cck_integration>
+	<cck_integration>
+		<component>com_cck</component>
+		<context>com_cck.site</context>
+		<options>{}</options>
+		<vars />
+		<view />
+	</cck_integration>
 </extension>

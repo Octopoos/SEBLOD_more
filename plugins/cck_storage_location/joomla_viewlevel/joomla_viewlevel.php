@@ -25,6 +25,8 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	protected static $access		=	'';
 	protected static $author		=	'';
 	protected static $author_object	=	'';
+	protected static $bridge_object	=	'';
+	protected static $child_object	=	'';
 	protected static $created_at	=	'';
 	protected static $custom		=	'';
 	protected static $modified_at	=	'';
@@ -34,6 +36,7 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	protected static $to_route		=	'';
 	
 	protected static $context		=	''; //TODO
+	protected static $context2		=	'';
 	protected static $contexts		=	array(); //TODO
 	protected static $error			=	false;
 	protected static $ordering		=	array( 'alpha'=>'title ASC', 'ordering'=>'ordering ASC' );
@@ -348,41 +351,6 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	public static function getId( $config )
 	{
 		return JCckDatabase::loadResult( 'SELECT id FROM #__cck_core WHERE storage_location="'.self::$type.'" AND pk='.(int)$config['pk'] );
-	}
-	
-	// getStaticProperties
-	public static function getStaticProperties( $properties )
-	{
-		static $autorized	=	array(
-									'access'=>'',
-									'author'=>'',
-									'author_object'=>'',
-									'created_at'=>'',
-									'context'=>'',
-									'contexts'=>'',
-									'custom'=>'',
-									'key'=>'',
-									'modified_at'=>'',
-									'ordering'=>'',
-									'parent'=>'',
-									'parent_object'=>'',
-									'routes'=>'',
-									'status'=>'',
-									'table'=>'',
-									'table_object'=>'',
-									'to_route'=>''
-								);
-		
-		if ( count( $properties ) ) {
-			foreach ( $properties as $i=>$p ) {
-				if ( isset( $autorized[$p] ) ) {
-					$properties[$p]	=	self::${$p};
-				}
-				unset( $properties[$i] );
-			}
-		}
-		
-		return $properties;
 	}
 }
 ?>
