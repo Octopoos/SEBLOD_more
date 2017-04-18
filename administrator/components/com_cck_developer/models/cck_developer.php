@@ -4,7 +4,7 @@
 * @package			SEBLOD Developer Add-on for SEBLOD 3.x
 * @url				https://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
-* @copyright		Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved.
+* @copyright		Copyright (C) 2009 - 2017 SEBLOD. All Rights Reserved.
 * @license 			GNU General Public License version 2 or later; see _LICENSE.php
 **/
 
@@ -33,7 +33,7 @@ class CCK_DeveloperModelCCK_Developer extends JModelLegacy
 		$paramsXML	=	array( 'author'=>$params->get( 'author', 'Octopoos' ),
 							   'author_email'=>$params->get( 'author_email', 'contact@seblod.com' ),
 							   'author_url'=>$params->get( 'author_url', 'https://www.seblod.com' ),
-							   'copyright'=>$params->get( 'copyright', 'Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved.' ),
+							   'copyright'=>$params->get( 'copyright', 'Copyright (C) 2009 - 2017 SEBLOD. All Rights Reserved.' ),
 							   'license'=>$params->get( 'license', 'GNU General Public License version 2 or later.' ),
 							   'creation_date'=>$app->input->post->getString( 'creation_date', '' ),
 							   'description'=>$app->input->post->getString( 'description', 'SEBLOD 3.x - www.seblod.com // by Octopoos - www.octopoos.com' ),
