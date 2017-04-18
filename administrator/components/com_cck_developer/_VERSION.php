@@ -15,7 +15,7 @@ final class JCckDeveloperVersion
 {
 	public $RELEASE = '1.2';
 	
-	public $DEV_LEVEL = '4';
+	public $DEV_LEVEL = '5';
 
 	// getShortVersion
 	public function getShortVersion()
