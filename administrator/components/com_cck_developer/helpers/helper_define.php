@@ -26,11 +26,5 @@ define( 'CCK_COM',				'com_cck' );
 define( 'CCK_MODEL',			CCK_TITLE.'Model' );
 define( 'CCK_TABLE',			CCK_NAME.'_Table' );
 define( 'CCK_WEBSITE',			'https://www.seblod.com' );
-
 define( 'CCK_LINK',				'index.php?option=com_'.CCK_NAME );
-
-$root	=	JUri::root( true );
-define( 'JROOT_CCK',			$root );
-define( 'JROOT_MEDIA_CCK',		$root.'/media/cck' );
-define( 'JPATH_LIBRARIES_CCK',	JPATH_SITE.'/libraries/cck' );
 ?>
