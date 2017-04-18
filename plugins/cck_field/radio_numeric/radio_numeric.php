@@ -39,7 +39,19 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 		}
 		parent::g_onCCK_FieldPrepareContent( $field, $config );
 		
-		$field->value	=	$value;
+		// Init
+		$doTranslation				=	$config['doTranslation'];
+
+		// Prepare
+		$options2					=	JCckDev::fromJSON( $field->options2 );
+		$opts						=	self::_getOptionsList( $options2, $field, $config );
+		$config['doTranslation']	=	0;
+
+		// Set
+		$field->text				=	parent::g_getOptionText( $value, $field->options, '', $config );
+		$field->value				=	$value;
+		$field->typo_target			=	'text';
+		$config['doTranslation']	=	$doTranslation;
 	}
 	
 	// onCCK_FieldPrepareForm
@@ -70,44 +82,8 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 		
 		// Prepare
 		$options2	=	JCckDev::fromJSON( $field->options2 );
-		$opts		=	array();
-
-		if ( isset( $options2['first'] ) && $options2['first'] != '' ) {
-			$opts[]	=	JHtml::_( 'select.option', $options2['first'], $options2['first'], 'value', 'text' );
-		}
-		$val	=	( $options2['start'] ? $options2['start'] : 0 );
-		$step	=	( $options2['step'] ? $options2['step'] : 0 );
-		$limit 	=	( $options2['end'] ? $options2['end'] : 0 );
-		$math	=	isset( $options2['math'] ) ? $options2['math'] : NULL;
-		$force	=	( isset( $options2['force_digits'] ) && $options2['force_digits'] ) ? $options2['force_digits'] : 0;
-		
-		if ( $step && $val || $step && $limit || $step && $val && $limit ) {
-			while ( 69 ) {
-				if ( $force ) {
-					$val	=	str_pad( $val, $force, '0' , STR_PAD_LEFT );
-				}
-				if ( $math == 0 && $val <= $limit  ) {
-					$opts[]	=	JHtml::_('select.option', $val, $val, 'value', 'text' );
-					$val	=	$val + $step;
-				} elseif ( $math == 1 && $val <= $limit  ) {
-					$opts[]	=	JHtml::_('select.option', $val, $val, 'value', 'text' );
-					$val	=	$val * $step;
-				} elseif ( $math == 2 && $val >= $limit  ) {
-					$opts[]	=	JHtml::_('select.option', $val, $val, 'value', 'text' );
-					$val	=	$val - $step;
-				} elseif ( $math == 3 && $val > $limit  ) {
-					$opts[]	=	JHtml::_('select.option', $val, $val, 'value', 'text' );
-					$val	=	floor( $val / $step );
-				} else {
-					break;
-				}
-			}
-		}
-		if ( isset( $options2['last'] ) && $options2['last'] != '' ) {
-			$opts[]	=	JHtml::_( 'select.option', $options2['last'], $options2['last'], 'value', 'text' );
-		}
-
-		$count	=	count( $opts );
+		$opts		=	self::_getOptionsList( $options2, $field, $config );
+		$count		=	count( $opts );
 		if ( $field->bool ) {
 			$orientation	=	' vertical';
 			$field->bool2	=	( !$field->bool2 ) ? 1 : $field->bool2;
@@ -156,6 +132,8 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 		// Set
 		if ( ! $field->variation ) {
 			$field->form	=	$form;
+			$field->text	=	parent::g_getOptionText( $value, $field->options, ( $config['client'] == 'search' ? ',' : '' ), $config );
+
 			if ( $field->variation != 'hidden' ) { 
 				self::_addScript();
 			}
@@ -163,6 +141,7 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 				parent::g_addScriptDeclaration( $field->script );
 			}
 		} else {
+			$field->text	=	parent::g_getOptionText( $value, $field->options, ( $config['client'] == 'search' ? ',' : '' ), $config );
 			parent::g_getDisplayVariation( $field, $field->variation, $value, $value, $form, $id, $name, '<input', '', '', $config );
 		}
 		$field->value	=	$value;
@@ -185,7 +164,6 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 		
 		// Set
 		$field->match_value	=	$field->match_value ? $field->match_value : ',';
-		$field->value		=	$value;
 		
 		// Return
 		if ( $return === true ) {
@@ -206,14 +184,21 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 		} else {
 			$name	=	$field->name;
 		}
+		$doTranslation	=	$config['doTranslation'];
+		$options2		=	JCckDev::fromJSON( $field->options2 );
+		$opts			=	self::_getOptionsList( $options2, $field, $config );
 		
 		// Validate
+		$config['doTranslation']	=	0;
+		$text						=	parent::g_getOptionText( $value, $field->options, '', $config );
+		$config['doTranslation']	=	$doTranslation;
 		parent::g_onCCK_FieldPrepareStore_Validation( $field, $name, $value, $config );
 		
 		// Set or Return
 		if ( $return === true ) {
 			return $value;
 		}
+		$field->text	=	$text;
 		$field->value	=	$value;
 		parent::g_onCCK_FieldPrepareStore( $field, $name, $value, $config );
 	}
@@ -223,7 +208,7 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 	// onCCK_FieldRenderContent
 	public static function onCCK_FieldRenderContent( $field, &$config = array() )
 	{
-		return parent::g_onCCK_FieldRenderContent( $field );
+		return parent::g_onCCK_FieldRenderContent( $field, 'text' );
 	}
 	
 	// onCCK_FieldRenderForm
@@ -233,7 +218,84 @@ class plgCCK_FieldRadio_Numeric extends JCckPluginField
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff & Script
-	
+
+	// _getOptionsList
+	protected static function _getOptionsList( $options2, &$field, $config )
+	{
+		$opts		=	array();
+		$options	=	array();
+
+		if ( isset( $options2['first'] ) && $options2['first'] != '' ) {
+			if ( strpos( $options2['first'], '=' ) !== false ) {
+				$opt	=	explode( '=', $options2['first'] );
+				$opt[0]	=	trim( $opt[0] );
+
+				if ( $opt[0] != '' ) {
+					if ( $config['doTranslation'] ) {
+						$opt[0]		=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', $opt[0] ) );
+					}
+				}
+				$opts[]		=	JHtml::_( 'select.option', $opt[1], $opt[0], 'value', 'text' );
+				$options[]	=	$opt[0].'='.$opt[1];
+			} else {
+				$opts[]		=	JHtml::_( 'select.option', $options2['first'], $options2['first'], 'value', 'text' );
+				$options[]	=	$options2['first'].'='.$options2['first'];
+			}
+		}
+		$val	=	( $options2['start'] ? $options2['start'] : 0 );
+		$step	=	( $options2['step'] ? $options2['step'] : 0 );
+		$limit 	=	( $options2['end'] ? $options2['end'] : 0 );
+		$math	=	isset( $options2['math'] ) ? $options2['math'] : NULL;
+		$force	=	( isset( $options2['force_digits'] ) && $options2['force_digits'] ) ? $options2['force_digits'] : 0;
+		
+		if ( $step && $val || $step && $limit || $step && $val && $limit ) {
+			while ( 69 ) {
+				if ( $force ) {
+					$val	=	str_pad( $val, $force, '0' , STR_PAD_LEFT );
+				}
+				if ( $math == 0 && $val <= $limit  ) {
+					$opts[]		=	JHtml::_('select.option', $val, $val, 'value', 'text' );
+					$options[]	=	$val.'='.$val;
+					$val		=	$val + $step;
+				} elseif ( $math == 1 && $val <= $limit  ) {
+					$opts[]		=	JHtml::_('select.option', $val, $val, 'value', 'text' );
+					$options[]	=	$val.'='.$val;
+					$val		=	$val * $step;
+				} elseif ( $math == 2 && $val >= $limit  ) {
+					$opts[]		=	JHtml::_('select.option', $val, $val, 'value', 'text' );
+					$options[]	=	$val.'='.$val;
+					$val		=	$val - $step;
+				} elseif ( $math == 3 && $val > $limit  ) {
+					$opts[]		=	JHtml::_('select.option', $val, $val, 'value', 'text' );
+					$options[]	=	$val.'='.$val;
+					$val		=	floor( $val / $step );
+				} else {
+					break;
+				}
+			}
+		}
+		if ( isset( $options2['last'] ) && $options2['last'] != '' ) {
+			if ( strpos( $options2['last'], '=' ) !== false ) {
+				$opt	=	explode( '=', $options2['last'] );
+				$opt[0]	=	trim( $opt[0] );
+
+				if ( $opt[0] != '' ) {
+					if ( $config['doTranslation'] ) {
+						$opt[0]		=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', $opt[0] ) );
+					}
+				}
+				$opts[]		=	JHtml::_( 'select.option', $opt[1], $opt[0], 'value', 'text' );
+				$options[]	=	$opt[0].'='.$opt[1];
+			} else {
+				$opts[]		=	JHtml::_( 'select.option', $options2['last'], $options2['last'], 'value', 'text' );
+				$options[]	=	$options2['last'].'='.$options2['last'];
+			}
+		}
+		$field->options	=	implode( '||', $options );
+
+		return $opts;
+	}
+
 	// isConvertible
 	public static function isConvertible()
 	{
