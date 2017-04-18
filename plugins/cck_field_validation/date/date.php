@@ -14,10 +14,10 @@ defined( '_JEXEC' ) or die;
 class plgCCK_Field_ValidationDate extends JCckPluginValidation
 {
 	protected static $type		=	'date';
-	protected static $regexs	=	array( 'international'=>'/^\d{4}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])$/',
-										   'en'=>'/^([0]?[1-9]{1}|[12]\d{1}|3[01])[\/\-\.]([0]?[1-9]|1[0-2])[\/\-\.]\d{4}$/',
-										   'fr'=>'/^([0]?[1-9]{1}|[12]\d{1}|3[01])[\/\-\.]([0]?[1-9]|1[0-2])[\/\-\.]\d{4}$/',
-										   'us'=>'/^(0?[1-9]|1[012])[\/\-\.](0?[1-9]|[12][0-9]|3[01])[\/\-\.]\d{4}$/'
+	protected static $regexs	=	array( 'international'=>'\d{4}[-](0?[1-9]|1[012])[-](0?[1-9]|[12][0-9]|3[01])',
+										   'en'=>'([0]?[1-9]{1}|[12]\d{1}|3[01])[\/\-\.]([0]?[1-9]|1[0-2])[\/\-\.]\d{4}',
+										   'fr'=>'([0]?[1-9]{1}|[12]\d{1}|3[01])[\/\-\.]([0]?[1-9]|1[0-2])[\/\-\.]\d{4}',
+										   'us'=>'(0?[1-9]|1[012])[\/\-\.](0?[1-9]|[12][0-9]|3[01])[\/\-\.]\d{4}'
 									);
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Prepare
@@ -36,6 +36,35 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 		$validation	=	parent::g_onCCK_Field_ValidationPrepareForm( $field, $fieldId, $config, 'regex', $definition );
 		
 		$field->validate[]	=	'custom['.$validation->name.']';
+
+		// Date Range
+		if ( !( isset( $validation->range ) && $validation->range != '' ) ) {
+			return;
+		}
+		if ( empty( $validation->range_fieldname ) ) {
+			return;
+		}
+		if ( $validation->range_alert != '' ) {
+			$name	=	$validation->range.'_'.$fieldId;
+			$alert	=	$validation->range_alert;
+			if ( $config['doTranslation'] ) {
+				if ( trim( $alert ) ) {
+					$alert	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $alert ) ) );
+				}
+			}
+			$prefix	=	JCck::getConfig_Param( 'validation_prefix', '* ' );
+			
+			$rule	=	'
+					"'.$name.'":{
+						"regex": "#'.$validation->range_fieldname.'",
+						"alertText":"'.$prefix.$alert.'"}
+					';
+			
+			$config['validation'][$name]	=	$rule;
+			$field->validate[]				=	'isFuture['.$name.']';
+		} else {
+			/* TODO */
+		}
 	}
 	
 	// onCCK_Field_ValidationPrepareStore
@@ -57,10 +86,16 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 			return;
 		}
 		$regex	=	self::$regexs[$region];
+		
 		if ( isset( $options->separator ) && $options->separator && $region != 'international' ) {
 			$regex	=	str_replace( '[\/\-\.]', '\\'.$options->separator, $regex );
 		}
 
+		if ( isset( $options->time ) && $options->time ) {
+			$regex	.=	' ((0|1)[0-9]|2[0-3]):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])';
+		}
+		$regex	=	'/^'.$regex.'$/';
+		
 		return array( 'definition'=>$regex, 'suffix'=>$region );
 	}
 }
