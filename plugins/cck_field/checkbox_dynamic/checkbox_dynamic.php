@@ -113,8 +113,8 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 
 		// Init
 		if ( count( $inherit ) ) {
-			$id		=	( @$inherit['id'] != '' ) ? $inherit['id'] : $field->name;
-			$name	=	( @$inherit['name'] != '' ) ? $inherit['name'] : $field->name;
+			$id		=	( isset( $inherit['id'] ) && $inherit['id'] != '' ) ? $inherit['id'] : $field->name;
+			$name	=	( isset( $inherit['name'] ) && $inherit['name'] != '' ) ? $inherit['name'] : $field->name;
 		} else {
 			$id		=	$field->name;
 			$name	=	$field->name;
@@ -147,6 +147,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			parent::g_getDisplayVariation( $field, $field->variation, $value, $field->text, $form, $id, $name, '<input', '', '', $config );
 		} else {
 			$options2	=	JCckDev::fromJSON( $field->options2 );
+			$options	=	array();
 			$opts		=	array();
 			if ( $field->bool2 == 0 ) {
 				$opt_table			=	isset( $options2['table'] ) ? ' FROM '.$options2['table'] : '';
@@ -196,6 +197,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 				foreach ( $items as $item ) {
 					$o_name		=	isset( $opt_name ) ? $item->$opt_name : $item->text;
 					$o_value	=	isset( $opt_value ) ? $item->$opt_value : $item->value;
+					$options[]	=	$o_name.'='.$o_value;
 					$opts[]		=	JHtml::_( 'select.option', $o_value, $o_name, 'value', 'text' );
 				}
 			}
@@ -270,7 +272,10 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 
 			// Set
 			if ( ! $field->variation ) {
-				$field->form	=	$form;
+				$field->form		=	$form;
+				$field->optionsList	=	( count( $options ) ) ? implode( '||', $options ) : '';
+				$field->text		=	parent::g_getOptionText( $value, $field->optionsList, $divider, $config );
+
 				if ( $field->variation != 'hidden' ) {
 					self::_addStyle();
 				}
@@ -278,38 +283,9 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 				if ( $field->variation == 'form_filter' ) {
 					self::_addStyle();
 				}
-				$options_2			=	self::_getOptionsList( $options2, $field->bool2, $lang_code );
+				$field->optionsList	=	( count( $options ) ) ? implode( '||', $options ) : '';
+				$field->text		=	parent::g_getOptionText( $value, $field->optionsList, $divider, $config );
 
-				if ( $field->options ) {
-					if ( $field->bool4 == 3 ) {
-						$current		=	0;
-						$static_opts	=	explode( '||', $field->options );
-						$static_opts1	=	array();
-						$static_opts2	=	array();
-						
-
-						foreach ( $static_opts as $static_opt ) {
-							if ( $current < $half ) {
-								$static_opts1[]	=	$static_opt;
-							} else {
-								$static_opts2[]	=	$static_opt;
-							}
-							$current++;
-						}
-						$field->optionsList	=	implode( '||', $static_opts1 ).'||'.$options_2.'||'.implode( '||', $static_opts2 );
-					} elseif ( $field->bool4 == 2 ) {
-						$field->optionsList	=	$options_2.'||'.$field->options;
-					} else {
-						$field->optionsList	=	$field->options.'||'.$options_2;
-					}
-				} else {
-					$field->optionsList		=	$options_2;
-				}
-				if ( $field->bool4 ) {
-					$field->text	=	parent::g_getOptionText( $value, $field->optionsList, $divider, $config );
-				} else {
-					$field->text	=	parent::g_getOptionText( $value, $options_2, $divider, $config );
-				}
 				parent::g_getDisplayVariation( $field, $field->variation, $value, $field->text, $form, $id, $name, '<input', '', '', $config );
 			}
 		}
@@ -352,9 +328,6 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		$field->divider	=	$divider;
 		self::onCCK_FieldPrepareForm( $field, $value, $config, $inherit, $return );
 		
-		// Set
-		$field->value	=	$value;
-		
 		// Return
 		if ( $return === true ) {
 			return $field;
@@ -370,7 +343,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		
 		// Init
 		if ( count( $inherit ) ) {
-			$name	=	( @$inherit['name'] != '' ) ? $inherit['name'] : $field->name;
+			$name	=	( isset( $inherit['name'] ) && $inherit['name'] != '' ) ? $inherit['name'] : $field->name;
 		} else {
 			$name	=	$field->name;
 		}
