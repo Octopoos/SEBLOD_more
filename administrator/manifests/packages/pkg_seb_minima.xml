@@ -3,7 +3,7 @@
 	<name>pkg_seb_minima</name>
 	<packagename>seb_minima</packagename>
 	<packager>Octopoos</packager>
-	<packagerurl>http://www.seblod.com</packagerurl>
+	<packagerurl>https://www.seblod.com</packagerurl>
 	<copyright>Copyright (C) 2009 - 2016 SEBLOD. All Rights Reserved.</copyright>
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>April 2013</creationDate>
