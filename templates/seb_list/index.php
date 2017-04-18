@@ -21,6 +21,8 @@ $class			=	trim( $cck->getStyleParam( 'class', '' ) );
 $custom_attr	=	trim( $cck->getStyleParam( 'attributes', '' ) );
 $custom_attr	=	$custom_attr ? ' '.$custom_attr : '';
 $display_mode	=	(int)$cck->getStyleParam( 'list_display', '0' );
+$tags			=	$cck->getStyleParam( 'tag', 'ul_li' );
+$tags			=	explode( '_', $tags );
 $html			=	'';
 $id_class		=	$cck->id_class;
 $items			=	$cck->getItems();
@@ -48,14 +50,14 @@ if ( $id_class && !$isMore ) {
 ?>
 <div class="<?php echo trim( $cck->id_class ); ?>"><?php }
 if ( !( $isRaw || $isMore ) ) { ?>
-<ul<?php echo $class.$custom_attr; ?>>
+<<?php echo $tags[0]; ?><?php echo $class.$custom_attr; ?>>
 <?php }
 	if ( $count ) {
 		if ( $display_mode == 2 ) {
 			foreach ( $items as $item ) {
 				$row	=	$item->renderPosition( 'element' );
 				if ( $row && !$isRaw ) {
-					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
+					$row	=	'<'.$tags[1].$item->replaceLive( $attributes ).'>'.$row.'</'.$tags[1].'>';
 				}
 				$html	.=	$row;
 			}
@@ -63,7 +65,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 			foreach ( $items as $pk=>$item ) {
 				$row	=	$cck->renderItem( $pk );
 				if ( $row && !$isRaw ) {
-					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
+					$row	=	'<'.$tags[1].$item->replaceLive( $attributes ).'>'.$row.'</'.$tags[1].'>';
 				}
 				$html	.=	$row;
 			}
@@ -81,7 +83,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 					}
 				}
 				if ( $row && !$isRaw ) {
-					$row	=	'<li'.$item->replaceLive( $attributes ).'>'.$row.'</li>';
+					$row	=	'<'.$tags[1].$item->replaceLive( $attributes ).'>'.$row.'</'.$tags[1].'>';
 				}
 	            $html	.=	$row;
 			}
@@ -90,7 +92,7 @@ if ( !( $isRaw || $isMore ) ) { ?>
 	}
 if ( !( $isRaw || $isMore ) ) {
 ?>
-</ul>
+</<?php echo $tags[0]; ?>>
 <?php
 }
 if ( $id_class && !$isMore ) { ?>
