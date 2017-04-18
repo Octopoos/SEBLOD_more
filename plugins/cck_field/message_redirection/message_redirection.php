@@ -45,7 +45,7 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 				if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
 					JFactory::getApplication()->redirect( JCckDevHelper::getAbsoluteUrl( $options2->itemid ) );
 				} else {
-					$redirection	=	'window.location.href=\''.JCckDevHelper::getAbsoluteUrl( $options2->itemid ).'\'';
+					$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $options2->itemid ).'\'';
 				
 					JFactory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$options2->timeout_ms.');' );
 				}
