@@ -37,9 +37,9 @@ if ( $cck->countFields( 'modal' ) ) {
 	</div>
 <?php }
 
-if ( $cck->countFields( 'hidden' ) ) { ?>
+if ( $cck->countFields( 'hidden' ) && ( $buffer = $cck->renderPosition( 'hidden' ) ) ) { ?>
 	<div style="display: none;">
-		<?php echo $cck->renderPosition( 'hidden' ); ?>
+		<?php echo $buffer; ?>
 	</div>
 <?php }
 
