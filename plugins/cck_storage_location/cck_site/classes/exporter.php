@@ -87,7 +87,7 @@ class plgCCK_Storage_LocationCck_Site_Exporter extends plgCCK_Storage_LocationCc
 		// Set
 		if ( $config['prepare_output'] ) {
 			JPluginHelper::importPlugin( 'cck_field' );
-			$dispatcher	=	JDispatcher::getInstance();
+			$dispatcher	=	JEventDispatcher::getInstance();
 		}
 		if ( count( $items ) ) {
 			foreach ( $items as $item ) {

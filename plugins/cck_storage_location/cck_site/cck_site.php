@@ -196,7 +196,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
 		$app		=	JFactory::getApplication();
-		$dispatcher	=	JDispatcher::getInstance();
+		$dispatcher	=	JEventDispatcher::getInstance();
 		$table		=	self::_getTable( $pk );	
 		
 		if ( !$table ) {
@@ -275,8 +275,8 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		self::_completeTable( $table, $data, $config );
 		
 		// Store
-		$dispatcher	=	JDispatcher::getInstance();
 		JPluginHelper::importPlugin( 'content' );
+		$dispatcher	=	JEventDispatcher::getInstance();
 		if ( $isNew ) {
 			$groups	=	@$table->groups;
 		}

@@ -79,8 +79,8 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 			self::_completeTable( $table, $data, $config );
 			
 			// Store
-			$dispatcher	=	JDispatcher::getInstance();
 			JPluginHelper::importPlugin( 'content' );
+			$dispatcher	=	JEventDispatcher::getInstance();
 			$dispatcher->trigger( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
 
 			if ( !$table->store() ) {

@@ -183,7 +183,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
 		$app		=	JFactory::getApplication();
-		$dispatcher	=	JDispatcher::getInstance();
+		$dispatcher	=	JEventDispatcher::getInstance();
 		$table		=	self::_getTable( $pk );
 		
 		if ( !$table ) {
@@ -260,7 +260,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		self::_completeTable( $table, $data, $config );
 		
 		// Store
-		$dispatcher	=	JDispatcher::getInstance();
+		$dispatcher	=	JEventDispatcher::getInstance();
 		$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
 		if ( !$table->store() ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
