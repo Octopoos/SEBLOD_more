@@ -167,12 +167,12 @@ Helper_Display::quickCopyright();
         submit: function(task) {
             Joomla.submitbutton(task);
         }
-    }
+    };
 	Joomla.submitbutton = function(task) {
 		if ($("#adminForm").validationEngine("validate",task) === true) {
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
-	}
+	};
 	$(document).ready(function() {
     });
 })(jQuery);

@@ -88,12 +88,12 @@ Helper_Display::quickCopyright();
         submit: function(task) {
             Joomla.submitbutton(task);
         }
-    }
+    };
 	Joomla.submitbutton = function(task) {
 		if ($("#adminForm").validationEngine("validate",task) === true) {
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
-	}
+	};
 	$(document).ready(function() {
 		$('#group_cck_field').isVisibleWhen('type','cck_field',false);
 		$('#group_cck_field_link').isVisibleWhen('type','cck_field_link',false);
