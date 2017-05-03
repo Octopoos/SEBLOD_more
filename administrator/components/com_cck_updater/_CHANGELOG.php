@@ -25,12 +25,17 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
--------------------- 1.3.1 Initial Release [25-Apr-2016] -----------------
+-------------------- 1.3.3 Upgrade Release [3-May-2017] ------------------
+
+! SEBLOD 3.11 ready.
+! Copyright Updated.
+
+-------------------- 1.3.1 Upgrade Release [25-Apr-2016] -----------------
 
 ! Copyright Updated.
 ! Language constant updated for Updater Add-on.
 
--------------------- 1.3.0 Initial Release [7-Sep-2015] ------------------
+-------------------- 1.3.0 Upgrade Release [7-Sep-2015] ------------------
 
 + "Copy/Paste" Modal Box added.
 + Reverse Proxy process added >> useful for Intranets.
@@ -40,7 +45,7 @@ $ -> Language fix or change
 ! Translation applied.
 ! Language constant updated for Updater Add-on.
 
--------------------- 1.2.0 Initial Release [12-Aug-2015] ------------------
+-------------------- 1.2.0 Upgrade Release [12-Aug-2015] ------------------
 
 ! Overall process improved >> "Beta" tag removed.
 ! XML scripts (of each SEBLOD product) updated.
@@ -49,7 +54,7 @@ $ -> Language fix or change
 
 # Notices removed.
 
--------------------- 1.1.0 Initial Release [7-May-2014] ------------------
+-------------------- 1.1.0 Upgrade Release [7-May-2014] ------------------
 
 ! Joomla! 3.4 ready.
 
