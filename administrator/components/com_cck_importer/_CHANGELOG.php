@@ -25,6 +25,16 @@ $ -> Language fix or change
 
 @ID is the ID on SEBLOD Tracker.
 
+-------------------- 1.9.0 Upgrade Release [3-May-2017] ------------------
+
+! SEBLOD 3.11 ready.
+! Copyright Updated.
+
++ "Encoding List" parameter/process added.
+
+# Import issue fixed.
+# Minor issue fixed.
+
 -------------------- 1.8.2 Upgrade Release [18-Nov-2016] -----------------
 
 + Suffix forced for existing/identical "alias" on submission.
