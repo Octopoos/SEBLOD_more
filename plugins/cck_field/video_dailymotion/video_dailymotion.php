@@ -196,10 +196,10 @@ class plgCCK_FieldVideo_Dailymotion extends JCckPluginField
 			} else {
 				$scheme	=	JUri::getInstance()->getScheme();
 				$video	= 	'<object width="'.$width.'" height="'.$height.'">';
-				$video	.=	'<param value="'.$scheme.'://www.dailymotion.com/swf/'.$v_tag.'" name="movie"></param>';
-				$video	.=	'<param name="allowFullScreen" value="true"></param>';
-				$video	.=	'<param name="allowScriptAccess" value="always"></param>';
-				$video	.=	'<param name="wmode" value="transparent"></param>';
+				$video	.=	'<param value="'.$scheme.'://www.dailymotion.com/swf/'.$v_tag.'" name="movie">';
+				$video	.=	'<param name="allowFullScreen" value="true">';
+				$video	.=	'<param name="allowScriptAccess" value="always">';
+				$video	.=	'<param name="wmode" value="transparent">';
 				$video	.=	'<embed width="'.$width.'" height="'.$height.'" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="';
 				$video	.=	$scheme.'://www.dailymotion.com/swf/'.$v_tag.'?width='.$width;
 				$video	.=	'"></embed></object>';
