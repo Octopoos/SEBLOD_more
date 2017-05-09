@@ -995,6 +995,8 @@
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_accesslevel.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_associations.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_associations.sys.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_jform_calendar.ini
+/administrator/language/en-GB/en-GB.plg_cck_field_jform_calendar.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_category.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_category.sys.ini
 /administrator/language/en-GB/en-GB.plg_cck_field_jform_componentlayout.ini
@@ -1160,6 +1162,8 @@
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_accesslevel.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_associations.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_associations.sys.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_jform_calendar.ini
+/administrator/language/fr-FR/fr-FR.plg_cck_field_jform_calendar.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_category.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_category.sys.ini
 /administrator/language/fr-FR/fr-FR.plg_cck_field_jform_componentlayout.ini
@@ -1352,6 +1356,7 @@
 /plugins/cck_field/icon/*
 /plugins/cck_field/jform_accesslevel/*
 /plugins/cck_field/jform_associations/*
+/plugins/cck_field/jform_calendar/*
 /plugins/cck_field/jform_category/*
 /plugins/cck_field/jform_componentlayout/*
 /plugins/cck_field/jform_contentlanguage/*
