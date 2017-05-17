@@ -51,7 +51,9 @@ class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 			}
 			if ( isset( $xml->update->downloads->downloadurl ) ) {
 				$url	=	(string)$xml->update->downloads->downloadurl;
-				if ( strpos( $url, 'http://www.seblod.com/' ) === false || strpos( $url, 'https://www.seblod.com/' ) === false ) {
+				$url	=	str_replace( 'http://www.seblod.com/', 'https://www.seblod.com/', $url );
+				
+				if ( strpos( $url, 'https://www.seblod.com/' ) === false ) {
 					$count--;
 					continue;
 				}
