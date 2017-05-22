@@ -55,7 +55,7 @@ class CCK_DeveloperModelCCK_Developer extends JModelLegacy
 			$files	=	JFolder::files( $root, '.', true, true );
 			if ( count( $files ) ) {
 				foreach ( $files as $file ) {
-					$buffer		=	JFile::read( $file );
+					$buffer		=	file_get_contents( $file );
 					$buffer		=	str_replace( array( '%class%', '%group%', '%GROUP%', '%name%', '%NAME%', '%title%' ), array( $class, $group, $group2, $name, $name2, $title ), $buffer );
 					if ( JFile::getExt( $file ) == 'xml' ) {
 						$buffer	=	str_replace( array( '%author%', '%author_email%', '%author_url%', '%copyright%', '%license%', '%creation_date%', '%description%', '%version%' ), $paramsXML, $buffer );
