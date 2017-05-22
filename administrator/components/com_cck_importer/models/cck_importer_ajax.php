@@ -87,7 +87,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$session['fieldnames']		=	array();
 		$session['fieldnames_info']	=	array();
 
-		$data				=	JFile::read( $file );
+		$data				=	file_get_contents( $file );
 		$encodings 			=	$session['options']['encoding_list'];
 
 		if ( trim( $encodings ) != '' ) {
