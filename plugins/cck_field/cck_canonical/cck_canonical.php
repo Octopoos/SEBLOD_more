@@ -55,7 +55,7 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 					$itemId		=	$options2->get( 'itemid', $config['Itemid'] );
 				}
 
-				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ) );
+				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ), 5 );
 			}
 		}
 
