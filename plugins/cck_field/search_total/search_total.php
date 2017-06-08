@@ -72,8 +72,8 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 		$value		=	'';
 		
 		// Prepare
-		$options2	=	json_decode( $field->options2 );
-		parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'id'=>$id, 'name'=>$name, 'jtext'=>$options2->jtext ) );
+		$options2	=	new JRegistry( $field->options2 );
+		parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'id'=>$id, 'name'=>$name, 'jtext'=>$options2->get( 'jtext', '' ), 'alternative'=>(int)$options2->get( 'alternative', '0' ) ) );
 
 		// Set
 		if ( ! $field->variation ) {
@@ -135,6 +135,7 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 	// onCCK_FieldBeforeRenderForm
 	public static function onCCK_FieldBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
 	{
+		$alt	=	$process['alternative'];
 		$id		=	$process['id'];
 		$name	=	$process['name'];
 		$jtext	=	$process['jtext'];
@@ -148,7 +149,15 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 			$start					=	$config['limitstart'] + 1;
 			$end					=	$config['limitstart'] + $step;
 			$end					=	( $config['total'] < $end ) ? $config['total'] : $end;
-			$fields[$name]->form	=	( $jtext != '' ) ? JText::sprintf( $jtext, $config['total'], $step, $start, $end ) : $config['total'];
+
+			if ( $jtext != '' ) {
+				if ( $config['total'] == 1 && $alt && JFactory::getLanguage()->hasKey( $jtext.'_1' ) ) {
+					$jtext	.=	'_1';
+				}
+				$fields[$name]->form	=	JText::sprintf( $jtext, $config['total'], $step, $start, $end );
+			} else {
+				$fields[$name]->form	=	$config['total'];
+			}
 			$fields[$name]->value	=	$config['total'];
 		}
 	}
