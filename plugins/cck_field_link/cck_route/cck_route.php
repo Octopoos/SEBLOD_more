@@ -46,7 +46,7 @@ class plgCCK_Field_LinkCck_Route extends JCckPluginLink
 		$link_target	=	$link->get( 'target', '' );
 		
 		if ( count( $fieldnames ) ) {
-			parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldnames'=>$fieldnames ), 4 );
+			parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldnames'=>$fieldnames ), 5 );
 		}
 		
 		$field->link			=	'';
