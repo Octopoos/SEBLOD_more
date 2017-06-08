@@ -74,7 +74,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareContent( $table, $pk );
 			if ( ! isset( $config['storages'][self::$table] ) ) {
-                $config['storages'][self::$table] =	self::_getTable( $pk, true );
+                $config['storages'][self::$table] =	self::_getTable( $pk );
 			}
 		}
 	}
