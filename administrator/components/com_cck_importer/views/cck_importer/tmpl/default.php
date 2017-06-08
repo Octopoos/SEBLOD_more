@@ -96,7 +96,6 @@ $session->set( 'cck_importer_batch_ok', '' );
 	            </ul>
 	        </div>
         <?php } ?>
-            </ul>
         </div>
         <?php echo JCckDevAccordion::end(); ?>
 	</div>
