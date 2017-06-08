@@ -15,7 +15,7 @@ final class JCckImporterVersion
 {
 	public $RELEASE = '1.9';
 	
-	public $DEV_LEVEL = '1';
+	public $DEV_LEVEL = '2';
 
 	// getShortVersion
 	public function getShortVersion()
