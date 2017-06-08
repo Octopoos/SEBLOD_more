@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\String\StringHelper;
+
 // Plugin
 class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 {
@@ -66,16 +68,16 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 				$value		=	strip_tags( $value );
 				break;
 			case 'strtolower':
-				$value		=	JString::strtolower( $value );
+				$value		=	StringHelper::strtolower( $value );
 				break;
 			case 'strtoupper':
-				$value		=	JString::strtoupper( $value );
+				$value		=	StringHelper::strtoupper( $value );
 				break;
 			case 'substr':
 				if ( $force ) {
 					$value	=	strip_tags( $value );
 				}
-				$value2		=	( $arg2 != '' ) ? JString::substr( $value, $arg1, $arg2 ) : JString::substr( $value, $arg1 );
+				$value2		=	( $arg2 != '' ) ? StringHelper::substr( $value, $arg1, $arg2 ) : StringHelper::substr( $value, $arg1 );
 				if ( $value2 != $value ) {
 					$value	=	trim( $value2 ).$typo->get( 'suffix_overflow', '' );
 				}
@@ -85,15 +87,15 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 				break;
 			case 'ucfirst':
 				if ( $force ) {
-					$value	=	JString::strtolower( $value );
+					$value	=	StringHelper::strtolower( $value );
 				}
-				$value		=	JString::ucfirst( $value );
+				$value		=	StringHelper::ucfirst( $value );
 				break;
 			case 'ucwords':
 				if ( $force ) {
-					$value	=	JString::strtolower( $value );
+					$value	=	StringHelper::strtolower( $value );
 				}
-				$value		=	JString::ucwords( $value );
+				$value		=	StringHelper::ucwords( $value );
 				break;
 			case 'wordwrap':
 				if ( $force ) {
