@@ -76,7 +76,7 @@ class plgCCK_FieldVideo_Vimeo extends JCckPluginField
 
 		if ( $preview == 1 && $value ){
 			$video	=	self::_addVideo( $value, $options2, $field->bool2 );
-			$video	=	'<div style="float: clear;"></div><div class="video" style="float: left;">'.$video.'</div>';
+			$video	=	'<div style="float: none;"></div><div class="video" style="float: left;">'.$video.'</div>';
 		}
 		
 		// Validate
