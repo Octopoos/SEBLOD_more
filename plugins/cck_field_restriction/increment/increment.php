@@ -89,8 +89,6 @@ class plgCCK_Field_RestrictionIncrement extends JCckPluginRestriction
 
 			return false;
 		}
-
-		return true;
 	}
 }
 ?>
