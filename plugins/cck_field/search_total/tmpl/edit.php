@@ -11,7 +11,8 @@
 defined( '_JEXEC' ) or die;
 
 JCckDev::forceStorage();
-$options2   =   JCckDev::fromJSON( $this->item->options2 );
+$options2       =   JCckDev::fromJSON( $this->item->options2 );
+$defaultvalue   =   ( !isset( $options2['jtext'] ) ) ? '1' : '0';
 ?>
 
 <div class="seblod">
@@ -21,6 +22,7 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
         echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
         echo JCckDev::renderForm( 'core_defaultvalue', $this->item->defaultvalue, $config );
 		echo JCckDev::renderForm( 'core_dev_text', @$options2['jtext'], $config, array( 'label'=>'Language Constant', 'defaultvalue'=>'COM_CCK_SEARCH_TOTAL', 'storage_field'=>'json[options2][jtext]' ) );
+        echo JCckDev::renderForm( 'core_dev_bool', @$options2['alternative'], $config, array( 'label'=>'Use Alternative', 'defaultvalue'=>$defaultvalue, 'storage_field'=>'json[options2][alternative]' ) );
 		
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
