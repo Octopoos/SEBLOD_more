@@ -103,7 +103,7 @@ class Helper_Import
 	// isCoreStorage_Location
 	public static function isCoreStorage_Location( $name, $table  )
 	{
-		$fields	=	JCckDatabase::loadColumn( 'SHOW COLUMNS FROM '.$table );
+		$fields	=	JCckDatabaseCache::getTableColumns( $table );
 		
 		if ( $table == '#__users' ) { // Todo
 			$fields[]	=	'groups';
