@@ -56,14 +56,8 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('#json_options2_query').isVisibleWhen('bool2','1');
-	
-	$('#json_options2_table').isVisibleWhen('bool2','0');
-	$('#json_options2_name').isVisibleWhen('bool2','0');
-	$('#json_options2_value').isVisibleWhen('bool2','0');
-	$('#json_options2_where').isVisibleWhen('bool2','0');
-	$('#json_options2_orderby').isVisibleWhen('bool2','0');
-	$('#json_options2_limit').isVisibleWhen('bool2','0');
-	$('#blank_li').isVisibleWhen('bool2','0');
+	$('#json_options2_table,#json_options2_name,#json_options2_value,#json_options2_where,#json_options2_orderby,#json_options2_limit,#blank_li').isVisibleWhen('bool2','0');
+	$('#json_options2_language_detection,#json_options2_language_codes,#bool3,#custom_attr_toggle').isVisibleWhen('bool2','0,1');
 	$('#bool5').isVisibleWhen('bool','1',false);
 });
 </script>

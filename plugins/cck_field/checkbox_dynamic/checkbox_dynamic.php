@@ -171,6 +171,8 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 					$query			=	JCckDevHelper::replaceLive( $query );
 					$items			=	JCckDatabase::loadObjectList( $query );
 				}
+			} elseif ( $field->bool2 == 2 ) {
+				$items2	=	JCckDatabase::getTableList();
 			} else {
 				if ( @$options2['query'] != '' ) {
 					// Language Detection
@@ -193,7 +195,14 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 				$opt_group	=	'optgroup';
 			}
 			
-			if ( count( $items ) ) {
+			if ( isset( $items2 ) ) {
+				if ( count( $items2 ) ) {
+					foreach ( $items2 as $o ) {
+						$opts[]		=	JHtml::_( 'select.option', $o, $o, 'value', 'text' );
+						$options[]	=	$o.'='.$o;
+					}
+				}
+			} elseif ( count( $items ) ) {
 				foreach ( $items as $item ) {
 					$o_name		=	isset( $opt_name ) ? $item->$opt_name : $item->text;
 					$o_value	=	isset( $opt_value ) ? $item->$opt_value : $item->value;
@@ -436,11 +445,11 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 	}
 	
 	// _getOptionsList
-	protected static function _getOptionsList( $options2, $bool2 )
+	protected static function _getOptionsList( $options2, $sql_type )
 	{
 		$options	=	'';
 		
-		if ( $bool2 == 0 ) {
+		if ( $sql_type == 0 ) {
 			$opt_table	=	( isset( $options2['table'] ) ) ? ' FROM '.$options2['table'] : '';
 			$opt_name	=	( isset( $options2['name'] ) ) ? $options2['name'] : '';
 			$opt_value	=	( isset( $options2['value'] ) ) ? $options2['value'] : '';
@@ -449,17 +458,24 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			if ( $opt_name && $opt_table ) {
 				$query	=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where;
 				$query	=	JCckDevHelper::replaceLive( $query );
-				$lists	=	JCckDatabase::loadObjectList( $query );
+				$lists	=	JCckDatabaseCache::loadObjectList( $query );
 				if ( count( $lists ) ) {
 					foreach ( $lists as $list ) {
 						$options	.=	$list->$opt_name.'='.$list->$opt_value.'||';
 					}
 				}
 			}
+		} elseif ( $sql_type == 2 ) {
+			$lists		=	JCckDatabaseCache::getTableList();
+			if ( count( $lists ) ) {
+				foreach ( $lists as $list ) {
+					$options	.=	@$list.'='.@$list.'||';
+				}
+			}
 		} else {
 			$opt_query	=	isset( $options2['query'] ) ? $options2['query'] : '';
 			$opt_query	=	JCckDevHelper::replaceLive( $opt_query );
-			$lists		=	JCckDatabase::loadObjectList( $opt_query );
+			$lists		=	JCckDatabaseCache::loadObjectList( $opt_query );
 			if ( count( $lists ) ) {
 				foreach ( $lists as $list ) {
 					$options	.=	@$list->text.'='.@$list->value.'||';
