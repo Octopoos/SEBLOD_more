@@ -37,6 +37,8 @@ class plgCCK_Field_LinkCustom_Js extends JCckPluginLink
 	{
 		$link_class				=	$link->get( 'class', '' );
 		$link_onclick			=	htmlspecialchars( $link->get( 'custom' ) );
+		$link_title				=	$link->get( 'title', '' );
+		$link_title2			=	$link->get( 'title_custom', '' );
 
 		$field->link			=	'javascript: void(0);';
 		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
@@ -51,6 +53,19 @@ class plgCCK_Field_LinkCustom_Js extends JCckPluginLink
 			$field->link_onclick	=	'if(!confirm(\''.addslashes( $alert ).'\')){return false;}else{'.$link_onclick.'}';
 		} else {
 			$field->link_onclick	=	$link_onclick;
+		}
+
+		if ( $link_title ) {
+			if ( $link_title == '2' ) {
+				$field->link_title	=	$link_title2;
+			} elseif ( $link_title == '3' ) {
+				$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+			}
+			if ( !isset( $field->link_title ) ) {
+				$field->link_title	=	'';
+			}
+		} else {
+			$field->link_title		=	'';
 		}
 	}
 }

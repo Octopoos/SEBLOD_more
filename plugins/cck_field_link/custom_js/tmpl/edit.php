@@ -26,7 +26,7 @@ JCckDev::initScript( 'link', $this->item );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Rel', 'size'=>32, 'storage_field'=>'rel' ) );
 		echo JCckDev::renderBlank();
 		echo '<li><label>'.JText::_( 'COM_CCK_TITLE' ).'</label>'
-			. JCckDev::getForm( 'core_dev_select', '', $config, array( 'selectlabel'=>'None', 'options'=>'Custom=2', 'storage_field'=>'title' ) )
+			. JCckDev::getForm( 'core_dev_select', '', $config, array( 'selectlabel'=>'None', 'options'=>'Custom Text=2||Translated Text=3', 'storage_field'=>'title' ) )
 			. JCckDev::getForm( 'core_dev_text', '', $config, array( 'label'=>'Title', 'size'=>16, 'css'=>'input-medium', 'storage_field'=>'title_custom' ) )
 			. '</li>';
         ?>
@@ -35,7 +35,7 @@ JCckDev::initScript( 'link', $this->item );
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#title_custom').isVisibleWhen('title','2',false);
+	$('#title_custom').isVisibleWhen('title','2,3',false);
 	$('#confirm_alert').isVisibleWhen('confirm','1');
 });
 </script>
