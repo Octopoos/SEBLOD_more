@@ -354,7 +354,7 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 	// _completeTable
 	protected function _completeTable( &$table, &$data, &$config )
 	{
-		if ( ! intval( $table->date_time ) ) {
+		if ( ! (int)$table->date_time ) {
 			$table->date_time	=	JFactory::getDate()->toSql();
 		}
 		
