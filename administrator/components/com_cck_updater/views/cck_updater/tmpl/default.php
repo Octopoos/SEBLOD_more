@@ -16,7 +16,7 @@ $params	=	JComponentHelper::getParams( 'com_cck_updater' );
 $rows   =   0;
 $text   =   '';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin: 0px 0px 0px 0px;} #system-message-container.j-toggle-main.span10{width: 100%;}' );
+JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin: 0px 0px 0px 0px;} #system-message-container.j-toggle-main.span10{width: 100%;} div.cpanel_news div.alert.alert-danger{color:#a94442;}' );
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
@@ -109,7 +109,7 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                 </tbody>
             </table>
         </div>
-        <?php if ( $canDo->get( 'core.admin' ) ) { ?>
+        <?php if ( $canDo->get( 'core.admin' ) && count( $items ) ) { ?>
         <div class="seblod cck-padding-top-0 cck-overflow-visible">
             <ul class="adminformlist">
                 <?php
@@ -123,6 +123,12 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
         </div>
         <?php } ?>
         <?php echo JCckDevAccordion::end(); ?>
+        <div class="alert alert-danger">
+            <div>
+                <strong><?php echo JText::_( 'COM_CCK_UPDATER_BEFORE_UPDATE' ); ?></strong><br>
+                <?php echo JText::_( 'COM_CCK_UPDATER_BEFORE_UPDATE_DESC' ); ?>
+            </div>
+        </div>
 	</div>
     <div class="clr"></div>
 </div>
