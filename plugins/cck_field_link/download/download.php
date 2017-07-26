@@ -54,6 +54,20 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 				$link_more2		=	$link_more.'&collection='.$collection.'&xi='.$xi;
 				$f->link		=	'index.php?option=com_cck&task=download'.$link_more2.'&file='.$f->name.'&id='.$config['id'];
 				$f->link_class	=	$link_class ? $link_class : ( isset( $f->link_class ) ? $f->link_class : '' );
+
+				if ( $link_title ) {
+					if ( $link_title == '2' ) {
+						$f->link_title	=	$link_title2;
+					} elseif ( $link_title == '3' ) {
+						$f->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+					}
+					if ( !isset( $f->link_title ) ) {
+						$f->link_title	=	'';
+					}
+				} else {
+					$f->link_title		=	'';
+				}
+
 				$xi++;
 			}
 			$field->link		=	'#';	//todo
@@ -74,6 +88,19 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 			}
 
 			$field->link_class	=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
+
+			if ( $link_title ) {
+				if ( $link_title == '2' ) {
+					$field->link_title	=	$link_title2;
+				} elseif ( $link_title == '3' ) {
+					$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+				}
+				if ( !isset( $field->link_title ) ) {
+					$field->link_title	=	'';
+				}
+			} else {
+				$field->link_title		=	'';
+			}
 		}
 	}
 

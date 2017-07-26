@@ -23,6 +23,10 @@ JCckDev::initScript( 'link', $this->item );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.JText::_( 'COM_CCK_GENERIC' ).')</span>' );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Class', 'size'=>24, 'storage_field'=>'class' ) );
+		echo '<li><label>'.JText::_( 'COM_CCK_TITLE' ).'</label>'
+			. JCckDev::getForm( 'core_dev_select', '', $config, array( 'selectlabel'=>'None', 'options'=>'Custom Text=2||Translated Text=3', 'storage_field'=>'title' ) )
+			. JCckDev::getForm( 'core_dev_text', '', $config, array( 'label'=>'Title', 'size'=>16, 'css'=>'input-medium', 'storage_field'=>'title_custom' ) )
+			. '</li>';
         ?>
     </ul>
 </div>
@@ -30,5 +34,6 @@ JCckDev::initScript( 'link', $this->item );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('#content_fieldname,#content_location,#blank_li').isVisibleWhen('content','2');
+	$('#title_custom').isVisibleWhen('title','2,3',false);
 });
 </script>
