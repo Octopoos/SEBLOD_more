@@ -95,6 +95,9 @@ class plgCCK_FieldCck_Break extends JCckPluginField
 		$value	=	'';
 
 		// Set
+		if ( $field->state == 'disabled' ) {
+			$field->state	=	'';
+		}
 		if ( $field->state ) {
 			$config['error']	=	2;
 		}
