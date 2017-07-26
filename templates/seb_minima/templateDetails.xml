@@ -35,7 +35,11 @@
 	
 	<positions>
 		<position>mainbody</position>
-		<position toggle="position_modal">modal</position>
+		<position toggle="position_modal" toggle_value="1,2,3,4,5">modal</position>
+		<position toggle="position_modal" toggle_value="2,3,4,5">modal2</position>
+		<position toggle="position_modal" toggle_value="3,4,5">modal3</position>
+		<position toggle="position_modal" toggle_value="4,5">modal4</position>
+		<position toggle="position_modal" toggle_value="5">modal5</position>
 		<position toggle="position_hidden">hidden</position>
 		<position toggle="position_clear">clear</position>
 	</positions>
@@ -60,6 +64,10 @@
 				<field name="position_modal" type="list" default="1" label="TPL_SEB_MINIMA_MODAL_POSITION" description="" class="inputbox">
 					<option	value="0">JHIDE</option>
 					<option	value="1">JSHOW</option>
+					<option	value="2">2</option>
+					<option	value="3">3</option>
+					<option	value="4">4</option>
+					<option	value="5">5</option>
 				</field>
 			</fieldset>
 		</fields>

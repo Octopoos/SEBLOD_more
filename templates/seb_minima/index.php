@@ -26,16 +26,19 @@ if ( $cck->id_class != '' ) {
 	echo $cck->renderPosition( 'mainbody', '', $cck->h( 'mainbody' ) );
 }
 
-if ( $cck->countFields( 'modal' ) ) {
-	JHtml::_( 'bootstrap.modal', 'collapseModal' );
+for ( $i = 1; $i <= 5; $i++ ) {
+	$suffix	=	( $i == 1 ) ? '' : $i;
+	if ( $cck->countFields( 'modal'.$suffix ) ) {
+		JHtml::_( 'bootstrap.modal', 'collapseModal'.$suffix );
 
-	$class = $cck->getPosition( 'modal' )->css;
-	$class = ( $class ) ? ' ' . $class : '';
-	?>
-	<div class="modal hide fade<?php echo $class; ?>" id="collapseModal">
-		<?php echo $cck->renderPosition( 'modal' ); ?>
-	</div>
-<?php }
+		$class = $cck->getPosition( 'modal'.$suffix )->css;
+		$class = ( $class ) ? ' ' . $class : '';
+		?>
+		<div class="modal hide fade<?php echo $class; ?>" id="collapseModal<?php echo $suffix; ?>">
+			<?php echo $cck->renderPosition( 'modal'.$suffix ); ?>
+		</div>
+	<?php }
+}
 
 if ( $cck->countFields( 'hidden' ) && ( $buffer = $cck->renderPosition( 'hidden' ) ) ) { ?>
 	<div style="display: none;">
