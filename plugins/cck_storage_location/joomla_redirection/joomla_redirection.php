@@ -37,6 +37,12 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	protected static $context2		=	'';
 	protected static $contexts		=	array(); /* used for Content/Intro views */
 	protected static $error			=	false;
+	protected static $events		=	array(
+											'afterDelete'=>'onContentAfterDelete',
+											'afterSave'=>'onContentAfterSave',
+											'beforeDelete'=>'onContentBeforeDelete',
+											'beforeSave'=>'onContentBeforeSave'
+										);
 	protected static $ordering		=	array( 'alpha'=>'old_url ASC', 'newest'=>'created_date DESC', 'oldest'=>'created_date ASC', 'popular'=>'hits DESC' );
 	protected static $ordering2		=	array();
 	protected static $pk			=	0;
@@ -76,24 +82,6 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 			if ( ! isset( $config['storages'][self::$table] ) ) {
                 $config['storages'][self::$table] =	self::_getTable( $pk );
 			}
-		}
-	}
-	
-	// onCCK_Storage_LocationPrepareDelete
-	public function onCCK_Storage_LocationPrepareDelete( &$field, &$storage, $pk = 0, &$config = array() )
-	{
-		if ( self::$type != $field->storage_location ) {
-			return;
-		}
-		
-		// Init
-		$table	=	$field->storage_table;
-		
-		// Set
-		if ( $table == self::$table ) {
-			$storage	=	self::_getTable( $pk );
-		} else {
-			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
 	}
 	
@@ -210,24 +198,6 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		$dispatcher->trigger( 'onContentAfterDelete', array( self::$context, $table ) );
 		
 		return true;
-	}
-	
-	// onCCK_Storage_LocationStore
-	public function onCCK_Storage_LocationStore( $type, $data, &$config = array(), $pk = 0 )
-	{
-		if ( self::$type != $type ) {
-			return;
-		}
-		
-		if ( ! @$config['storages'][self::$table]['_']->pk ) {
-			self::_core( $config['storages'][self::$table], $config, $pk );
-			$config['storages'][self::$table]['_']->pk	=	self::$pk;
-		}
-		if ( $data['_']->table != self::$table ) {
-			parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
-		}
-		
-		return self::$pk;
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Protected
