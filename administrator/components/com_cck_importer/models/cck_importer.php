@@ -495,7 +495,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 				$log['all']	=	implode( ',', $log['all'] );
 				$items		=	JCckDatabase::loadColumn( 'SELECT id FROM '.$sto_table.' WHERE id NOT IN ('.$log['all'].')' );
 				$regression	=	array();
-				require_once JPATH_LIBRARIES.'/joomla/user/user.php';
+				JLoader::register( 'JUser', JPATH_PLATFORM.'/joomla/user/user.php' );
 				foreach ( $items as $item ) {
 					$table			=	JUser::getInstance( $item );
 					if ( !$table->authorise( 'core.admin' ) ) {
