@@ -252,7 +252,7 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
-		$table	=	JTable::getInstance( 'viewlevel' );
+		$table	=	JTable::getInstance( 'Viewlevel' );
 		
 		if ( $pk > 0 ) {
 			$table->load( $pk );
