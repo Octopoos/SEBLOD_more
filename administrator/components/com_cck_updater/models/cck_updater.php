@@ -33,7 +33,7 @@ class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
 		$vars		=	'&secret_key='.$secret.'&domain='.$domain;
 		foreach ( $pks as $pk ) {
 			$update		=	new JUpdate;
-			$instance	=	JTable::getInstance( 'update' );
+			$instance	=	JTable::getInstance( 'Update' );
 			$instance->load( $pk );
 
 			// --------
