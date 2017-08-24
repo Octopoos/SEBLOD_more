@@ -21,7 +21,7 @@ class Helper_Import
 		
 		$style						=	Helper_Workshop::getDefaultStyle( 'seb_one' );
 		
-		$table						=	JTable::getInstance( 'type', 'CCK_Table' );
+		$table						=	JTable::getInstance( 'Type', 'CCK_Table' );
 		$table->title				=	$title;
         $table->folder				=	1;
 		$table->template_admin		=	$style->id;
@@ -56,7 +56,7 @@ class Helper_Import
 	// addField
 	public static function addField( $name , $sto_table, $sto_location, $sto, $custom, $overrides = array() )
 	{
-		$row					=	JTable::getInstance( 'field', 'CCK_Table' );
+		$row					=	JTable::getInstance( 'Field', 'CCK_Table' );
 		$row->title				=	ucwords( str_replace( '_', ' ', $name ) );   
 		$row->name				=	$name;
 		$row->folder			=	1;
