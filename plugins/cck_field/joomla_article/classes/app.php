@@ -48,12 +48,12 @@ class plgCCK_FieldJoomla_Article_App extends plgCCK_FieldGeneric_App
 	}
 	
 	// onCCK_FieldImportType_Field
-	public static function onCCK_FieldImportType_Field( &$xml, $data )
+	public static function onCCK_FieldImportType_Field( $field, &$xml, $data )
 	{
 	}
 	
 	// onCCK_FieldImportSearch_Field
-	public static function onCCK_FieldImportSearch_Field( &$xml, $data )
+	public static function onCCK_FieldImportSearch_Field( $field, &$xml, $data )
 	{
 	}
 	
@@ -66,7 +66,7 @@ class plgCCK_FieldJoomla_Article_App extends plgCCK_FieldGeneric_App
 		$value	=	array();
 		
 		foreach ( $values as $v ) {
-			$table	=	JTable::getInstance( 'category' );
+			$table	=	JTable::getInstance( 'Category' );
 			if ( $v > 0 ) {
 				$table->load( $v );
 			}
