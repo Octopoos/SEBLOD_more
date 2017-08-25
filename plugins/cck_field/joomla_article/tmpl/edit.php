@@ -10,7 +10,6 @@
 
 defined( '_JEXEC' ) or die;
 
-$options	=	JCckDev::fromSTRING( $this->item->options );
 $options2	=	JCckDev::fromJSON( $this->item->options2 );
 ?>
 
@@ -20,7 +19,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
         <?php
 		echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
 		echo JCckDev::renderForm( 'core_defaultvalue', $this->item->defaultvalue, $config );
-		echo JCckDev::renderForm( 'core_options_categories', $options, $config, array( 'css'=>'adminformlist-maxwidth' ) );
+		echo JCckDev::renderForm( 'core_options_categories', $this->item->options, $config, array( 'css'=>'adminformlist-maxwidth' ) );
 		echo JCckDev::renderForm( 'core_selectlabel', $this->item->selectlabel, $config, array( 'defaultvalue'=>'Select an Article' ) );
 		
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_PROCESSING' ), JText::_( 'PLG_CCK_FIELD_'.$this->item->type.'_DESC_PROCESSING' ), 2 );
