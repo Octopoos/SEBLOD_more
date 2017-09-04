@@ -85,7 +85,11 @@ jQuery(document).ready(function($) {
 		}
 		$('#arg2,#blank_li').parent().hide();
 		$('#arg3,#blank_li3').parent().hide();
-		$('#suffix_overflow,#blank_li2').parent().hide();
+		if (v == 'wordwrap') {
+			$('#suffix_overflow,#blank_li2').parent().show();
+		} else {
+			$('#suffix_overflow,#blank_li2').parent().hide();
+		}
 	} else if (v == 'number_format') {
 		$('#force').parent().hide();
 		$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_DECIMALS')+'<span class="star"> *</span>');
@@ -129,7 +133,11 @@ jQuery(document).ready(function($) {
 			}
 			$('#arg2,#blank_li').parent().hide();
 			$('#arg3,#blank_li3').parent().hide();
-			$('#suffix_overflow,#blank_li2').parent().hide();
+			if (v == 'wordwrap') {
+				$('#suffix_overflow,#blank_li2').parent().show();
+			} else {
+				$('#suffix_overflow,#blank_li2').parent().hide();
+			}
 		} else if (v == 'number_format') {
 			$('#force').parent().hide();
 			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_DECIMALS')+'<span class="star"> *</span>');

@@ -101,7 +101,10 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 				if ( $force ) {
 					$value	=	strip_tags( $value );
 				}
-				$value		=	wordwrap( $value, $arg1 );
+				$value2		=	wordwrap( $value, $arg1 );
+				if ( $value2 != $value ) {
+					$value	=	trim( $value2 ).$typo->get( 'suffix_overflow', '' );
+				}
 				break;
 			default:
 				break;
