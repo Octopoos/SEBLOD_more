@@ -17,7 +17,7 @@ JCckDev::initScript( 'link', $this->item );
 	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_LINK_'.$this->item->name.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
-		echo JCckDev::renderForm( 'core_task', '', $config, array( 'selectlabel'=>'Select', 'options'=>'Task Export=export||Task Processing=process', 'required'=>'required', 'storage_field'=>'task' ) );
+		echo JCckDev::renderForm( 'core_task', '', $config, array( 'selectlabel'=>'Select', 'options'=>'Task Export=export||Task Process=process', 'required'=>'required', 'storage_field'=>'task' ) );
 		echo JCckDev::renderForm( 'core_task_exporter', '', $config, array( 'storage_field'=>'task_id_export' ) );
 		echo JCckDev::renderForm( 'core_task_processing', '', $config, array( 'storage_field'=>'task_id_process' ) );
 
