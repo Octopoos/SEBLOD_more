@@ -19,6 +19,8 @@ JCckDev::initScript( 'restriction', $this->item );
         <?php
 		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Execute', 'defaultvalue'=>'1', 'options'=>'1=1||2=2||3=3||4=4||5=5||6=6||7=7||8=8||9=9', 'storage_field'=>'execute' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Identifier', 'defaultvalue'=>'', 'storage_field'=>'identifier_name' ) );
+		echo JCckDev::renderBlank();
+		echo JCckDev::renderForm( 'core_bool', '', $config, array( 'label'=>'Invert', 'defaultvalue'=>'0', 'options'=>'Yes=1||No=0', 'storage_field'=>'do' ) );
         ?>
     </ul>
 </div>
