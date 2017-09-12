@@ -41,6 +41,8 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 		$file_fieldname		=	$link->get( 'file_fieldname', '' );
 		$link_class			=	$link->get( 'class', '' );
 		$link_more			=	( $config['client'] == 'intro' /*|| $config['client'] == 'list' || $config['client'] == 'item'*/ ) ? '&client='.$config['client'] : '';
+		$link_title			=	$link->get( 'title', '' );
+		$link_title2		=	$link->get( 'title_custom', '' );
 		$xi					=	0;
 
 		// Set
