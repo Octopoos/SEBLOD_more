@@ -123,10 +123,12 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 	JCck.Dev = {
 		ajaxStep:<?php echo $ajaxStep; ?>,
 		ajaxTotal:<?php echo $ajaxTotal; ?>,
+		token:"<?php echo JSession::getFormToken(); ?>=1",
 		ajaxLoopRequest: function(uri, start, end, len, total) {
 			$.ajax({
-				data: "start="+start+"&end="+end,
-				url:  uri,
+				data: JCck.Dev.token,
+				type: "POST",
+				url:  uri+"&start="+start+"&end="+end,
 				beforeSend:function(){},
 				success: function(resp) {
 					var percent = end / total * 100;
@@ -175,8 +177,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			var loading = "<img align='center' src='<?php echo $ajax_load; ?>' alt='' />"; 
 			$.ajax({
 				cache: false,
-				type: "POST",
-				url: 'index.php?option=com_cck&task=ajax_session_del&format=raw&sid='+sid,
+				url: 'index.php?option=com_cck&task=deleteSessionAjax&format=raw&sid='+sid+"&"+JCck.Dev.token,
 				beforeSend:function(){ $("#loading").html(loading); },
 				success: function(){ $("#loading").html(""); document.location.reload(); }
 			});
@@ -195,7 +196,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 				cache: false,
 				data: "data="+encoded,
 				type: "POST",
-				url: 'index.php?option=com_cck&task=ajax_session&format=raw&extension=com_cck_importer&folder=1&type='+type,
+				url: 'index.php?option=com_cck&task=saveSessionAjax&format=raw&extension=com_cck_importer&folder=1&type='+type+"&"+JCck.Dev.token,
 				beforeSend:function(){ $("#loading").html(loading); },
 				success: function(){ $("#loading").html(""); document.location.reload(); }
 			});
