@@ -77,6 +77,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$session['location'].'/classes/importer.php';
 
 		$allowed_columns	=	JCck::callFunc( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'getColumnsToImport' );
+		$core_columns		=	array_flip( $allowed_columns );
 
 		// CSV Process
 		$i							=	0;
@@ -199,8 +200,8 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 			for ( $i = 0; $i < $count; $i++ ) {
 				$fieldname			=	str_replace( ' ', '_', $session['fieldnames'][$i] );
 				$session['fieldnames'][$i]		=	$fieldname;  
-				$isCore				=	Helper_Import::isCoreStorage_Location( $fieldname, $session['table'] );
-				if ( $isCore ) {
+
+				if ( isset( $core_columns[$fieldname] ) ) {
 					$session['data'][$i]['sto_table']		=	$session['table'];	
 					$session['fieldnames2'][$i]['storage']	=	( $fieldname == $session['custom'] )? 'custom': 'standard';
 					
@@ -270,8 +271,8 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 			for ( $i = 0;  $i < $count;  $i++ ) {
 				$fieldname	=	str_replace( ' ', '_', $session['fieldnames'][$i] );
 				$session['fieldnames'][$i]		=	$fieldname;   
-				$isCore				=	Helper_Import::isCoreStorage_Location( $fieldname, $session['table'] );
-				if ( $isCore ) {
+				
+				if ( isset( $core_columns[$fieldname] ) ) {
 					$session['data'][$i]['sto_table']		= 	$session['table'];	
 					$session['fieldnames2'][$i]['storage']	=	( $fieldname == $session['custom'] ) ? 'custom': 'standard';
 					continue;  

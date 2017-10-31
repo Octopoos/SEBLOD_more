@@ -100,18 +100,6 @@ class Helper_Import
 		return $dest;
 	}
 	
-	// isCoreStorage_Location
-	public static function isCoreStorage_Location( $name, $table  )
-	{
-		$fields	=	JCckDatabaseCache::getTableColumns( $table );
-		
-		if ( $table == '#__users' ) { // Todo
-			$fields[]	=	'groups';
-		}
-		
-		return in_array( $name, $fields );
-	}
-	
 	// addTypeFields
 	public static function addTypeFields( $type_id, $field_id, $ordering )
 	{
