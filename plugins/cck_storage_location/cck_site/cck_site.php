@@ -16,6 +16,7 @@ JLoader::register( 'CCK_TableSite', JPATH_ADMINISTRATOR.'/components/com_cck/tab
 class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 {
 	protected static $type			=	'cck_site';
+	protected static $type_alias	=	'Site';
 	protected static $table			=	'#__cck_core_sites';
 	protected static $table_object	=	array( 'Site', 'CCK_Table' );
 	protected static $key			=	'id';

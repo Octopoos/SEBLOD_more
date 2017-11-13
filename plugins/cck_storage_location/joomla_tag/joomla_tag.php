@@ -16,6 +16,7 @@ JLoader::register( 'TagsTableTag', JPATH_ADMINISTRATOR . '/components/com_tags/t
 class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_tag';
+	protected static $type_alias	=	'Tag';
 	protected static $table			=	'#__tags';
 	protected static $table_object	=	array( 'Tag', 'TagsTable' );
 	protected static $key			=	'id';

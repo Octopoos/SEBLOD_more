@@ -16,6 +16,7 @@ JLoader::register( 'UsersTableNote', JPATH_ADMINISTRATOR.'/components/com_users/
 class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_user_note';
+	protected static $type_alias	=	'UserNote';
 	protected static $table			=	'#__user_notes';
 	protected static $table_object	=	array( 'Note', 'UsersTable' );
 	protected static $key			=	'id';

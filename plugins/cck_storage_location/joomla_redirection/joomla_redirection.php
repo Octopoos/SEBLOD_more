@@ -16,6 +16,7 @@ JLoader::register('RedirectTableLink', JPATH_ADMINISTRATOR .'/components/com_red
 class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_redirection';
+	protected static $type_alias	=	'Redirection';
 	protected static $table			=	'#__redirect_links';
 	protected static $table_object	=	array( 'Link', 'RedirectTable' );
 	protected static $key			=	'id';

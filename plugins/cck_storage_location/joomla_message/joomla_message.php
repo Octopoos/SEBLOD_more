@@ -16,6 +16,7 @@ JLoader::register( 'MessagesTableMessage', JPATH_ADMINISTRATOR.'/components/com_
 class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_message';
+	protected static $type_alias	=	'Message';
 	protected static $table			=	'#__messages';
 	protected static $table_object	=	array( 'Message', 'MessagesTable' );
 	protected static $key			=	'message_id';

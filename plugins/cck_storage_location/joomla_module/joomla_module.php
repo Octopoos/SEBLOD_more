@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die;
 class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_module';
+	protected static $type_alias	=	'Module';
 	protected static $table			=	'#__modules';
 	protected static $table_object	=	array( 'Module', 'JTable' );
 	protected static $key			=	'id';
