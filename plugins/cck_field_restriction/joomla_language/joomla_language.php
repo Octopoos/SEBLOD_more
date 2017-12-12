@@ -48,7 +48,9 @@ class plgCCK_Field_RestrictionJoomla_Language extends JCckPluginRestriction
 			return;
 		}
 		
-		return true;
+		$restriction	=	parent::g_getRestriction( $field->restriction_options );
+
+		return self::_authorise( $restriction, $field, $config );
 	}
 	
 	// _authorise
