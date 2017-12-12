@@ -58,47 +58,11 @@ class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 			$id		=	$field->name;
 			$name	=	$field->name;
 		}
+		$form		=	'';
 		$value		=	'';
 
 		// Prepare
-		$app				=	JFactory::getApplication();
-		$class				=	( $field->css ) ? ' class="'.$field->css.'"' : '';
-		$form				=	'';
-		$clear_all			=	false;
-		$clear_all_js		=	'';
-		$field->children	=	self::_getChildren( $field, $config );
-		$submit				=	( isset( $config['submit'] ) && isset( $config['submit'] ) ) ? $config['submit'] : 'JCck.Core.submit';
-		
-		if ( count( $field->children ) ) {
-			foreach ( $field->children as $child ) {
-				$val		=	'';
-				$value		=	$app->input->get( $child->name, '', 'array' );
-				
-				if ( is_array( $value ) ) {
-					foreach ( $value as $v ) {
-						$t	=	$v;
-
-						if ( $child->options != '' && strpos( $child->options, '||' ) !== false ) {
-							$t		=	parent::g_getOptionText( $v, $child->options, $child->divider, $config );
-						}
-						if ( $v != '' ) {
-							$clear_all		=	true;
-							$clear_all_js	.=	'jQuery(\'#'.$child->name.'\').myClear(\''.$v.'\'); ';
-							$val			.=	'<a'.$class.' href="javascript:void(0);" onclick="jQuery(\'#'.$child->name.'\').myClear(\''.$v.'\'); '.$submit.'(\'search\');">'.$t.'</a>';
-						}
-					}
-				}
-				if ( $val != '' ) {
-					$form	.=	'<li>'.$child->label.JText::_( 'COM_CCK_PAIR_KEY_VALUE_SEPARATOR' ).$val.'</li>';
-				}
-			}
-		}
-		if ( $field->bool2 && $clear_all ) {
-			$form	=	'<li><a'.$class.' href="javascript:void(0);" onclick="'.$clear_all_js.$submit.'(\'search\');">'.JText::_( 'COM_CCK_CLEAR_FILTERS' ).'</a></li>'.$form;
-		}
-		if ( $form ) {
-			$form	=	'<ul class="inline">'.$form.'</ul>';
-		}
+		parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'id'=>$id, 'name'=>$name, 'clear_all'=>$field->bool2, 'child_names'=>$field->options ) );
 		
 		// Set
 		if ( ! $field->variation ) {
@@ -172,15 +136,93 @@ class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 	{
 		return parent::g_onCCK_FieldRenderForm( $field );
 	}
+
+	// -------- -------- -------- -------- -------- -------- -------- -------- // Special Events
 	
+	// onCCK_FieldBeforeRenderForm
+	public static function onCCK_FieldBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
+	{
+		$app				=	JFactory::getApplication();
+		$name				=	$process['name'];
+
+		$class				=	( $fields[$name]->css ) ? ' class="'.$fields[$name]->css.'"' : '';
+		$clear_all			=	false;
+		$clear_all_js		=	'';
+		$children			=	self::_getChildren( $process['child_names'], $config );
+		$form				=	'';
+		$submit				=	( isset( $config['submit'] ) && isset( $config['submit'] ) ) ? $config['submit'] : 'JCck.Core.submit';
+
+		if ( count( $children ) ) {
+			$doTranslation	=	$config['doTranslation'];
+
+			foreach ( $children as $child ) {
+				$val		=	'';
+				$value		=	$app->input->get( $child->name, '', 'array' );
+
+				if ( isset( $fields[$child->name] ) ) {
+					$value	=	$fields[$child->name]->value;
+
+					if ( $child->divider ) {
+						$value	=	explode( $child->divider, $value );
+					}
+					if ( !is_array( $value ) ) {
+						$value	=	array( 0=>$value );
+					}
+				}
+				if ( $doTranslation ) {
+					$config['doTranslation']	=	$child->bool8;
+				}
+				if ( is_array( $value ) ) {
+					foreach ( $value as $v ) {
+						$t	=	$v;
+						
+						if ( JCck::callFunc( 'plgCCK_Field'.$child->type, 'isFriendly' ) ) {
+							$t	=	JCck::callFunc_Array( 'plgCCK_Field'.$child->type, 'getTextFromOptions', array( $child, $v, $config ) );
+						}
+						if ( $v != '' ) {
+							$clear_all		=	true;
+							$clear_all_js	.=	'jQuery(\'#'.$child->name.'\').myClear(\''.$v.'\'); ';
+							$val			.=	'<a'.$class.' href="javascript:void(0);" onclick="jQuery(\'#'.$child->name.'\').myClear(\''.$v.'\'); '.$submit.'(\'search\');">'.$t.'</a>';
+						}
+					}
+				}
+				if ( $val != '' ) {
+					if ( $child->label ) {
+						if ( $child->label == 'clear' || $child->label == 'none' ) {
+							$child->label	=	'';
+						}
+						if ( $config['doTranslation'] ) {
+							if ( $child->label == '&nbsp;' ) {
+								$child->label	=	'Nbsp';
+							}
+							if ( trim( $child->label ) ) {
+								$child->label	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $child->label ) ) );
+							}
+						}	
+					}
+					$form	.=	'<li>'.$child->label.JText::_( 'COM_CCK_PAIR_KEY_VALUE_SEPARATOR' ).$val.'</li>';
+				}
+				$config['doTranslation']	=	$doTranslation;
+			}
+		}
+		if ( $process['clear_all'] && $clear_all ) {
+			$form	=	'<li><a'.$class.' href="javascript:void(0);" onclick="'.$clear_all_js.' '.$submit.'(\'search\');">'.JText::_( 'COM_CCK_PLG_SEARCH_BREADCRUMBS_ALL_RESULTS' ).'</a></li>'.$form;
+		}
+		if ( $form ) {
+			$form	=	'<ul>'.$form.'</ul>';
+		}
+
+		$fields[$name]->form	=	$form;
+	}
+
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff & Script
 	
 	// _getChildren
-	protected static function _getChildren( $parent, $config = array() )
+	protected static function _getChildren( $child_names, $config = array() )
 	{
-		$names	=	'"'.str_replace( '||', '","', $parent->options ).'"';
+		$names	=	'"'.str_replace( '||', '","', $child_names ).'"';
 		
-		$query	= 	'SELECT a.name, a.type, a.label, a.options, a.options2, a.divider'
+		$query	= 	'SELECT a.name, a.type, a.label, a.options, a.options2, a.divider, a.bool2, a.bool3, a.bool8'
 				.	' FROM #__cck_core_fields AS a'
 				.	' WHERE a.name IN ('.$names.') ORDER BY FIELD(name, '.$names. ')'
 				;
