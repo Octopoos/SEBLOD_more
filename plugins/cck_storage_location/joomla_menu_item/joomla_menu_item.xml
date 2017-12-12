@@ -53,4 +53,8 @@
 		<vars />
 		<view />
 	</cck_integration>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Joomla! Menu Item Object Plug-in Updates">http://update.seblod.com/plg_cck_storage_location_joomla_menu_item.xml</server>
+	</updateservers>
 </extension>
