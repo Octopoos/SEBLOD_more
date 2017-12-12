@@ -55,7 +55,9 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                 }
                 $items      =   JCckDatabase::loadObjectList( 'SELECT * FROM #__updates WHERE extension_id != 0 AND detailsurl LIKE "%'.$domain.'%" ORDER BY FIELD(type,"component","package","plugin"), element ASC' );
                 $lang       =   JFactory::getLanguage();
-                $extensions =   array();
+                $extensions =   array(
+                                    'pkg_cck'=>''
+                                );
                 if ( count( $items ) ) {
                     jimport( 'joomla.filesystem.file' );
                     
