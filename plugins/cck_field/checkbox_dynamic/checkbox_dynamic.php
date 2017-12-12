@@ -101,7 +101,27 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		$config['doTranslation']	=	$jtext;
 		/* tmp */
 	}
-	
+
+	// onCCK_FieldPrepareExport
+	public function onCCK_FieldPrepareExport( &$field, $value = '', &$config = array() )
+	{
+		if ( static::$type != $field->type ) {
+			return;
+		}
+
+		static $options	=	null;
+
+		if ( !is_string( $options ) ) {
+			$options		=	$field->options;
+		} else {
+			$field->options	=	$options;
+		}
+
+		self::onCCK_FieldPrepareContent( $field, $value, $config );
+
+		$field->output	=	$field->text;
+	}
+
 	// onCCK_FieldPrepareForm
 	public function onCCK_FieldPrepareForm( &$field, $value = '', &$config = array(), $inherit = array(), $return = false )
 	{
