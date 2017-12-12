@@ -25,7 +25,6 @@ $tag			=	$plg_params->get( 'item_tag_title', 'h2' );
 $class			=	$plg_params->get( 'item_class_title', '' );
 $class			=	$class ? ' class="'.$class.'"' : '';
 ?>
-
 <div>
 	<?php echo '<'.$tag.$class.'>'.$item->title.'</'.$tag.'>'; ?>
 	<?php echo JHtml::_( 'content.prepare', $item->description ); ?>
