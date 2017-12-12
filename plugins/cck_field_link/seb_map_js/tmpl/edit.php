@@ -18,6 +18,10 @@ JCckDev::initScript( 'link', $this->item );
     <ul class="adminformlist adminformlist-2cols">
         <?php
 		echo JCckDev::renderForm( 'more_google_map_zoom', '', $config, array( 'defaultvalue'=>'16', 'storage_field'=>'zoom' ) );		
+
+		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.JText::_( 'COM_CCK_GENERIC' ).')</span>' );
+		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Class', 'size'=>24, 'storage_field'=>'class' ) );
+		echo JCckDev::renderBlank();
         ?>
     </ul>
 </div>
