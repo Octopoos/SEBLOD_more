@@ -10,7 +10,7 @@
 
 defined( '_JEXEC' ) or die;
 
-echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Format', 'selectlabel'=>'Select', 'options'=>'International=international||EN=en||FR=fr||US=us', 'bool8'=>false, 'required'=>'required', 'storage_field'=>'region' ) );
+echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Format', 'selectlabel'=>'Use JText', 'options'=>'International=international||EN=en||FR=fr||US=us', 'bool8'=>false, 'storage_field'=>'region' ) );
 echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Time', 'defaultvalue'=>'0', 'selectlabel'=>'', 'storage_field'=>'time' ) );
 echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Separator', 'selectlabel'=>'Any', 'options'=>'-=-||.=.||/=/', 'bool8'=>false, 'storage_field'=>'separator' ) );
 echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Restriction', 'selectlabel'=>'None', 'options'=>'State is Future=isFuture', 'storage_field'=>'range' ) );
@@ -26,6 +26,7 @@ jQuery(document).ready(function($) {
 	if ($('#separator').val() != '') {
 		$('#alert').addClass('validate[required]').parent().find('span.star').html(' *');
 	}
+	$('#time').isVisibleWhen('region','international,en,fr,us');
 	$('#separator').isVisibleWhen('region','en,fr,us');
 	$('#range,#range_fieldname,#range_alert').isVisibleWhen('region','international');
 	$("div#layout").on("change", "#separator", function() {
