@@ -30,11 +30,11 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 		}
 		
 		$definition	=	self::_getDefinition( $field );
+
 		if ( !is_array( $definition ) ) {
 			return;
 		}
-		$validation	=	parent::g_onCCK_Field_ValidationPrepareForm( $field, $fieldId, $config, 'regex', $definition );
-		
+		$validation			=	parent::g_onCCK_Field_ValidationPrepareForm( $field, $fieldId, $config, 'regex', $definition );
 		$field->validate[]	=	'custom['.$validation->name.']';
 
 		// Date Range
@@ -81,11 +81,11 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 
 		if ( isset( $options->region ) && $options->region ) {
 			$region	=	$options->region;
+			$regex	=	self::$regexs[$region];
 		} else {
-			// todo: detection
-			return;
+			$region	=	'auto';
+			$regex	=	JText::_( 'COM_CCK_DATE_FORMAT_AUTO_REGEX' );
 		}
-		$regex	=	self::$regexs[$region];
 		
 		if ( isset( $options->separator ) && $options->separator && $region != 'international' ) {
 			$regex	=	str_replace( '[\/\-\.]', '\\'.$options->separator, $regex );
