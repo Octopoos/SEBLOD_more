@@ -70,4 +70,8 @@
 		<vars />
 		<view />
 	</cck_integration>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Joomla! Tag Object Plug-in Updates">http://update.seblod.com/plg_cck_storage_location_joomla_tag.xml</server>
+	</updateservers>
 </extension>
