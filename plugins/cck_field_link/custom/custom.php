@@ -221,9 +221,8 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 			}
 		}
 		if ( $process['target_fieldname'] != '' ) {
-			$link_target				=	( isset( $fields[$process['target_fieldname']] ) ) ? $fields[$process['target_fieldname']]->link_target : '';
+			$link_target				=	( isset( $fields[$process['target_fieldname']] ) ) ? $fields[$process['target_fieldname']]->value : '';
 			if ( $link_target != '' ) {
-				$fields[$name]->html		=	$link_target;
 				$fields[$name]->html		=	str_replace( 'target="_blank"', 'target="'.$link_target.'"', $fields[$name]->html );
 				if ( isset( $fields[$name]->typo ) ) {
 					$fields[$name]->typo	=	str_replace( 'target="_blank"', 'target="'.$link_target.'"', $fields[$name]->typo );
