@@ -34,10 +34,28 @@ class plgCCK_Field_LiveUrl extends JCckPluginLive
 			$parts	=	$options->get( 'parts', 'scheme,user,pass,host,port,path,query,fragment' );
 			$parts	=	explode( ',', $parts );
 			$live	=	JUri::getInstance()->toString( $parts );
+		} elseif ( $method == 'path' ) {
+			$path	=	JUri::getInstance()->getPath();
+
+			if ( $path != '' && $path[0] == '/' ) {
+				$path	=	substr( $path, 1 );
+			}
+			$path	=	explode( '/', $path );
+			$parts	=	$options->get( 'segments', '' );
+			$parts	=	explode( ',', $parts );
+			$live	=	array();
+
+			foreach ( $parts as $part ) {
+				$k	=	$part - 1;
+				if ( isset( $path[$k] ) && $path[$k] ) {
+					$live[]	=	$path[$k];
+				}
+			}
+			$live	=	implode( '/', $live );
 		} else {
 			$live	=	JUri::$method();
 		}
-		
+
 		// Set
 		$value	=	(string)$live;
 	}

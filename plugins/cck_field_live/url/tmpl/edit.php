@@ -19,6 +19,7 @@ JCckDev::initScript( 'live', $this->item );
         <?php
 		echo JCckDev::renderForm( 'core_uri', '', $config );
 		echo JCckDev::renderForm( 'core_uri_parts', '', $config );
+		echo JCckDev::renderForm( 'core_uri_parts', '', $config, array( 'label'=>'Segments', 'options'=>'1=1||2=2||3=3', 'storage_field'=>'segments' ) );
 		?>
     </ul>
 </div>
@@ -26,5 +27,6 @@ JCckDev::initScript( 'live', $this->item );
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	$('#parts').isVisibleWhen('uri','custom');
+	$('#segments').isVisibleWhen('uri','path');
 });
 </script>
