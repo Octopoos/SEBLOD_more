@@ -35,7 +35,12 @@ class plgCCK_Field_LinkSeb_Map_Js extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
+		// Prepare
+		$link_class	=	$link->get( 'class', '' );
+
+		// Set
 		$field->link			=	'javascript: void(0);';
+		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
 		$field->link_onclick	=	'JCck.More.SebMap.openMarker('.(int)$config['pk'].','.(int)$link->get( 'zoom', '16' ).'); return false;';
 	}
 }
