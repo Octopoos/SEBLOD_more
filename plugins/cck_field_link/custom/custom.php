@@ -108,6 +108,9 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				if ( count( $matches[1] ) ) {
 					parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'matches'=>$matches, 'itemId'=>$itemId, 'target_fieldname'=>( $link_target == '-1' ? $link->get( 'target_fieldname', '' ) : '' ) ) );
 				}
+			} elseif ( $link_target == '-1' ) {
+				$matches	=	array();
+				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'matches'=>$matches, 'itemId'=>$itemId, 'target_fieldname'=>( $link_target == '-1' ? $link->get( 'target_fieldname', '' ) : '' ) ) );
 			}
 			if ( $custom != '' && strpos( $custom, '$uri->get' ) !== false ) {
 				$matches	=	'';
@@ -190,7 +193,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 	{
 		$name	=	$process['name'];
 		
-		if ( count( $process['matches'][1] ) ) {
+		if ( isset( $process['matches'][1] ) && count( $process['matches'][1] ) ) {
 			foreach ( $process['matches'][1] as $k=>$v ) {
 				$fieldname		=	$process['matches'][2][$k];
 				$target			=	strtolower( $v );
@@ -215,6 +218,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				}
 				$fields[$name]->link        =	str_replace( $process['matches'][0][$k], $value, $fields[$name]->link );
 				$fields[$name]->html		=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->html );
+				
 				if ( isset( $fields[$name]->typo ) ) {
 					$fields[$name]->typo	=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->typo );
 				}
@@ -222,10 +226,33 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 		}
 		if ( $process['target_fieldname'] != '' ) {
 			$link_target				=	( isset( $fields[$process['target_fieldname']] ) ) ? $fields[$process['target_fieldname']]->value : '';
-			if ( $link_target != '' ) {
+
+			if ( $link_target != '' && $link_target != '_blank' ) {
+
+				if ( $fields[$name]->link_rel ) {
+					$rel	=	trim( JCck::getConfig_Param( 'link_rel_blank', 'noopener noreferrer' ) );
+					$rel	=	explode( ' ', $rel );
+
+					if ( count( $rel ) ) {
+						$link_rel	=	explode( ' ', $fields[$name]->link_rel );
+						$rel		=	array_diff( $link_rel, $rel );
+						$rel		=	implode( ' ', $rel );
+						$link_rel	=	trim( $rel );
+						$link_rel	=	$link_rel ? ' rel="'.$link_rel.'"' : '';
+					}
+				}
 				$fields[$name]->html		=	str_replace( 'target="_blank"', 'target="'.$link_target.'"', $fields[$name]->html );
+
+				if ( isset( $link_rel ) ) {
+					$fields[$name]->html	=	str_replace( ' rel="'.$fields[$name]->link_rel.'"', $link_rel, $fields[$name]->html );
+				}
+
 				if ( isset( $fields[$name]->typo ) ) {
 					$fields[$name]->typo	=	str_replace( 'target="_blank"', 'target="'.$link_target.'"', $fields[$name]->typo );
+
+					if ( isset( $link_rel ) ) {
+						$fields[$name]->typo	=	str_replace( ' rel="'.$fields[$name]->link_rel.'"', $link_rel, $fields[$name]->typo );
+					}
 				}
 			}
 		}
