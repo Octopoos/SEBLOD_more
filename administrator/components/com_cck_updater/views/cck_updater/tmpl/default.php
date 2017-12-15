@@ -100,7 +100,7 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                         ?>
                         <tr class="row<?php echo $i % 2; ?> half">
                             <td class="center hidden-phone"><?php echo JHtml::_( 'grid.id', $i, $item->update_id ); ?></td>
-                            <td><?php echo '<a href="'.$item->infourl.'" target="_blank">'.$this->escape( $item->name ).'</a>'; ?></td>
+                            <td><?php echo '<a href="'.$item->infourl.'" target="_blank" rel="noopener noreferrer">'.$this->escape( $item->name ).'</a>'; ?></td>
                             <td class="center hidden-phone"><?php echo ucfirst( $item->type ); ?></td>
                             <td class="center"><?php echo $item->version; ?></td>
                         </tr>
