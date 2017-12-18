@@ -35,9 +35,9 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	protected static $status		=	'';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	''; //TODO
+	protected static $context		=	''; /* TODO#SEBLOD: */
 	protected static $context2		=	'';
-	protected static $contexts		=	array(); //TODO
+	protected static $contexts		=	array(); /* TODO#SEBLOD: */
 	protected static $error			=	false;
 	protected static $events		=	array(
 											'afterDelete'=>'onContentAfterDelete',
@@ -243,8 +243,8 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 			$config['pk']	=	self::$pk;
 		}
 		
-		// $config['author']	=	$table->{self::$author}; // TODO
-		// $config['parent']	=	$table->{self::$parent}; // TODO
+		// $config['author']	=	$table->{self::$author}; /* TODO#SEBLOD: */
+		// $config['parent']	=	$table->{self::$parent}; /* TODO#SEBLOD: */
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
 	}

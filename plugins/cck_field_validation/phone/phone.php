@@ -53,7 +53,7 @@ class plgCCK_Field_ValidationPhone extends JCckPluginValidation
 		if ( isset( $options->region ) && $options->region ) {
 			$region	=	$options->region;
 		} else {
-			// todo: detection
+			/* TODO#SEBLOD: detection */
 			return;
 		}
 		

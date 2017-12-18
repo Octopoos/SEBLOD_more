@@ -63,7 +63,7 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 			$config['validation'][$name]	=	$rule;
 			$field->validate[]				=	'isFuture['.$name.']';
 		} else {
-			/* TODO */
+			/* TODO#SEBLOD: */
 		}
 	}
 	

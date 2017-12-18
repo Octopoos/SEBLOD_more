@@ -178,7 +178,7 @@ class plgCCK_Storage_LocationCck_Site_Exporter extends plgCCK_Storage_LocationCc
 							}
 						} elseif ( $field->storage != 'none' ) {
 							if ( !isset( $tables[$field->storage_table][$item->pk]->{$field->storage_field} ) ) {
-								$tables[$field->storage_table][$item->pk]->{$field->storage_field}	=	array();	// TODO
+								$tables[$field->storage_table][$item->pk]->{$field->storage_field}	=	array(); /* TODO#SEBLOD: */
 							}
 							// DISPATCH --> EXPORT
 							if ( $config['prepare_output'] ) {
@@ -209,9 +209,7 @@ class plgCCK_Storage_LocationCck_Site_Exporter extends plgCCK_Storage_LocationCc
 					}
 				}
 
-				/*
-				TODO: beforeExport
-				*/
+				/* TODO#SEBLOD: beforeExport */
 
 				$event	=	'onCckPostBeforeExport';
 				if ( isset( $config['processing'][$event] ) ) {

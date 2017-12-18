@@ -413,9 +413,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 				}
 			}
 
-			/*
-			TODO: beforeImport
-			*/
+			/* TODO#SEBLOD: beforeImport */
 
 			$event	=	'onCckPostBeforeImport';
 			if ( isset( $processing[$event] ) ) {
@@ -458,9 +456,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 					}
 				}
 
-				/*
-				TODO: afterImport
-				*/
+				/* TODO: afterImport */
 
 				$event	=	'onCckPostAfterImport';
 				if ( isset( $processing[$event] ) ) {

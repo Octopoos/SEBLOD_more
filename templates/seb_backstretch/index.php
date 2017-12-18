@@ -16,7 +16,7 @@ $cck	=	CCK_Rendering::getInstance( $this->template );
 if ( $cck->initialize() === false ) { return; }
 
 // -- Prepare
-$backstretch_id	=	$cck->id; //todo
+$backstretch_id	=	$cck->id; /* TODO#SEBLOD: id */
 $duration		=	$cck->getStyleParam( 'backstretch_duration', 5000 );
 $fade			=	$cck->getStyleParam( 'backstretch_fade', 0 );
 $fieldnames		=	$cck->getFields( 'element', '', false );

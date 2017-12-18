@@ -50,7 +50,7 @@ class plgCCK_Field_ValidationCheckbox extends JCckPluginValidation
 	// onCCK_Field_ValidationPrepareStore
 	public static function onCCK_Field_ValidationPrepareStore( &$field, $name, $value, &$config )
 	{
-		// todo
+		/* TODO#SEBLOD: */
 	}
 	
 	// _validation

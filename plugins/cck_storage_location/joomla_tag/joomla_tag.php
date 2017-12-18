@@ -82,11 +82,11 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage			=	self::_getTable( $pk );
-			// TODO
+			/* TODO#SEBLOD: */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareContent( $table, $pk );
 			if ( ! isset( $config['storages'][self::$table] ) ) {
-				// TODO
+				/* TODO#SEBLOD: */
 			}
 		}
 	}
@@ -104,7 +104,7 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage			=	self::_getTable( $pk );
-			// TODO
+			/* TODO#SEBLOD: */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
@@ -138,7 +138,7 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	// onCCK_Storage_LocationPrepareList
 	public static function onCCK_Storage_LocationPrepareList( &$params )
 	{
-		// TODO
+		/* TODO#SEBLOD: */
 	}
 
 	// onCCK_Storage_LocationPrepareOrder
@@ -289,7 +289,7 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
-		// TODO
+		/* TODO#SEBLOD: */
 		$table	=	JTable::getInstance( 'Tag', 'TagsTable' );
 		
 		if ( $pk > 0 ) {
@@ -304,9 +304,9 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	{
 		if ( ! $table->{self::$key} ) {
 			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
-			// TODO
+			/* TODO#SEBLOD: */
 		}
-		// TODO
+		/* TODO#SEBLOD: */
 		$table->{self::$custom}	=	'';
 	}
 	
@@ -314,9 +314,9 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 	protected function _completeTable( &$table, &$data, &$config )
 	{
 		if ( ! $table->{self::$key} ) {
-			// TODO
+			/* TODO#SEBLOD: */
 		}
-		// TODO
+		/* TODO#SEBLOD: */
 		
 		parent::g_completeTable( $table, self::$custom, $config );
 	}

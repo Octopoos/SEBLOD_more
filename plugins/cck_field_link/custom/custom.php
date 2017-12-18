@@ -88,7 +88,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 					$f->link_title		=	'';
 				}
 			}
-			$field->link		=	'#';	//todo
+			$field->link		=	'#'; /* TODO#SEBLOD: */
 		} else {
 			// Prepare
 			if ( $custom != '#' && strpos( $custom, '*' ) !== false ) {

@@ -62,7 +62,7 @@ class plgCCK_Field_ValidationZipcode extends JCckPluginValidation
 		if ( isset( $options->region ) && $options->region ) {
 			$region	=	$options->region;
 		} else {
-			// todo: detection
+			/* TODO#SEBLOD: detection */
 			return;
 		}
 		

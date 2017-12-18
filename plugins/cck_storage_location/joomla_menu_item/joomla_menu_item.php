@@ -138,7 +138,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 	// onCCK_Storage_LocationPrepareList
 	public static function onCCK_Storage_LocationPrepareList( &$params )
 	{
-		// TODO
+		/* TODO#SEBLOD: */
 	}
 
 	// onCCK_Storage_LocationPrepareOrder

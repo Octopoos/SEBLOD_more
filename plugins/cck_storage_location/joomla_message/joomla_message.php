@@ -295,7 +295,7 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 			$config['pk']	=	self::$pk;
 		}
 		
-		// todo:: sendMail cf model?
+		/* TODO#SEBLOD: sendMail cf model? */
 		
 		$config['author']	=	$table->user_id_from;
 		

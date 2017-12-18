@@ -124,7 +124,7 @@ class plgCCK_FieldJoomla_Article extends JCckPluginField
 					$options2->loadString( $field->options2 );
 					$options3_json	=	$options2->get( 'child_link_options' );
 					$options3		=	new JRegistry;
-					$options3->loadString( $options3_json ); // todo >> href
+					$options3->loadString( $options3_json ); /* TODO#SEBLOD: >> href */
 					$properties		=	array( 'table', 'access', 'status', 'to_route' );
 					$properties		=	JCck::callFunc( 'plgCCK_Storage_Location'.$location, 'getStaticProperties', $properties );
 					$and			=	( $properties['status'] ) ? ' AND a.'.$properties['status'].' = 1' : '';

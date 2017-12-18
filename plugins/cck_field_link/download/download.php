@@ -72,7 +72,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 
 				$xi++;
 			}
-			$field->link		=	'#';	//todo
+			$field->link		=	'#'; /* TODO#SEBLOD: */
 		} else {
 			$collection			=	'';
 			$field_name			=	( $file_fieldname ) ? $file_fieldname : $field->name;

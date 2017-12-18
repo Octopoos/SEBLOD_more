@@ -74,11 +74,11 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage			=	self::_getTable( $pk );
-			// TODO
+			/* TODO#SEBLOD: */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareContent( $table, $pk );
 			if ( ! isset( $config['storages'][self::$table] ) ) {
-				// TODO
+				/* TODO#SEBLOD: */
 			}
 		}
 	}
@@ -114,7 +114,7 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage			=	self::_getTable( $pk );
-			// TODO
+			/* TODO#SEBLOD: */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
@@ -147,7 +147,7 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 	// onCCK_Storage_LocationPrepareList
 	public static function onCCK_Storage_LocationPrepareList( &$params )
 	{
-		// TODO
+		/* TODO#SEBLOD: */
 	}
 
 	// onCCK_Storage_LocationPrepareOrder
