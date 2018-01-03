@@ -35,9 +35,10 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
-		$app		=	JFactory::getApplication();
-		$itemId		=	$link->get( 'itemid', '' );
-		$custom		=	$link->get( 'custom', '' );
+		$app			=	JFactory::getApplication();
+		$custom			=	$link->get( 'custom', '' );
+		$itemId			=	$link->get( 'itemid', '' );
+		$redirection	=	$link->get( 'redirection', '' );
 		
 		// Prepare
 		if ( !$itemId ) {
@@ -55,9 +56,15 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		
 		// Set
 		$field->link		=	JRoute::_( 'index.php?Itemid='.$itemId );
+		
 		if ( $field->link ) {
 			if ( $vars ) {
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
+			}
+			if ( $redirection == 'current' ) {
+				$uri			=	JUri::getInstance()->toString();
+				$return			=	base64_encode( $uri );
+				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&return='.$return : '?return='.$return;
 			}
 			if ( $custom ) {
 				if ( $custom[0] == '#' ) {
@@ -67,6 +74,7 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 				}				
 			}
 		}
+
 		$field->link_attributes	=	$link_attr ? $link_attr : ( isset( $field->link_attributes ) ? $field->link_attributes : '' );
 		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
 		$field->link_rel		=	$link_rel ? $link_rel : ( isset( $field->link_rel ) ? $field->link_rel : '' );
