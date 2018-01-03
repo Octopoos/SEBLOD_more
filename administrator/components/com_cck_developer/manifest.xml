@@ -13,13 +13,6 @@
 	<scriptfile>script.php</scriptfile>
 	
 	<files folder="site">
-		<folder>assets</folder>
-		<folder>helpers</folder>
-		<folder>models</folder>
-		<folder>views</folder>
-		
-		<filename>controller.php</filename>
-		<filename>cck_developer.php</filename>
 		<filename>index.html</filename>
 	</files>
 	
