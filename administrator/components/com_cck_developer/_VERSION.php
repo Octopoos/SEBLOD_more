@@ -13,9 +13,9 @@ defined( '_JEXEC' ) or die;
 // JCckDeveloperVersion
 final class JCckDeveloperVersion
 {
-	public $RELEASE = '1.2';
+	public $RELEASE = '1.3';
 	
-	public $DEV_LEVEL = '7';
+	public $DEV_LEVEL = '0';
 
 	// getShortVersion
 	public function getShortVersion()
