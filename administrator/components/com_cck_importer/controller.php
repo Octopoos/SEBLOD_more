@@ -61,8 +61,8 @@ class CCK_ImporterController extends JControllerLegacy
 		}
 	}
 
-	// importFromFileByAjax
-	public function importFromFileByAjax()
+	// importFromFileAjax
+	public function importFromFileAjax()
 	{
 		JSession::checkToken() or jexit( JText::_( 'JINVALID_TOKEN' ) );
 		

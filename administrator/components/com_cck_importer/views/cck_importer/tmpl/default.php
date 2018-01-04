@@ -84,7 +84,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 	            <ul class="adminformlist">
 					<?php
 					if ( $ajax ) {
-						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFileByAjax\');"';
+						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFileAjax\');"';
 					} else {
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFile\');"';
 					}
@@ -123,7 +123,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 	JCck.Dev = {
 		ajaxStep:<?php echo $ajaxStep; ?>,
 		ajaxTotal:<?php echo $ajaxTotal; ?>,
-		token:"<?php echo JSession::getFormToken(); ?>=1",
+		token:Joomla.getOptions("csrf.token")+"=1",
 		ajaxLoopRequest: function(uri, start, end, len, total) {
 			$.ajax({
 				data: JCck.Dev.token,
@@ -177,7 +177,9 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			var loading = "<img align='center' src='<?php echo $ajax_load; ?>' alt='' />"; 
 			$.ajax({
 				cache: false,
-				url: 'index.php?option=com_cck&task=deleteSessionAjax&format=raw&sid='+sid+"&"+JCck.Dev.token,
+				data: "sid="+sid+"&"+JCck.Dev.token,
+				type: "POST",
+				url: "index.php?option=com_cck&task=deleteSessionAjax&format=raw",
 				beforeSend:function(){ $("#loading").html(loading); },
 				success: function(){ $("#loading").html(""); document.location.reload(); }
 			});
@@ -194,9 +196,9 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			var type = $("#options_storage_location").val();
 			$.ajax({
 				cache: false,
-				data: "data="+encoded,
+				data: "data="+encoded+"&extension=com_cck_importer&folder=1&type="+type+"&"+JCck.Dev.token,
 				type: "POST",
-				url: 'index.php?option=com_cck&task=saveSessionAjax&format=raw&extension=com_cck_importer&folder=1&type='+type+"&"+JCck.Dev.token,
+				url: "index.php?option=com_cck&task=saveSessionAjax&format=raw",
 				beforeSend:function(){ $("#loading").html(loading); },
 				success: function(){ $("#loading").html(""); document.location.reload(); }
 			});
@@ -273,7 +275,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		$('#options_content_type_new').isVisibleWhen('options_content_type','-1',false);
 		/* Ajax::start */
 		if (JCck.Dev.ajaxTotal > 0) {
-			var uri = "index.php?option=com_cck_importer&task=importFromFileByAjax&format=raw";
+			var uri = "index.php?option=com_cck_importer&task=importFromFileAjax&format=raw";
 			JCck.Dev.ajaxLoopRequest(uri, 0, JCck.Dev.ajaxStep, JCck.Dev.ajaxStep, JCck.Dev.ajaxTotal);
 		} else {
 			JCck.Dev.ajaxLayer("cck_importer", "default2", "#layer", "&ajax_type="+$("#options_storage_location").val());
