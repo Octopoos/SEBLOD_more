@@ -69,7 +69,8 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 		}
 
 		$uri		=	JUri::getInstance()->toString();
-		$pre_task	=	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\'<input type="hidden" name="return" value="'.base64_encode( $uri ).'">\');' );
+		$pre_task	=	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\'<input type="hidden" name="return" value="'.base64_encode( $uri ).'">\');' )
+					.	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\''.JHtml::_( 'form.token' ).'\');' );
 
 		// $field->onclick	=	'';
 		$field->link		=	'javascript: '.$pre_task.'JCck.Core.submitTask(\''.$task.'\','.$task_id.',\'cb'.($i - 1).'\',\''.$config['formId'].'\');';
