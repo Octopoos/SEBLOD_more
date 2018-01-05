@@ -50,7 +50,7 @@ class CCK_DeveloperModelCCK_Developer extends JModelLegacy
 		$output_path	=	( $output == 2 && $output_path != '' && JFolder::exists( $output_path ) ) ? $output_path : ( ( $output == 1 && $output_path != ''  ) ? JPATH_SITE.'/'.$output_path : $tmp_path );
 		
 		if ( $name && $type ) {
-			JFolder::copy( JPATH_SITE.'/libraries/cck/development/plugins/plg_'.$type, $root );
+			JFolder::copy( JPATH_ADMINISTRATOR.'/components/com_cck_developer/install/development/plugins/plg_'.$type, $root );
 			
 			$files	=	JFolder::files( $root, '.', true, true );
 			if ( count( $files ) ) {
