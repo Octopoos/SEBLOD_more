@@ -16,7 +16,7 @@ jimport( 'joomla.filesystem.file' );
 class CCK_ImporterModelCCK_Importer extends JModelLegacy
 {
 	// importFromFile
-	function importFromFile( $params, &$log )
+	public function importFromFile( $params, &$log )
 	{
 		ini_set( 'memory_limit', '512M' );
 		set_time_limit( 0 );

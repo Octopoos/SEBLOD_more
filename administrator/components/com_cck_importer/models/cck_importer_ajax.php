@@ -16,7 +16,7 @@ jimport( 'joomla.filesystem.file' );
 class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 {
 	// debugAjax
-	function debugAjax( $text = '' )
+	protected function debugAjax( $text = '' )
 	{
 		/*
 		$table				=	JCckTable::getInstance( '#__cck_abc' );
@@ -27,7 +27,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 	}
 
 	// importFromFile_preflight
-	function importFromFile_preflight( $session )
+	protected function importFromFile_preflight( $session )
 	{
 		set_time_limit( 60 );
 		
@@ -45,7 +45,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 	}
 
 	// importFromFile_start
-	function importFromFile_start( &$session, $params )
+	public function importFromFile_start( &$session, $params )
 	{
 		// $this->debugAjax( 'start' );
 		// #
@@ -346,7 +346,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 	}
 
 	// importFromFile_continue
-	function importFromFile_process( &$session, $start, $end )
+	public function importFromFile_process( &$session, $start, $end )
 	{
 		// $this->debugAjax('process from '.$start.' to '.$end);
 		// #
@@ -546,7 +546,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 	}
 
 	// importFromFile_end
-	function importFromFile_end( &$session, $params )
+	public function importFromFile_end( &$session, $params )
 	{
 		// $this->debugAjax('end');
 		// #

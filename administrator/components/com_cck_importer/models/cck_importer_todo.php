@@ -16,7 +16,7 @@ jimport( 'joomla.filesystem.file' );
 class CCK_ImporterModelCCK_Importer_Todo extends JModelLegacy
 {
 	// importFromFile
-	function importFromFile( $params, &$log )
+	public function importFromFile( $params, &$log )
 	{
 		// -------- -------- -------- !!
 		// -------- -------- --------
