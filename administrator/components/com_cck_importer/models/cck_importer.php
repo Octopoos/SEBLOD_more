@@ -40,7 +40,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			$session['options']['key_table']	=	$key_field->storage_table;
 		}
 		$values				=	$app->input->get( 'values', array(), 'array' );
-		$file				=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', NULL, 'files', 'array' ) );
+		$file				=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', null, 'files', 'array' ) );
 		$storage			=	$session['options']['storage'];
 		$storage_location	=	$session['options']['storage_location'];
 		$output				=	Helper_Output::init( $storage_location, 'csv', $params );

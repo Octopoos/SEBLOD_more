@@ -31,7 +31,7 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 	// onCCK_FieldConstruct_SearchSearch
 	public static function onCCK_FieldConstruct_SearchSearch( &$field, $style, $data = array(), &$config = array() )
 	{
-		$data['validation']	=	NULL;
+		$data['validation']	=	null;
 		
 		parent::onCCK_FieldConstruct_SearchSearch( $field, $style, $data, $config );
 	}

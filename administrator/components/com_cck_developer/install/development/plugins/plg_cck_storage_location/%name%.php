@@ -280,7 +280,7 @@ class plgCCK_Storage_Location%class% extends JCckPluginLocation
 	// -------- -------- -------- -------- -------- -------- -------- -------- // SEF
 
 	// buildRoute
-	public static function buildRoute( &$query, &$segments, $config, $menuItem = NULL )
+	public static function buildRoute( &$query, &$segments, $config, $menuItem = null )
 	{
 	}
 	

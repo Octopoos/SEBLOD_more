@@ -53,7 +53,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$this->importFromFile_preflight( $session );
 
 		$app									=	JFactory::getApplication();
-		$file									=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', NULL, 'files', 'array' ) );
+		$file									=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', null, 'files', 'array' ) );
 		$session['options']						=	$app->input->get( 'options', array(), 'array' );
 
 		$session['options']['key']				=	( isset( $session['options']['key'] ) ) ? $session['options']['key'] : '';

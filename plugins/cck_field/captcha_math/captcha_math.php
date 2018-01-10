@@ -37,7 +37,7 @@ class plgCCK_FieldCaptcha_Math extends JCckPluginField
 	// onCCK_FieldConstruct_SearchSearch
 	public static function onCCK_FieldConstruct_SearchSearch( &$field, $style, $data = array(), &$config = array() )
 	{
-		$data['match_mode']	=	NULL;
+		$data['match_mode']	=	null;
 
 		parent::onCCK_FieldConstruct_SearchSearch( $field, $style, $data, $config );
 	}
