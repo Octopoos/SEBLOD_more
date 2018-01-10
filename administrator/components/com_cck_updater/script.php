@@ -18,31 +18,31 @@ class com_cck_updaterInstallerScript extends JCckInstallerScriptComponent
 	protected $cck_name		=	'cck_updater';
 	
 	// install
-	function install( $parent )
+	public function install( $parent )
 	{
 		parent::install( $parent );
 	}
 	
 	// uninstall
-	function uninstall( $parent )
+	public function uninstall( $parent )
 	{
 		parent::uninstall( $parent );
 	}
 	
 	// update
-	function update( $parent )
+	public function update( $parent )
 	{
 		parent::update( $parent );
 	}
 	
 	// preflight
-	function preflight( $type, $parent )
+	public function preflight( $type, $parent )
 	{
 		parent::preflight( $type, $parent );
 	}
 	
 	// postflight
-	function postflight( $type, $parent )
+	public function postflight( $type, $parent )
 	{
 		$db		=	JFactory::getDbo();
 		
