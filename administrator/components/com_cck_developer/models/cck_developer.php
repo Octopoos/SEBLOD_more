@@ -16,7 +16,7 @@ jimport( 'cck.base.install.export' );
 class CCK_DeveloperModelCCK_Developer extends JModelLegacy
 {
 	// createPlugin
-	function createPlugin( $params )
+	public function createPlugin( $params )
 	{
 		set_time_limit( 0 );
 		
