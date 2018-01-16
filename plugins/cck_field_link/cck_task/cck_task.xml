@@ -40,4 +40,8 @@
 			</fieldset>
 		</fields>
 	</config>
+
+	<updateservers>
+		<server type="extension" priority="1" name="SEBLOD Task Link Plug-in Updates">http://update.seblod.com/plg_cck_field_link_cck_task.xml</server>
+	</updateservers>
 </extension>
