@@ -1,7 +1,7 @@
 <?php
 /**
-* @version 			SEBLOD 3.x More
-* @package			SEBLOD (App Builder & CCK) // SEBLOD nano (Form Builder)
+* @version 			SEBLOD eCommerce 1.x
+* @package			SEBLOD eCommerce Add-on for SEBLOD 3.x
 * @url				https://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
 * @copyright		Copyright (C) 2009 - 2017 SEBLOD. All Rights Reserved.
