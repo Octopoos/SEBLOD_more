@@ -33,6 +33,7 @@
 		<fields name="params" addfieldpath="/libraries/cck/construction/field">
 			<fieldset name="basic">
 				<field name="api_key" type="text" default="" label="PLG_CCK_FIELD_ADDRESS_TO_COORDINATES_API_KEY" description="PLG_CCK_FIELD_ADDRESS_TO_COORDINATES_API_KEY_DESC" class="inputbox" />
+				<field name="api_key_alt" type="text" default="" label="PLG_CCK_FIELD_ADDRESS_TO_COORDINATES_API_KEY_ALT" description="PLG_CCK_FIELD_ADDRESS_TO_COORDINATES_API_KEY_ALT_DESC" class="inputbox" />
 			</fieldset>
 			
 			<fieldset name="advanced">

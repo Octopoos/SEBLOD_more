@@ -139,7 +139,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			$options2	=	new JRegistry( $field->options2 );
 			$latitude	=	$options2->get( 'latitude' );
 			$longitude	=	$options2->get( 'longitude' );
-			parent::g_addProcess( 'beforeStore', self::$type, $config, array( 'name'=>$name, 'latitude'=>$latitude, 'longitude'=>$longitude, 'fieldnames'=>$fieldnames ) );
+			parent::g_addProcess( 'beforeStore', self::$type, $config, array( 'api_key'=>trim( $this->params->get( 'api_key_alt', $this->params->get( 'api_key', '' ) ) ), 'name'=>$name, 'latitude'=>$latitude, 'longitude'=>$longitude, 'fieldnames'=>$fieldnames ) );
 		}
 
 		// Set or Return
@@ -170,6 +170,11 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 	public static function onCCK_FieldBeforeStore( $process, &$fields, &$storages, &$config = array() )
 	{
 		$map		=	new JGoogleEmbedMaps();
+
+		if ( isset( $process['api_key'] ) && $process['api_key'] ) {
+			$map->setKey( $process['api_key'] );
+		}
+
 		$address	=	'';
 		if ( count( $process['fieldnames'] ) && $process['latitude'] && $process['longitude'] ) {
 			foreach ( $process['fieldnames'] as $name ) {
