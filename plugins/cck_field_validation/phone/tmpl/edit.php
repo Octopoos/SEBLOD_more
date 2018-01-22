@@ -10,5 +10,5 @@
 
 defined( '_JEXEC' ) or die;
 
-echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Format', 'selectlabel'=>'Select', 'options'=>'International=international||FR=fr||UK=uk||US=us', 'bool8'=>false, 'required'=>'required', 'storage_field'=>'region' ), array(), 'w100' );
+echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Format', 'selectlabel'=>'Select', 'options'=>'International=international||FR=fr||UA=ua||UK=uk||US=us', 'bool8'=>false, 'required'=>'required', 'storage_field'=>'region' ), array(), 'w100' );
 ?>
