@@ -36,15 +36,16 @@ class plgCCK_Field_LinkJoomla_Print extends JCckPluginLink
 	protected static function _link( $link, &$field, &$config )
 	{	
 		// Init
-		$link_class		=	$link->get( 'class', '' );
+		$href		=	JUri::current();
+		$href		.=	( strpos( $href, '?' ) !== false ) ? '&' : '?';
+		$href		.=	'tmpl=component&print=1';
+		$link_class	=	$link->get( 'class', '' );
 		
 		// Set
-		$field->link			=	JUri::current();
-		$field->link			.=	( strpos( $field->link, '?' ) !== false ) ? '&' : '?';
-		$field->link			.=	'tmpl=component&print=1';
+		$field->link			=	'javascript: void(0);';
 		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
 		$field->link_rel		=	'nofollow';
-		$field->link_onclick	=	'window.open(\''.$field->link.'\',\'win2\',\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\'); return false;';
+		$field->link_onclick	=	'window.open(\''.$href.'\',\'win2\',\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\'); return false;';
 	}
 }
 ?>
