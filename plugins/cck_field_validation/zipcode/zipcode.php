@@ -24,6 +24,7 @@ class plgCCK_Field_ValidationZipcode extends JCckPluginValidation
 										   'jp'=>'/^\d{3}-\d{4}$/',
 										   'nl'=>'/^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/',
 										   'ru'=>'/^[0-9]{6}/',
+										   'ua'=>'/^[0-9]{5}/',
 										   'uk'=>'/^([A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2})*$/',
 										   'us'=>'/^([0-9]{5}(?:-[0-9]{4})?)*$/',
 										   'za'=>'/^([0-9]){4}$/'
