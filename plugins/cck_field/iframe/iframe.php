@@ -45,8 +45,7 @@ class plgCCK_FieldIframe extends JCckPluginField
 		$variable	=	isset( $options2['variable'] ) ? $options2['variable'] : '';
 		$var		=	'';
 		if ( @$value != '' ) {
-			$v_int = strpos( $value, 'http://' );
-			if ( $v_int !== 0 ) {
+			if ( strpos( $value, 'https://' ) === false && strpos( $value, 'http://' ) === false ) {
 				$value	=	'http://'.$value;
 			}
 			if ( $full_var ) {
