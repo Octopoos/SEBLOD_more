@@ -14,24 +14,7 @@ defined( '_JEXEC' ) or die;
 class CCK_DeveloperController extends JControllerLegacy
 {
 	protected $default_view	=	'cck_developer';
-	
-	// display
-	public function display( $cachable = false, $urlparams = false )
-	{
-		$app	=	JFactory::getApplication();
-		$id		=	$app->input->getInt( 'id' );
-		$layout	=	$app->input->get( 'layout', 'default' );
-		$view	=	$app->input->get( 'view', $this->default_view );
-		
-		if ( !( $layout == 'edit' || $layout == 'edit2' ) ) {
-			Helper_Admin::addSubmenu( $this->default_view, $view );
-		}
-		
-		parent::display();
-		
-		return $this;
-	}
-		
+
 	// createPlugin
 	public function createPlugin()
 	{
@@ -51,6 +34,23 @@ class CCK_DeveloperController extends JControllerLegacy
 		} else {
 			$this->setRedirect( CCK_LINK, JText::_( 'JERROR_AN_ERROR_HAS_OCCURRED' ), 'error' );
 		}
+	}
+	
+	// display
+	public function display( $cachable = false, $urlparams = false )
+	{
+		$app	=	JFactory::getApplication();
+		$id		=	$app->input->getInt( 'id' );
+		$layout	=	$app->input->get( 'layout', 'default' );
+		$view	=	$app->input->get( 'view', $this->default_view );
+		
+		if ( !( $layout == 'edit' || $layout == 'edit2' ) ) {
+			Helper_Admin::addSubmenu( $this->default_view, $view );
+		}
+		
+		parent::display();
+		
+		return $this;
 	}
 }
 ?>
