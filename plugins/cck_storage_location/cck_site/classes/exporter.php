@@ -138,7 +138,7 @@ class plgCCK_Storage_LocationCck_Site_Exporter extends plgCCK_Storage_LocationCc
 
 				// Core > Custom
 				if ( self::$custom && isset( $fields[self::$custom] ) ) {
-					preg_match_all( CCK_Content::getRegex(), $fields[self::$custom], $values );
+					preg_match_all( '#::(.*?)::(.*?)::/(.*?)::#s', $fields[self::$custom], $values );
 					$tables[self::$table][$item->pk]->{self::$custom}	=	array();
 					$fields[self::$custom]								=	'';
 					if ( count( $values[1] ) ) {
