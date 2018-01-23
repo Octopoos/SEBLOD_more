@@ -202,15 +202,15 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 					$fieldname	=	explode( ',', $fieldname );
 					if ( count( $fieldname ) == 3 ) {
 						if ( $fields[$fieldname[0]]->value[$fieldname[1]][$fieldname[2]] ) {
-							$value	=	$fields[$fieldname[0]]->value[$fieldname[1]][$fieldname[2]]->{$target};
+							$value	=	$fields[$fieldname[0]]->value[$fieldname[1]][$fieldname[2]]->$target;
 						}
 					} else {
 						if ( $fields[$fieldname[0]]->value[$fieldname[1]] ) {
-							$value	=	$fields[$fieldname[0]]->value[$fieldname[1]]->{$target};
+							$value	=	$fields[$fieldname[0]]->value[$fieldname[1]]->$target;
 						}
 					}
 				} else {
-					$value	=	$fields[$fieldname]->{$target};
+					$value	=	$fields[$fieldname]->$target;
 				}
 				if ( $value && $process['itemId'] ) {
 					$value	.=	( strpos( $value, '?' ) !== false ) ? '&Itemid='.$process['itemId'] : '?Itemid='.$process['itemId'];
