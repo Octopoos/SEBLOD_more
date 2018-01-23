@@ -13,5 +13,6 @@ defined( '_JEXEC' ) or die;
 // JCckContent
 class JCckContentJoomla_Module extends JCckContent
 {
+	/* TODO#SEBLOD: should we add a specific "initialize" method? */
 }
 ?>
