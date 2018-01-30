@@ -77,7 +77,7 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 		}
 		self::$path	=	parent::g_getPath( self::$type.'/' );
 		parent::g_onCCK_FieldPrepareForm( $field, $config );
-		
+
 		// Init
 		$value		=	( $value != ' ' ) ? $value : '';
 		
@@ -91,12 +91,10 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 			preg_match_all( $search, $html, $matches );
 			if ( count( $matches[1] ) ) {
 				foreach ( $matches[1] as $target ) {
-					if ( isset( $field->$target ) ) {
-						if ( is_array( $field->$target ) ) {
-							$html	=	str_replace( '*'.$target.'*', ( ( isset( $field->{$target}[0] ) ) ? $field->{$target}[0] : '' ), $html );
-						} else {
-							$html	=	str_replace( '*'.$target.'*', $field->$target, $html );
-						}	
+					if ( $target == 'value' ) {
+						$html	=	str_replace( '*'.$target.'*', $value, $html );
+					} elseif ( isset( $field->$target ) ) {
+						$html	=	str_replace( '*'.$target.'*', $field->$target, $html );
 					}
 				}
 			}
