@@ -9,14 +9,15 @@
 **/
 
 defined( '_JEXEC' ) or die;
+
+$options2	=	JCckDev::fromJSON( $this->item->options2 );
 ?>
 
 <div class="seblod">
 	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_'.$this->item->type.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
-        echo JCckDev::renderBlank();
-        echo JCckDev::renderBlank();
+        echo JCckDev::renderForm( 'core_options_html', @$options2['html'], $config, array( 'rows'=>8, 'defaultvalue'=>'*value*', 'bool2'=>1, 'required'=>'required', 'storage_field'=>'json[options2][html]' ), array(), 'w100' );
         
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );

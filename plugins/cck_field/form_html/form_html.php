@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\Registry\Registry;
+
 // Plugin
 class plgCCK_FieldForm_Html extends JCckPluginField
 {
@@ -79,8 +81,37 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 		// Init
 		$value		=	( $value != ' ' ) ? $value : '';
 		
+		// Prepare
+		$registry	=	new Registry( $field->options2 );
+		$html		=	$registry->get( 'html', '*value*' );
+
+		if ( $html != '' ) {
+			$matches	=	'';
+			$search		=	'#\*([a-zA-Z0-9_]*)\*#U';
+			preg_match_all( $search, $html, $matches );
+			if ( count( $matches[1] ) ) {
+				foreach ( $matches[1] as $target ) {
+					if ( isset( $field->$target ) ) {
+						if ( is_array( $field->$target ) ) {
+							$html	=	str_replace( '*'.$target.'*', ( ( isset( $field->{$target}[0] ) ) ? $field->{$target}[0] : '' ), $html );
+						} else {
+							$html	=	str_replace( '*'.$target.'*', $field->$target, $html );
+						}	
+					}
+				}
+			}
+		}
+		if ( $html != '' && strpos( $html, '$cck->get' ) !== false ) {
+			$matches	=	'';
+			$search		=	'#\$cck\->get([a-zA-Z0-9_]*)\( ?\'([a-zA-Z0-9_,\[\]]*)\' ?\)(;)?#';
+			preg_match_all( $search, $html, $matches );
+			if ( count( $matches[1] ) ) {
+				parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'matches'=>$matches ) );
+			}
+		}
+
 		// Set
-		$field->form	=	$value;
+		$field->form	=	$html;
 		$field->value	=	'';
 		
 		// Return
@@ -129,6 +160,40 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 		$field->markup	=	'none';
 
 		return parent::g_onCCK_FieldRenderForm( $field );
+	}
+
+	// -------- -------- -------- -------- -------- -------- -------- -------- // Special Events
+
+	// onCCK_FieldBeforeRenderForm
+	public static function onCCK_FieldBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
+	{
+		$name	=	$process['name'];
+		
+		if ( count( $process['matches'][1] ) ) {
+			foreach ( $process['matches'][1] as $k=>$v ) {
+				$fieldname		=	$process['matches'][2][$k];
+				$search			=	'';
+				$target			=	strtolower( $v );
+				$value			=	'';
+				
+				$pos					=	strpos( $target, 'safe' );
+
+				if ( $pos !== false && $pos == 0 ) {
+					$target				=	substr( $target, 4 );
+
+					if ( isset( $fields[$fieldname] ) ) {
+						$value			=	$fields[$fieldname]->$target;
+						$value			=	JCckDev::toSafeID( $value );
+					}
+				} else {
+					if ( isset( $fields[$fieldname] ) ) {
+						$value			=	$fields[$fieldname]->$target;
+					}
+				}
+
+				$fields[$name]->form	=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->form );
+			}
+		}
 	}
 }
 ?>
