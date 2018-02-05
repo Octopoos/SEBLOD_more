@@ -200,7 +200,7 @@ class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 							}
 						}	
 					}
-					$form	.=	'<li>'.$child->label.JText::_( 'COM_CCK_PAIR_KEY_VALUE_SEPARATOR' ).$val.'</li>';
+					$form	.=	'<li><span>'.$child->label.'</span>'.JText::_( 'COM_CCK_PAIR_KEY_VALUE_SEPARATOR' ).$val.'</li>';
 				}
 				$config['doTranslation']	=	$doTranslation;
 			}
