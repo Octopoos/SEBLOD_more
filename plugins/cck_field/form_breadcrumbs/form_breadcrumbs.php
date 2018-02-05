@@ -168,7 +168,7 @@ class plgCCK_FieldForm_Breadcrumbs extends JCckPluginField
 					$text	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $text ) ) );
 				}
 
-				$form	.=	'<li'.$css.'>'.$text.'</li>';
+				$form	.=	'<li'.$css.'><span>'.$text.'</span></li>';
 			}
 		}
 		if ( $form ) {
