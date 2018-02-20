@@ -35,7 +35,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
-		// Prepare
+		// Init
 		$content			=	$link->get( 'content', '' );
 		$content_fieldname	=	$link->get( 'content_fieldname', '' );
 		$file_fieldname		=	$link->get( 'file_fieldname', '' );
@@ -45,6 +45,9 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 		$link_title2		=	$link->get( 'title_custom', '' );
 		$xi					=	0;
 
+		$itemId				=	$link->get( 'itemid', '' );
+		$itemId				=	$itemId ? '&Itemid='.$itemId : '';
+		
 		// Set
 		if ( is_array( $field->value ) ) {
 			$collection			=	$field->name;
@@ -54,7 +57,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 				$field->hits	=	(int)JCckDatabase::loadResult( $query ); //@
 				
 				$link_more2		=	$link_more.'&collection='.$collection.'&xi='.$xi;
-				$f->link		=	'index.php?option=com_cck&task=download'.$link_more2.'&file='.$f->name.'&id='.$config['id'];
+				$f->link		=	JRoute::_( 'index.php?option=com_cck&task=download'.$link_more2.'&file='.$f->name.'&id='.$config['id'].$itemId );
 				$f->link_class	=	$link_class ? $link_class : ( isset( $f->link_class ) ? $f->link_class : '' );
 
 				if ( $link_title ) {
@@ -86,7 +89,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 			} else {
 				$query			=	'SELECT a.hits FROM #__cck_core_downloads AS a WHERE a.id = '.(int)$pk.' AND a.field = "'.(string)$field_name.'" AND a.collection = "'.(string)$collection.'" AND a.x = '.(int)$xi;
 				$field->hits	=	(int)JCckDatabase::loadResult( $query ); //@
-				$field->link	=	'index.php?option=com_cck&task=download'.$link_more.'&file='.$file_fieldname.'&id='.$pk;
+				$field->link	=	JRoute::_( 'index.php?option=com_cck&task=download'.$link_more.'&file='.$file_fieldname.'&id='.$pk.$itemId );
 			}
 
 			$field->link_class	=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
@@ -114,7 +117,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 		$pk			=	isset( $fields[$fieldname] ) ? (int)$fields[$fieldname]->value : $process['pk'];
 
 		if ( $pk ) {
-			$fields[$name]->link	=	'index.php?option=com_cck&task=download'.$process['link_more'].'&file='.$process['file_fieldname'].'&id='.$pk;
+			$fields[$name]->link	=	JRoute::_( 'index.php?option=com_cck&task=download'.$process['link_more'].'&file='.$process['file_fieldname'].'&id='.$pk.$itemId );
 			$target					=	 $fields[$name]->typo_target;
 
 			if ( isset( $fields[$name]->typo_mode ) && $fields[$name]->typo_mode ) {
