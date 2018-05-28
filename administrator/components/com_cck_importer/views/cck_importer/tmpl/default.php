@@ -64,7 +64,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 	            <ul class="adminformlist">
 					<?php
 					echo '<li><label>'.JText::_( 'COM_CCK_CONTENT_OBJECT' ).'<span class="star"> *</span></label>'
-					 .	 JCckDev::getForm( 'more_importer_storage_location', '', $config )
+					 .	 JCckDev::getFormFromHelper( array( 'component'=>'com_cck_importer', 'function'=>'getObjectPlugins', 'name'=>'more_importer_storage_location' ), '', $config, array( 'storage_field'=>'options[storage_location]' ) )
 					 .	 JCckDev::getForm( 'more_importer_storage', $this->params->get( 'storage', 'standard' ), $config )
 					 .	 '</li>';
 					echo '<li><label>'.JText::_( 'COM_CCK_CONTENT_TYPE_FORM' ).'<span class="star"> *</span></label>'

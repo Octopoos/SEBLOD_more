@@ -26,7 +26,7 @@ $media_ext	=	( $this->isNew ) ? '' : ( ( isset( $options2['media_extensions'] ) 
 		echo JCckDev::renderForm( 'core_bool', $this->item->bool, $config, array( 'label'=>'Storage Format', 'options'=>'File Name or Path=1||Full Path=0' ) );
 
 		echo '<li><label>'.JText::_( 'COM_CCK_LEGAL_EXTENSIONS' ).'</label>'
-		 .	 JCckDev::getForm( 'core_options_media_extensions', $media_ext, $config )
+		 .	 JCckDev::getFormFromHelper( array( 'component'=>'com_cck', 'function'=>'getMediaExtensions', 'name'=>'core_options_media_extensions' ), $media_ext, $config, array( 'storage_field'=>'json[options2][media_extensions]' ) )
 		 .	 JCckDev::getForm( 'core_options_legal_extensions', @$options2['legal_extensions'], $config, array( 'size'=>13, 'required'=>'required' ) )
 		 .	 '</li>';
 		echo JCckDev::renderBlank();
