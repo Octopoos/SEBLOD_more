@@ -168,6 +168,10 @@ class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 					if ( !is_array( $value ) ) {
 						$value	=	array( 0=>$value );
 					}
+
+					if ( !$fields[$child->name]->state ) {
+						continue;
+					}
 				}
 				if ( $doTranslation ) {
 					$config['doTranslation']	=	$child->bool8;
