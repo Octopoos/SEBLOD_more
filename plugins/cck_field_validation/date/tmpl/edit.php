@@ -26,7 +26,6 @@ jQuery(document).ready(function($) {
 	if ($('#separator').val() != '') {
 		$('#alert').addClass('validate[required]').parent().find('span.star').html(' *');
 	}
-	$('#time').isVisibleWhen('region','international,en,fr,us');
 	$('#separator').isVisibleWhen('region','en,fr,us');
 	$('#range,#range_fieldname,#range_alert').isVisibleWhen('region','international');
 	$("div#layout").on("change", "#separator", function() {
