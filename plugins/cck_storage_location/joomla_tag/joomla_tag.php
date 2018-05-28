@@ -238,11 +238,6 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 
 			return false;
 		}
-		
-		// Prepare
-		if ( $table->parent_id != $data['parent_id'] || $isNew ) {
-			$table->setLocation( $data['parent_id'], 'last-child' );
-		}
 
 		$table->bind( $data );
 		$table->check();
@@ -305,8 +300,14 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 		if ( ! $table->{self::$key} ) {
 			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
 			/* TODO#SEBLOD: */
+		} else {
+			/* TODO#SEBLOD: */
 		}
 		/* TODO#SEBLOD: */
+
+		if ( $table->parent_id != $data['parent_id'] || $data['id'] == 0 ) {
+			$table->setLocation( $data['parent_id'], 'last-child' );
+		}
 		$table->{self::$custom}	=	'';
 	}
 	
@@ -317,6 +318,10 @@ class plgCCK_Storage_LocationJoomla_Tag extends JCckPluginLocation
 			/* TODO#SEBLOD: */
 		}
 		/* TODO#SEBLOD: */
+
+		if ( empty( $table->language ) ) {
+			$table->language	=	'*';
+		}
 		
 		parent::g_completeTable( $table, self::$custom, $config );
 	}
