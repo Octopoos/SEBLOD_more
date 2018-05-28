@@ -13,5 +13,16 @@ defined( '_JEXEC' ) or die;
 // JCckContent
 class JCckContentJoomla_User_Note extends JCckContent
 {
+	// postSave
+	protected function postSave( $instance_name, $data )
+	{
+		if ( $instance_name == 'base' && !$this->getId() ) {
+			if ( isset( $data['created_user_id'] ) && $data['created_user_id'] && $data['created_user_id'] != $this->_instance_base->created_user_id ) {
+				$this->_instance_base->created_user_id	=	$data['created_user_id'];
+			}
+
+			$this->_instance_base->store();
+		}
+	}
 }
 ?>
