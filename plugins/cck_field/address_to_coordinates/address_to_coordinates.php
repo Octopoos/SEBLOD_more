@@ -49,7 +49,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 		}
 		self::$path	=	parent::g_getPath( self::$type.'/' );
 		parent::g_onCCK_FieldPrepareForm( $field, $config );
-		
+
 		// Init
 		if ( count( $inherit ) ) {
 			$id		=	( isset( $inherit['id'] ) && $inherit['id'] != '' ) ? $inherit['id'] : $field->name;
@@ -75,19 +75,22 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			$form	=	'';
 		} else {
 			$class	=	'inputbox text'.$validate . ( $field->css ? ' '.$field->css : '' );
+			if ( $value != '' ) {
+				$class	.=	' has-value';
+			}
 			$maxlen	=	( $field->maxlength > 0 ) ? ' maxlength="'.$field->maxlength.'"' : '';
 			$attr	=	'class="'.$class.'" size="'.$field->size.'"'.$maxlen . ( $field->attributes ? ' '.$field->attributes : '' );
 			$form	=	'<input type="text" id="'.$id.'" name="'.$name.'" value="'.$value.'" '.$attr.' />';
 		}
 
 		// Set
-		if ( ! $field->variation ) {
+		if ( !parent::g_isStaticVariation( $field, $field->variation ) ) {
 			$field->form	=	$form;
 			if ( $field->bool == 1 ) {
 				$options2	=	new JRegistry( $field->options2 );
 
 				if ( $field->state ) {
-					parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'id'=>$id, 'api_key'=>trim($this->params->get( 'api_key', '' )), 'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */, 'lat'=>$options2->get( 'latitude' ), 'lng'=>$options2->get( 'longitude' ), 'postal_code'=>$options2->get( 'postal_code' ), 'city'=>$options2->get( 'city' ), 'country'=>$options2->get( 'country' ), 'country_type'=>$options2->get( 'country_type', '0' ), 'r_type'=>$options2->get( 'types' ), 'r_country'=>$options2->get( 'restrictions_country' ) ) );
+					parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'id'=>$id, 'variation'=>$field->variation, 'api_key'=>trim($this->params->get( 'api_key', '' )), 'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */, 'lat'=>$options2->get( 'latitude' ), 'lng'=>$options2->get( 'longitude' ), 'postal_code'=>$options2->get( 'postal_code' ), 'city'=>$options2->get( 'city' ), 'country'=>$options2->get( 'country' ), 'country_type'=>$options2->get( 'country_type', '0' ), 'r_type'=>$options2->get( 'types' ), 'r_country'=>$options2->get( 'restrictions_country' ) ) );
 				}
 			}
 			if ( $field->script ) {
@@ -204,7 +207,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			return;
 		}
 		
-		self::_addScripts( $process['id'], array(
+		self::_addScripts( $process['id'], $process['variation'], array(
 									'api_key'=>trim($process['api_key']),
 									'bypass'=>$process['bypass'],
 									'lat'=>$process['lat'],
@@ -219,7 +222,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 	}
 
 	// _addScripts
-	protected static function _addScripts( $id, $params = array(), &$config = array() )
+	protected static function _addScripts( $id, $variation, $params = array(), &$config = array() )
 	{
 		static $loaded	=	0;
 
@@ -227,8 +230,17 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			$params['bypass'] == '-1';
 		}
 		$doc	=	JFactory::getDocument();
+		$js2	=	'';
 		$opts	=	'types: ['.( $params['r_type'] ? '"'.$params['r_type'].'"' : '' ).'], '
 				.	'componentRestrictions: {'.( $params['r_country'] ? 'country: "'.$params['r_country'].'"' : '' ).'}';
+
+		if ( isset( $config['submit'] ) && isset( $config['formId'] ) ) {
+			$submit		=	$config['submit'];
+		} else {
+			$submit		=	'JCck.Core.submit';
+		}
+		$js2			=	$submit.'(\'search\');';
+
 		$js		=	'
 					jQuery(document).ready(function($){
 						var $ac = $("#"+"'.$id.'");
@@ -288,6 +300,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 							}
 							$lat.val(latitude); if ($lat2.length){ $lat2.text(latitude); }
 							$lng.val(longitude); if ($lng2.length){ $lng2.text(longitude); }
+							'.$js2.'
 						});
 					});
 					';
