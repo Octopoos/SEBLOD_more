@@ -100,9 +100,19 @@ class plgCCK_FieldCaptcha_Math extends JCckPluginField
 		$num2	=	rand( 6, 10 );
 		shuffle( $math );
 		$glue	=	$math[0];
-		$eval	= 	$num2.$glue.$num1;
-		eval( "\$secure_session_var=".$eval.";" );
+		
+		if ( $glue == '+' ) {
+			$secure_session_var	=	$num2 + $num1;
+		} elseif ( $glue == '-' ) {
+			$secure_session_var	=	$num2 - $num1;
+		} elseif ( $glue == '*' ) {
+			$secure_session_var	=	$num2 * $num1;
+		} else {
+			$secure_session_var	=	-1;
+		}
+		
 		$ask	=	'<span class="variation_value">'.$num2.' '.$glue.' '.$num1.' = </span>';
+		
 		if ( empty( $field->description ) ) {
 			$field->description	=	JText::_( 'COM_CCK_CAPTCHA_DO_THE_MATH' );
 		}
