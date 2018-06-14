@@ -16,11 +16,6 @@
 		<filename>index.html</filename>
 	</files>
 	
-	<languages folder="site/languages">
-		<language tag="en-GB">en-GB/en-GB.com_cck_updater.ini</language>
-		<language tag="fr-FR">fr-FR/fr-FR.com_cck_updater.ini</language>
-	</languages>
-	
 	<administration>
 		<menu>SEBLOD Updater</menu>
 	
