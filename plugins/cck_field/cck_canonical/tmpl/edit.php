@@ -12,6 +12,7 @@ defined( '_JEXEC' ) or die;
 
 JCckDev::forceStorage();
 $options2   =   JCckDev::fromJSON( $this->item->options2 );
+$options    =   JCckDev::fromSTRING( @$options2['itemids'] );
 ?>
 
 <div class="seblod">
@@ -22,10 +23,14 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
         echo JCckDev::renderForm( 'core_menuitem', @$options2['itemid'], $config, array( 'selectlabel'=>'Inherited', 'options'=>'Use Value=optgroup||Field=-2', 'storage_field'=>'json[options2][itemid]' ) );
         echo JCckDev::renderBlank( '<input type="hidden" id="blank_li2" value="" />' );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['itemid_fieldname'], $config, array( 'label'=>'Field Name', 'storage_field'=>'json[options2][itemid_fieldname]' ) );
-		echo JCckDev::renderForm( 'core_bool', $this->item->bool, $config, array( 'label'=>'Behavior', 'defaultvalue'=>'0', 'options'=>'Always=0||Auto=1' ) );
+		echo JCckDev::renderForm( 'core_bool', $this->item->bool, $config, array( 'label'=>'Behavior', 'defaultvalue'=>'0', 'options'=>'Always=0||Only If Different=1' ) );
         echo JCckDev::renderForm( 'core_dev_select', @$options2['content'], $config, array( 'defaultvalue'=>'', 'label'=>'Content', 'selectlabel'=>'Current', 'options'=>'Use Value=optgroup||Field=2', 'storage_field'=>'json[options2][content]' ) );
         echo JCckDev::renderBlank( '<input type="hidden" id="blank_li" value="" />' );
         echo JCckDev::renderForm( 'core_dev_text', @$options2['content_fieldname'], $config, array( 'label'=>'Field Name', 'storage_field'=>'json[options2][content_fieldname]' ) );
+
+        echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) );
+        echo JCckDev::renderForm( 'core_bool2', $this->item->bool2, $config, array( 'label'=>'Alternative Behavior', 'defaultvalue'=>'0', 'options'=>'None=0||Redirection=2' ) );
+        echo JCckDev::renderForm( 'core_menuitem', $options, $config, array( 'selectlabel'=>'', 'options'=>'', 'bool3'=>1, 'rows'=>10, 'storage_field'=>'json[options2][string][itemids]' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
@@ -37,5 +42,6 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
 jQuery(document).ready(function($) {
     $('#json_options2_itemid_fieldname,#blank_li2').isVisibleWhen('json_options2_itemid','-2');
     $('#json_options2_content_fieldname,#blank_li').isVisibleWhen('json_options2_content','2');
+    $('#json_options2_string_itemids').isVisibleWhen('bool2','2');
 });
 </script>

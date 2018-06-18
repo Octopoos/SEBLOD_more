@@ -42,8 +42,9 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 			if ( $field->options2 != '' ) {
 				$fieldname		=	'';
 				$fieldname2		=	'';
-				$options2		=	new JRegistry( $field->options2 );
+				$itemIds		=	'';
 				$location		=	( $config['location'] ) ? $config['location'] : 'joomla_article';
+				$options2		=	new JRegistry( $field->options2 );
 				
 				if ( $options2->get( 'content' ) == '2' ) {				
 					$fieldname	=	$options2->get( 'content_fieldname' );
@@ -54,8 +55,11 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 				} else {
 					$itemId		=	$options2->get( 'itemid', $config['Itemid'] );
 				}
+				if ( $field->bool2 ) {
+					$itemIds	=	$options2->get( 'itemids', '' );
+				}
 
-				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ), 5 );
+				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'mode2'=>(string)$field->bool2, 'itemIds'=>$itemIds, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ), 5 );
 			}
 		}
 
@@ -147,7 +151,15 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 			$itemId	=	$process['itemId'];
 		}
 		$link	=	JCck::callFunc_Array( 'plgCCK_Storage_Location'.$process['location'], 'getRoute', array( $pk, $process['sef'], $itemId, $config ) );
-		
+
+		if ( $process['mode2'] == '2' ) {
+			$itemIds	=	explode( '||', $process['itemIds'] );
+
+			if ( in_array( JFactory::getApplication()->input->getInt( 'Itemid' ), $itemIds ) ) {
+				$app->redirect( $link );
+				return;
+			}
+		}
 		if ( $process['mode'] == '0' || ( $process['mode'] == '1' && $doc->getBase() != $domain.$link ) ) {
 			$doc->addHeadLink( $domain.$link, 'canonical' );
 			$app->cck_canonical_url	=	$link;
