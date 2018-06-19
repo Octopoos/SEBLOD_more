@@ -14,9 +14,9 @@ defined( '_JEXEC' ) or die;
 class JCckContentCck_Site extends JCckContent
 {
 	// preSave
-	protected function preSave( $instance_name, &$data )
+	protected function preSave( $table_instance_name, &$data )
 	{
-		if ( $instance_name == 'base' && $this->isNew() ) {
+		if ( $table_instance_name == 'base' && $this->isNew() ) {
 			$config		=	array(
 							'isNew'=>true,
 							'storages'=>array( '#__cck_core_sites'=>array() ),

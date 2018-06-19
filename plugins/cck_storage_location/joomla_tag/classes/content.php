@@ -14,9 +14,9 @@ defined( '_JEXEC' ) or die;
 class JCckContentJoomla_Tag extends JCckContent
 {	
 	// preSave
-	protected function preSave( $instance_name, &$data )
+	protected function preSave( $table_instance_name, &$data )
 	{
-		if ( $instance_name == 'base' ) {
+		if ( $table_instance_name == 'base' ) {
 			if ( !isset( $data['parent_id'] ) ) {
 				$data['parent_id']	=	( $this->getPk() ) ? $this->_instance_base->parent_id : 1;
 			}
@@ -27,9 +27,9 @@ class JCckContentJoomla_Tag extends JCckContent
 	}
 
 	// postSave
-	protected function postSave( $instance_name, $data )
+	protected function postSave( $table_instance_name, $data )
 	{
-		if ( $instance_name == 'base' ) {
+		if ( $table_instance_name == 'base' ) {
 			$this->_instance_base->rebuildPath( $this->getPk() );
 		}
 	}
