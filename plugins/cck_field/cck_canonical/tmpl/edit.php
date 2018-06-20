@@ -4,7 +4,7 @@
 * @package			SEBLOD (App Builder & CCK) // SEBLOD nano (Form Builder)
 * @url				https://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
-* @copyright		Copyright (C) 2009 - 2017 SEBLOD. All Rights Reserved.
+* @copyright		Copyright (C) 2009 - 2018 SEBLOD. All Rights Reserved.
 * @license 			GNU General Public License version 2 or later; see _LICENSE.php
 **/
 
@@ -30,7 +30,8 @@ $options    =   JCckDev::fromSTRING( @$options2['itemids'] );
 
         echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) );
         echo JCckDev::renderForm( 'core_bool2', $this->item->bool2, $config, array( 'label'=>'Alternative Behavior', 'defaultvalue'=>'0', 'options'=>'None=0||Redirection=2' ) );
-        echo JCckDev::renderForm( 'core_menuitem', $options, $config, array( 'selectlabel'=>'', 'options'=>'', 'bool3'=>1, 'rows'=>10, 'storage_field'=>'json[options2][string][itemids]' ) );
+        echo JCckDev::renderBlank( '<input type="hidden" id="blank_li2" value="" />' );
+        echo JCckDev::renderForm( 'core_menuitem', $options, $config, array( 'selectlabel'=>'', 'options'=>'', 'bool3'=>1, 'rows'=>30, 'css'=>'input-xlarge', 'storage_field'=>'json[options2][string][itemids]' ), array(), 'w100' );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
@@ -42,6 +43,6 @@ $options    =   JCckDev::fromSTRING( @$options2['itemids'] );
 jQuery(document).ready(function($) {
     $('#json_options2_itemid_fieldname,#blank_li2').isVisibleWhen('json_options2_itemid','-2');
     $('#json_options2_content_fieldname,#blank_li').isVisibleWhen('json_options2_content','2');
-    $('#json_options2_string_itemids').isVisibleWhen('bool2','2');
+    $('#json_options2_string_itemids,#blank_li2').isVisibleWhen('bool2','2');
 });
 </script>
