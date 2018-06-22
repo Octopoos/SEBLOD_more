@@ -4,11 +4,11 @@
 	<packagename>seb_list</packagename>
 	<packager>Octopoos</packager>
 	<packagerurl>https://www.seblod.com</packagerurl>
-	<copyright>Copyright (C) 2009 - 2017 SEBLOD. All Rights Reserved.</copyright>
+	<copyright>Copyright (C) 2009 - 2018 SEBLOD. All Rights Reserved.</copyright>
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>April 2013</creationDate>
 	<description>SEBLOD 3.x List App - www.seblod.com</description>
-	<version>1.7.0</version>
+	<version>1.7.1</version>
 	<scriptfile>pkg_script.php</scriptfile>
 	<files folder="extensions">
 		<file type="plugin" id="plg_system_blank" group="system">plg_system_blank.zip</file>
