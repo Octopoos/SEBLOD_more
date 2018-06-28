@@ -94,7 +94,11 @@ class plgCCK_FieldForm_Html extends JCckPluginField
 					if ( $target == 'value' ) {
 						$html	=	str_replace( '*'.$target.'*', $value, $html );
 					} elseif ( isset( $field->$target ) ) {
-						$html	=	str_replace( '*'.$target.'*', $field->$target, $html );
+						if ( is_array( $field->$target ) ) {
+							$html	=	str_replace( '*'.$target.'*', ( ( isset( $field->{$target}[0] ) ) ? $field->{$target}[0] : '' ), $html );
+						} else {
+							$html	=	str_replace( '*'.$target.'*', $field->$target, $html );
+						}
 					}
 				}
 			}
