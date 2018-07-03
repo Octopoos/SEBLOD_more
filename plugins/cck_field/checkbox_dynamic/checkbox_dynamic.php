@@ -78,7 +78,10 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 
 		// Prepare
 		$divider			=	( $field->divider != '' ) ? $field->divider : ',';
-		$field->options		=	self::_getOptionsList( $options2, $field->bool2 );
+		$lang_code			=	'';
+		$value2				=	'';
+		self::_languageDetection( $lang_code, $value2, $options2 );
+		$field->options		=	self::_getOptionsList( $options2, $field->bool2, $lang_code, $config );
 		if ( is_array( $value ) ) {
 			$value					=	implode( $divider, $value );
 		}
@@ -188,7 +191,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 
 				if ( $opt_name && $opt_value && $opt_table ) {
 					$query			=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where.$opt_orderby.$opt_limit;
-					$query			=	JCckDevHelper::replaceLive( $query );
+					$query			=	JCckDevHelper::replaceLive( $query, '', $config );
 					$items			=	JCckDatabase::loadObjectList( $query );
 				}
 			} elseif ( $field->bool2 == 2 ) {
@@ -199,7 +202,7 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 					$lang_code		=	'';
 					self::_languageDetection( $lang_code, $value, $options2 );
 					$query			=	str_replace( '[lang]', $lang_code, $options2['query'] );
-					$query			=	JCckDevHelper::replaceLive( $query );
+					$query			=	JCckDevHelper::replaceLive( $query, '', $config );
 					if ( ( strpos( $query, ' value ' ) != false ) || ( strpos( $query, ' value,' ) != false ) ) {
 						$items	=	JCckDatabase::loadObjectList( $query );
 					} else {
@@ -389,8 +392,11 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 		$config['doTranslation']	=	0;
 		/* tmp */
 
+		$lang_code			=	'';
+		$value2				=	'';
 		$options2			=	JCckDev::fromJSON( $field->options2 );
-		$field->options		=	self::_getOptionsList( $options2, $field->bool2 );
+		self::_languageDetection( $lang_code, $value2, $options2 );
+		$field->options		=	self::_getOptionsList( $options2, $field->bool2, $lang_code, $config );
 		
 		// Validate
 		$text	=	parent::g_getOptionText( $value, $field->options, $divider, $config );
@@ -436,11 +442,14 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			$lang_tag	=	JFactory::getLanguage()->getTag();
 			$lang_code	=	( isset( $languages[$lang_tag] ) ) ? strtoupper( $languages[$lang_tag]->sef ) : '';
 		}
+		
 		$value			=	str_replace( '[lang]', $lang_code, $value );
 		$languages		=	explode( ',', @$options2['language_codes'] );
+		
 		if ( ! in_array( $lang_code, $languages ) ) {
 			$lang_code	=	@$options2['language_default'] ? $options2['language_default'] : 'EN';
 		}
+		
 		$lang_code		=	strtolower( $lang_code );
 	}
 
@@ -465,19 +474,26 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 	}
 	
 	// _getOptionsList
-	protected static function _getOptionsList( $options2, $sql_type )
+	protected static function _getOptionsList( $options2, $sql_type, $lang_code, $config )
 	{
 		$options	=	'';
 		
 		if ( $sql_type == 0 ) {
-			$opt_table	=	( isset( $options2['table'] ) ) ? ' FROM '.$options2['table'] : '';
-			$opt_name	=	( isset( $options2['name'] ) ) ? $options2['name'] : '';
-			$opt_value	=	( isset( $options2['value'] ) ) ? $options2['value'] : '';
-			$opt_where	=	( isset( $options2['where'] ) && trim( $options2['where'] ) != '' ) ? ' WHERE '.$options2['where']: '';
-			
+			$opt_table		=	( isset( $options2['table'] ) ) ? ' FROM '.$options2['table'] : '';
+			$opt_name		=	( isset( $options2['name'] ) ) ? $options2['name'] : '';
+			$opt_value		=	( isset( $options2['value'] ) ) ? $options2['value'] : '';
+			$opt_where		=	( isset( $options2['where'] ) && trim( $options2['where'] ) != '' ) ? ' WHERE '.$options2['where']: '';
+			$opt_orderby	=	( isset( $options2['orderby'] ) && $options2['orderby'] != '' ) ? ' ORDER BY '.$options2['orderby'].' '.( ( isset( $options2['orderby_direction'] ) && $options2['orderby_direction'] != '' ) ? $options2['orderby_direction'] : 'ASC' ) : '';
+
+			// Language Detection
+			$opt_value		=	str_replace( '[lang]', $lang_code, $opt_value );
+			$opt_name		=	str_replace( '[lang]', $lang_code, $opt_name );
+			$opt_where		=	str_replace( '[lang]', $lang_code, $opt_where );
+			$opt_orderby	=	str_replace( '[lang]', $lang_code, $opt_orderby );
+
 			if ( $opt_name && $opt_table ) {
-				$query	=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where;
-				$query	=	JCckDevHelper::replaceLive( $query );
+				$query	=	'SELECT '.$opt_name.','.$opt_value.$opt_table.$opt_where.$opt_orderby;
+				$query	=	JCckDevHelper::replaceLive( $query, '', $config );
 				$lists	=	JCckDatabaseCache::loadObjectList( $query );
 				if ( count( $lists ) ) {
 					foreach ( $lists as $list ) {
@@ -494,7 +510,10 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 			}
 		} else {
 			$opt_query	=	isset( $options2['query'] ) ? $options2['query'] : '';
-			$opt_query	=	JCckDevHelper::replaceLive( $opt_query );
+
+			// Language Detection
+			$opt_query	=	str_replace( '[lang]', $lang_code, $opt_query );
+			$opt_query	=	JCckDevHelper::replaceLive( $opt_query, '', $config );
 			$lists		=	JCckDatabaseCache::loadObjectList( $opt_query );
 			if ( count( $lists ) ) {
 				foreach ( $lists as $list ) {
