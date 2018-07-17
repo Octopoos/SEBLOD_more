@@ -234,12 +234,14 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 		$opts	=	'types: ['.( $params['r_type'] ? '"'.$params['r_type'].'"' : '' ).'], '
 				.	'componentRestrictions: {'.( $params['r_country'] ? 'country: "'.$params['r_country'].'"' : '' ).'}';
 
-		if ( isset( $config['submit'] ) && isset( $config['formId'] ) ) {
-			$submit		=	$config['submit'];
-		} else {
-			$submit		=	'JCck.Core.submit';
+		if ( $variation == 'form_filter' || $variation == 'form_filter_ajax' ) {
+			if ( isset( $config['submit'] ) && isset( $config['formId'] ) ) {
+				$submit		=	$config['submit'];
+			} else {
+				$submit		=	'JCck.Core.submit';
+			}
+			$js2			=	$submit.'(\'search\');';
 		}
-		$js2			=	$submit.'(\'search\');';
 
 		$js		=	'
 					jQuery(document).ready(function($){
