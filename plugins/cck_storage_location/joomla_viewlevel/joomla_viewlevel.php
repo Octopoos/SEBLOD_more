@@ -4,7 +4,7 @@
 * @package			SEBLOD (App Builder & CCK) // SEBLOD nano (Form Builder)
 * @url				https://www.seblod.com
 * @editor			Octopoos - www.octopoos.com
-* @copyright		Copyright (C) 2009 - 2017 SEBLOD. All Rights Reserved.
+* @copyright		Copyright (C) 2009 - 2018 SEBLOD. All Rights Reserved.
 * @license 			GNU General Public License version 2 or later; see _LICENSE.php
 **/
 
@@ -18,6 +18,7 @@ JLoader::register( 'JTableUsergroup', JPATH_PLATFORM.'/joomla/table/viewlevel.ph
 class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_viewlevel';
+	protected static $type_alias	=	'Access';
 	protected static $table			=	'#__viewlevels';
 	protected static $table_object	=	array( 'Viewlevel', 'JTable' );
 	protected static $key			=	'id';
@@ -35,15 +36,15 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	protected static $status		=	'';
 	protected static $to_route		=	'';
 	
-	protected static $context		=	''; /* TODO#SEBLOD: */
+	protected static $context		=	'com_users.level';
 	protected static $context2		=	'';
 	protected static $contexts		=	array(); /* TODO#SEBLOD: */
 	protected static $error			=	false;
 	protected static $events		=	array(
 											'afterDelete'=>'onContentAfterDelete',
-											'afterSave'=>'',
+											'afterSave'=>'onContentAfterSave',
 											'beforeDelete'=>'onContentBeforeDelete',
-											'beforeSave'=>''
+											'beforeSave'=>'onContentBeforeSave'
 										);
 	protected static $ordering		=	array( 'alpha'=>'title ASC', 'ordering'=>'ordering ASC' );
 	protected static $ordering2		=	array();
@@ -79,6 +80,7 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage	=	self::_getTable( $pk );
+			/* TODO#SEBLOD: */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareContent( $table, $pk );
 			if ( ! isset( $config['storages'][self::$table] ) ) {
@@ -100,6 +102,7 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 		// Set
 		if ( $table == self::$table ) {
 			$storage	=	self::_getTable( $pk );
+			/* TODO#SEBLOD: */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
@@ -180,7 +183,7 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 		$canDeleteOwn	=	$user->authorise( 'core.delete.own', 'com_cck.form.'.$config['type_id'] );
 		if ( ( !$canDelete && !$canDeleteOwn ) ||
 			 ( !$canDelete && $canDeleteOwn && $config['author'] != $user->id ) ||
-			 ( $canDelete && !$canDeleteOwn && $config['author'] == $user->id ) ) {
+			 ( $canDelete && !$canDeleteOwn && $config['author'] == $user->id ) ) { /* TODO#SEBLOD */
 			$app->enqueueMessage( JText::_( 'COM_CCK_ERROR_DELETE_NOT_PERMITTED' ), 'error' );
 			return;
 		}
@@ -217,6 +220,8 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 		
 		// Check Error
 		if ( self::$error === true ) {
+			$config['error']	=	true;
+
 			return false;
 		}
 		
@@ -234,7 +239,17 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 		
 		// Store
 		$dispatcher	=	JEventDispatcher::getInstance();
-		$table->store();
+		$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
+		if ( !$table->store() ) {
+			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
+
+			if ( $isNew ) {
+				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
+			}
+			$config['error']	=	true;
+
+			return false;
+		}
 		
 		// Checkin
 		// parent::g_checkIn( $table );
@@ -247,11 +262,13 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 		// $config['parent']	=	$table->{self::$parent}; /* TODO#SEBLOD: */
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
+		$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 	
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
+		/* TODO#SEBLOD: */
 		$table	=	JTable::getInstance( 'Viewlevel' );
 		
 		if ( $pk > 0 ) {
@@ -266,14 +283,20 @@ class plgCCK_Storage_LocationJoomla_Viewlevel extends JCckPluginLocation
 	{
 		if ( ! $table->{self::$key} ) {
 			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
+			/* TODO#SEBLOD: */
+		} else {
+			/* TODO#SEBLOD: */
 		}
+		/* TODO#SEBLOD: */
 	}
 	
 	// _completeTable
 	protected function _completeTable( &$table, &$data, &$config )
 	{
 		if ( ! $table->{self::$key} ) {
+			/* TODO#SEBLOD: */
 		}
+		/* TODO#SEBLOD: */
 		
 		parent::g_completeTable( $table, self::$custom, $config );
 	}
