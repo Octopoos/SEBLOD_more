@@ -16,7 +16,7 @@ $params	=	JComponentHelper::getParams( 'com_cck_updater' );
 $rows   =   0;
 $text   =   '';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin: 0px 0px 0px 0px;} #system-message-container.j-toggle-main.span10{width: 100%;} div.cpanel_news div.alert.alert-danger{color:#a94442;}' );
+JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;} div.cpanel_news div.alert.alert-danger{color:#a94442;}' );
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
