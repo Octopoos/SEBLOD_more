@@ -31,7 +31,7 @@ class Helper_Include extends CommonHelper_Include
 		$paths	=	array( 'media/cck/css/definitions/all.css' );
 		Helper_Include::addStyleSheets( true, $paths );
 		
-		$doc->addStyleDeclaration( 'div.loading {position:absolute; right:10px; top:26px;} div.seblod div.legend{margin-left:0px !important}' );
+		$doc->addStyleDeclaration( 'div.loading {position:absolute; right:10px; top:26px;} div.seblod div.legend{margin-left:0!important}' );
 	}
 }
 ?>

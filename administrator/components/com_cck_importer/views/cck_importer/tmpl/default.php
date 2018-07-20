@@ -20,7 +20,7 @@ $session	=	JFactory::getSession();
 $ajax		=	$params->get( 'mode', 0 );
 $ajax_load	=	'components/com_cck/assets/styles/seblod/images/ajax.gif';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin: 0px 0px 0px 0px;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;}' );
+JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;}' );
 
 $ajaxStep	=	0;
 $ajaxTotal	=	0;
