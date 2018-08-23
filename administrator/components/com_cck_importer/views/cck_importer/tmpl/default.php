@@ -242,7 +242,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
                 $('#options_content_type').val("");
             }
 		}
-	}
+	};
 	Joomla.submitbutton = function(task) {
 		if (task == "purge") {
 			if (confirm(Joomla.JText._('COM_CCK_CONFIRM_PURGE_OUTPUT_FOLDER'))) {
@@ -253,7 +253,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		} else if ($("#adminForm").validationEngine("validate",task) === true) {
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
-	}
+	};
 	$(document).ready(function() {
 		JCck.Dev.toggleOptions($("#options_storage_location").val(),false);
 
