@@ -181,7 +181,5 @@ Helper_Display::quickCopyright();
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
 	};
-	$(document).ready(function() {
-    });
 })(jQuery);
 </script>
