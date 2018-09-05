@@ -23,6 +23,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 			. JCckDev::getForm( 'core_dev_bool', @$options2['timeout'], $config, array( 'defaultvalue'=>'0', 'storage_field'=>'json[options2][timeout]' ) )
 			. JCckDev::getForm( 'core_dev_text', @$options2['timeout_ms'], $config, array( 'size'=>12, 'storage_field'=>'json[options2][timeout_ms]' ) )
 		 	.'</li>';
+		echo JCckDev::renderForm( 'core_dev_select', @$options2['status_code'], $config, array( 'label'=>'Status Code', 'defaultvalue'=>'303', 'selectlabel'=>'', 'options'=>'301||303', 'bool8'=>0, 'storage_field'=>'json[options2][status_code]' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
@@ -32,6 +33,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('#json_options2_status').isVisibleWhen('json_options2_timeout','0',false);
 	$('#json_options2_timeout_ms').isVisibleWhen('json_options2_timeout','1',false);
 });
 </script>

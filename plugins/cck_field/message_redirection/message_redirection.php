@@ -43,7 +43,12 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 
 			if ( is_object( $options2 ) && isset( $options2->itemid ) && $options2->itemid ) {
 				if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
-					JFactory::getApplication()->redirect( JCckDevHelper::getAbsoluteUrl( $options2->itemid ) );
+					$status_code	=	303;
+
+					if ( isset( $options2->status_code ) && $options2->status_code ) {
+						$status_code	=	(int)$options2->status_code;
+					}
+					JFactory::getApplication()->redirect( JCckDevHelper::getAbsoluteUrl( $options2->itemid ), $status_code );
 				} else {
 					$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $options2->itemid ).'\'';
 				
