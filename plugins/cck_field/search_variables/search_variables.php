@@ -59,13 +59,14 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 		$form		=	'';
 		$options2	=	JCckDev::fromJSON( $field->options2 );
 		$variables	=	explode( '||', $field->options );
+		
 		if ( count( $variables ) ) {
 			foreach ( $variables as $k=>$name ) {
 				if ( $name ) {
 					$request	=	'get'.ucfirst( ( $options2['options'][$k]->type ) ? $options2['options'][$k]->type : '' );
 					$value		=	$app->input->$request( $name, '' );
 					$value		=	htmlspecialchars( $value, ENT_COMPAT, 'UTF-8' );
-					$form		.=	'<input class="inputbox hidden" type="hidden" id="'.$name.'" name="'.$name.'" value="'.$value.'" />';
+					$form		.=	'<input class="inputbox hidden" type="hidden" id="'.$name.'" name="'.$name.'" value="'.$value.'"'.( $field->attributes ? ' '.$field->attributes : '' ).' />';
 				}
 			}
 		}
@@ -91,13 +92,14 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 		$form		=	'';
 		$options2	=	json_decode( $field->options2, true );
 		$variables	=	explode( '||', $field->options );
+		
 		if ( count( $variables ) ) {
 			foreach ( $variables as $k=>$name ) {
 				if ( $name ) {
 					$request	=	'get'.ucfirst( ( $options2['options'][$k]['type'] ) ? $options2['options'][$k]['type'] : '' );
 					$value		=	$app->input->$request( $name, '' );
 					$value		=	htmlspecialchars( $value, ENT_COMPAT, 'UTF-8' );
-					$form		.=	'<input class="inputbox hidden" type="hidden" id="'.$name.'" name="'.$name.'" value="'.$value.'" />';
+					$form		.=	'<input class="inputbox hidden" type="hidden" id="'.$name.'" name="'.$name.'" value="'.$value.'"'.( $field->attributes ? ' '.$field->attributes : '' ).' />';
 				}
 			}
 		}
