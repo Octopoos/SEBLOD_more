@@ -19,7 +19,7 @@ class Helper_Import
 		require JPATH_ADMINISTRATOR.'/components/com_cck/tables/type.php';
 		require JPATH_ADMINISTRATOR.'/components/com_cck/helpers/helper_workshop.php';
 		
-		$style						=	Helper_Workshop::getDefaultStyle( 'seb_one' );
+		$style						=	Helper_Workshop::getDefaultStyle();
 		
 		$table						=	JTable::getInstance( 'Type', 'CCK_Table' );
 		$table->title				=	$title;
