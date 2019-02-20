@@ -34,7 +34,7 @@ foreach ( $texts as $t ) {
 	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_TYPO_'.$this->item->name.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
-		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Function', 'selectlabel'=>'Select', 'options'=>'number_format||str_repeat||str_replace||strip_tags||strtolower||strtoupper||substr||substr_count||ucfirst||ucwords||wordwrap', 'bool8'=>0, 'storage_field'=>'function' ) );
+		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Function', 'selectlabel'=>'Select', 'options'=>'number_format||str_repeat||str_replace||strip_tags||strtolower||strtoupper||substr||substr_count||truncate||ucfirst||ucwords||wordwrap', 'bool8'=>0, 'storage_field'=>'function' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Php String Start', 'storage_field'=>'arg1', 'required'=>'required' ) );
 		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Php String Lower first', 'defaultvalue'=>'0', 'storage_field'=>'force' ) );
 		echo JCckDev::renderBlank( '<input type="hidden" id="blank_li" value="" />' );
@@ -74,10 +74,12 @@ jQuery(document).ready(function($) {
 		$('#arg1,#arg2').parent().show();
 		$('#arg3,#blank_li3,#blank_li').parent().hide();
 		$('#suffix_overflow,#blank_li2').parent().show();
-	} else if (v == 'substr_count' || v == 'str_repeat' || v == 'wordwrap') {
+	} else if (v == 'substr_count' || v == 'str_repeat' || v == 'wordwrap' || v == 'truncate') {
 		$('#force').parent().hide();
 		if (v == 'wordwrap') {
 			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_WIDTH')+'<span class="star"> *</span>');
+		} else if (v == 'truncate') {
+				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LENGTH')+'<span class="star"> *</span>');
 		} else if (v == 'substr_count') {
 			$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_NEEDLE')+'<span class="star"> *</span>');	
 		} else {
@@ -85,7 +87,7 @@ jQuery(document).ready(function($) {
 		}
 		$('#arg2,#blank_li').parent().hide();
 		$('#arg3,#blank_li3').parent().hide();
-		if (v == 'wordwrap') {
+		if (v == 'wordwrap' || v == 'truncate') {
 			$('#suffix_overflow,#blank_li2').parent().show();
 		} else {
 			$('#suffix_overflow,#blank_li2').parent().hide();
@@ -122,10 +124,12 @@ jQuery(document).ready(function($) {
 			$('#arg1,#arg2').parent().show();
 			$('#arg3,#blank_li3,#blank_li').parent().hide();
 			$('#suffix_overflow,#blank_li2').parent().show();
-		} else if (v == 'substr_count' || v == 'str_repeat' || v == 'wordwrap') {
+		} else if (v == 'substr_count' || v == 'str_repeat' || v == 'wordwrap' || v == 'truncate') {
 			$('#force').parent().hide();
 			if (v == 'wordwrap') {
 				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_WIDTH')+'<span class="star"> *</span>');
+			} else if (v == 'truncate') {
+				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LENGTH')+'<span class="star"> *</span>');
 			} else if (v == 'substr_count') {
 				$('#arg1').parent().show().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_NEEDLE')+'<span class="star"> *</span>');
 			} else {
@@ -133,7 +137,7 @@ jQuery(document).ready(function($) {
 			}
 			$('#arg2,#blank_li').parent().hide();
 			$('#arg3,#blank_li3').parent().hide();
-			if (v == 'wordwrap') {
+			if (v == 'wordwrap' || v == 'truncate') {
 				$('#suffix_overflow,#blank_li2').parent().show();
 			} else {
 				$('#suffix_overflow,#blank_li2').parent().hide();
