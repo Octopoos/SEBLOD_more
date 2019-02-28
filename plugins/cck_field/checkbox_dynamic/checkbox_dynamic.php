@@ -382,8 +382,8 @@ class plgCCK_FieldCheckbox_Dynamic extends JCckPluginField
 
 		// Prepare
 		$divider	=	( $field->divider != '' ) ? $field->divider : ',';
-		$nb 		=	count( $value );
-		if ( is_array( $value ) && $nb > 0 ) {
+
+		if ( is_array( $value ) && count( $value ) ) {
 			$value	=	implode( $divider, $value );
 		}
 
