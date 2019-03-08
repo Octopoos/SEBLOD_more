@@ -87,7 +87,7 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 				$value		=	substr_count( $value, $arg1 );
 				break;
 			case 'truncate':
-				$value2		=	JCckDevHelper::truncate( $value, 10 );
+				$value2		=	JCckDevHelper::truncate( $value, $arg1 );
 
 				if ( $value2 != $value ) {
 					$value	=	trim( $value2 ).$typo->get( 'suffix_overflow', '' );
