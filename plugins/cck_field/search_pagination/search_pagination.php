@@ -104,9 +104,40 @@ class plgCCK_FieldSearch_Pagination extends JCckPluginField
 		if ( self::$type != $field->type ) {
 			return;
 		}
-		
+		parent::g_onCCK_FieldPrepareForm( $field, $config );
+
 		// Prepare
-		self::onCCK_FieldPrepareForm( $field, $value, $config, $inherit, $return );
+		if ( $field->extended ) {
+			$extended		=	JCckDatabase::loadObject( 'SELECT a.* FROM #__cck_core_fields AS a WHERE a.name = "'.$field->extended.'"' );
+
+			if ( is_object( $extended ) ) {
+				$form					=	JCckDevField::getForm( $extended, $value, $config, array(
+																								'id'=>$field->name,
+																								'name'=>$field->name,
+																								'variation'=>$field->variation )
+																							   );
+				$field->form			=	$form;
+				$field->markup_class	.=	' cck_form_'.$extended->type;
+				$field->text			=	parent::g_getOptionText( $value, $extended->options, '', $config );
+
+				if ( $value ) {
+					$config['limitend']	=	$value;
+				}
+
+				$field->value			=	$value;
+								
+				if ( $field->variation == 'clear' ) {
+					$field->display		=	0;
+				} elseif ( $field->variation == 'hidden' ) {
+					$field->display		=	1;
+				}
+			} else {
+				$field->form			=	'';
+				$field->form			=	$value;
+			}
+		} else {
+			self::onCCK_FieldPrepareForm( $field, $value, $config, $inherit, $return );
+		}
 		
 		// Return
 		if ( $return === true ) {

@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die;
 
 JCckDev::forceStorage();
-$options2   =   JCckDev::fromJSON( $this->item->options2 );
+$options	=	JCckDev::fromSTRING( $this->item->options );
 ?>
 
 <div class="seblod">
@@ -19,10 +19,18 @@ $options2   =   JCckDev::fromJSON( $this->item->options2 );
     <ul class="adminformlist adminformlist-2cols">
         <?php
         echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
-		echo JCckDev::renderForm( 'core_dev_bool', $this->item->bool, $config, array( 'label'=>'Behavior', 'defaultvalue'=>'', 'selectlabel'=>'Select', 'options'=>'Next=2||Previous=1', 'required'=>'required', 'storage_field'=>'bool' ) );
+        echo JCckDev::renderBlank();
+		echo JCckDev::renderForm( 'core_dev_bool', $this->item->bool, $config, array( 'label'=>'Behavior', 'defaultvalue'=>'', 'selectlabel'=>'Select', 'options'=>'Pagination=0||Links=optgroup||Next=2||Previous=1', 'required'=>'required', 'storage_field'=>'bool' ) );
+		echo JCckDev::renderForm( 'core_extended', $this->item->extended, $config, array( 'label'=>'Field', 'required'=>'required' ) );
 
 		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
 		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
         ?>
     </ul>
 </div>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $('#extended').isVisibleWhen('bool','0');
+});
+</script>
