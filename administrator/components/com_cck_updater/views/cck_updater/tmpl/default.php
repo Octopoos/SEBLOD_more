@@ -65,6 +65,13 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                         if ( isset( $extensions[$item->name] ) ) {
                             continue;
                         }
+                        
+                        $item->infourl    =   str_replace( 'http://', 'https://', $item->infourl );
+
+                        if ( $item->infourl == 'https://www.seblod.com/' || $item->infourl == 'https://www.seblod.com' ) {
+                            continue;
+                        }
+
                         $extensions[$item->name]    =   '';
                         $pos                        =   strpos( $item->name, 'pkg_' );
                         $suffix                     =   '';
