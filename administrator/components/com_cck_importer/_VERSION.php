@@ -13,9 +13,9 @@ defined( '_JEXEC' ) or die;
 // JCckImporterVersion
 final class JCckImporterVersion
 {
-	public $RELEASE = '1.11';
+	public $RELEASE = '1.12';
 	
-	public $DEV_LEVEL = '2';
+	public $DEV_LEVEL = '0';
 
 	// getShortVersion
 	public function getShortVersion()
