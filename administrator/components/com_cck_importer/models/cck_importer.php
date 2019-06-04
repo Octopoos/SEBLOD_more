@@ -49,11 +49,6 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		if ( $file === false ) {
 			return false;
 		}
-		
-		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$storage_location.'/classes/importer.php';
-
-		$allowed_columns	=	JCck::callFunc( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'getColumnsToImport' );
-		$core_columns		=	array_flip( $allowed_columns );
 
 		// CSV Process
 		$row 				=	0;
@@ -124,6 +119,8 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		
 		// -------- -------- -------- -------- -------- -------- -------- -------- //
 		
+		require_once JPATH_SITE.'/plugins/cck_storage_location/'.$storage_location.'/classes/importer.php';
+
 		$header					=	str_putcsv( $fieldnames, $session['options']['separator'] )."\n";
 		$header2				=	str_putcsv( array( 0=>'id', 1=>'name', 2=>'username', 3=>'email' ), $session['options']['separator'] )."\n";
 		$log_buffer				=	array( 'cancelled'=>'', 'created'=>'', 'regressed'=>'', 'updated'=>'' );
@@ -131,8 +128,15 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		$properties				=	array( 'custom', 'table' );
 		$properties				=	JCck::callFunc( 'plgCCK_Storage_Location'.$storage_location, 'getStaticProperties', $properties );
 		$sto_location_custom	=	$properties['custom'];
-		$sto_table				=	$properties['table'];
+		$sto_table				=	( isset( $session['options']['table'] ) && @$session['options']['table'] ) ? @$session['options']['table'] : '';
+
+		if ( $properties['table'] ) {
+			$sto_table			=	$properties['table'];
+		}
 		
+		$allowed_columns	=	JCck::callFunc( 'plgCCK_Storage_Location'.$storage_location.'_Importer', 'getColumnsToImport', $sto_table );
+		$core_columns		=	array_flip( $allowed_columns );
+
 		// -------- -------- -------- -------- -------- -------- -------- -------- // Prepare
 
 		if ( $session['options']['content_type'] == -1  ) { // New
@@ -222,7 +226,9 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 			//created the table #__store_form_  	
 			$table	=	'#__cck_store_form_'.$session['options']['content_type'];
 			
-			JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table.' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;' );
+			if ( $storage_location != 'free' ) {
+				JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table.' ( id int(11) NOT NULL, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;' );
+			}
 			
 			$count		=	count( $fieldnames );	
 			for ( $i = 0;  $i < $count;  $i++ ) {
@@ -287,6 +293,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 									'key'=>$session['options']['key'],
 									'key_column'=>@$session['options']['key_column'],
 									'key_table'=>@$session['options']['key_table'],
+									'table'=>( ( isset( $session['options']['table'] ) && @$session['options']['table'] ) ? @$session['options']['table'] : '' ),
 									'tasks'=>array()
 								);
 		$config['params']	=	new JRegistry( $plugin_location->params );
