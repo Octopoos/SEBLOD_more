@@ -20,11 +20,13 @@ $session	=	JFactory::getSession();
 $ajax		=	$params->get( 'mode', 0 );
 $ajax_load	=	'components/com_cck/assets/styles/seblod/images/ajax.gif';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;}' );
+JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;} .seblod-fix{padding-left:0!important; padding-right:0!important;} .seblod-fix ul{margin-left:0;} .seblod-fix table td{vertical-align:middle;} .column-name.excluded{text-decoration:line-through;} .column-name.selected{font-weight:bold;}' );
 
 $ajaxStep	=	0;
 $ajaxTotal	=	0;
 $do			=	$app->input->get( 'do', '' );
+$js			=	'';
+$wait		=	0;
 if ( $do == 'ok' ) {
 	$res	=	$session->get( 'cck_importer_batch_ok' );
 	if ( isset( $res['message'] ) && $res['message'] ) {
@@ -33,71 +35,149 @@ if ( $do == 'ok' ) {
 } elseif ( $do && $session->get( 'cck_importer_batch' ) ) {
 	$ajaxStep	=	$params->get( 'mode_ajax_count', 25 );
 	$ajaxTotal	=	(int)$do;
+
+	if ( $ajaxTotal ) {
+		$session_data	=	$session->get( 'cck_importer_batch' );
+
+		if ( isset( $session_data['options']['workflow'] ) && $session_data['options']['workflow'] ) {
+			$wait	=	1;
+		}
+	}
 } else {
 	$session->set( 'cck_importer_batch', '' );
 }
 $session->set( 'cck_importer_batch_ok', '' );
+
+require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_import.php';
 ?>
 
 <form enctype="multipart/form-data" action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
 <div>
 
 <div class="<?php echo $this->css['wrapper']; ?> hidden-phone">
-    <div class="<?php echo $this->css['w100']; ?>">
-        <div class="seblod first cpanel_news full">
-            <div class="legend top center plus"><?php echo CCK_LABEL .' &rarr; '. JText::_( 'COM_CCK_ADDON_'.CCK_NAME ); ?></div>
-            <ul class="adminformlist">
-                <li style="text-align:center;">
-                    <?php echo JText::_( 'COM_CCK_ADDON_'.CCK_NAME.'_DESC' ); ?>
-                </li>
-            </ul>
-            <div class="clr"></div>
-        </div>
-    </div>
-    <div class="seblod-less cpanel_news full">
-        <?php echo JCckDevAccordion::start( 'cckOptions', 'collapse0', JText::_( 'COM_CCK_PANE_FROM_FILE' ), array( 'active'=>'collapse0', 'useCookie'=>'1' ) ); ?>
-        <?php if ( $ajaxTotal ) { ?>
-			<div class="progress progress-striped active" style="position:relative; top:5px;"><div id="progressbar" class="bar" style="width: 5%;"></div></div>	
-        <?php } else { ?>
-	        <div class="seblod">
+	<div class="<?php echo $this->css['w100']; ?>">
+		<div class="seblod first cpanel_news full">
+			<div class="legend top center plus"><?php echo CCK_LABEL .' &rarr; '. JText::_( 'COM_CCK_ADDON_'.CCK_NAME ); ?></div>
+			<ul class="adminformlist">
+				<li style="text-align:center;">
+					<?php echo JText::_( 'COM_CCK_ADDON_'.CCK_NAME.'_DESC' ); ?>
+				</li>
+			</ul>
+			<div class="clr"></div>
+		</div>
+	</div>
+	<div class="seblod-less cpanel_news full">
+		<?php echo JCckDevAccordion::start( 'cckOptions', 'collapse0', JText::_( 'COM_CCK_PANE_FROM_FILE' ), array( 'active'=>'collapse0', 'parent'=>'.accordion', 'useCookie'=>'1' ) ); ?>
+		<?php if ( $ajaxTotal ) { ?>
+			<?php if ( $wait ) { ?>
+			<div class="seblod cck-padding-top-0 cck-padding-bottom-0 cck-overflow-visible seblod-fix">
+				<ul class="adminformlist">
+					<li>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th width="30%"><?php echo JText::_( 'COM_CCK_CSV_COLUMN' )?></th>
+									<th><?php echo JText::_( 'COM_CCK_FIELD_MAPPING' )?></th>
+									<th width="20%"><?php echo JText::_( 'COM_CCK_INPUT' )?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+								$field_options	=	Helper_Import::getMappingOptions( $session_data );
+
+								if ( isset( $session_data['csv']['columns'] ) ) {
+									foreach ( $session_data['csv']['columns'] as $field_name ) {
+										$js	.=	'$("#ajax_import_'.$field_name.'_input").isDisabledWhen("ajax_import_'.$field_name.'_mapping","clear",false);';
+
+										echo '<tr>'
+											.'<td><span class="column-name selected">'.$field_name.'</span></td>'
+											.'<td>'.JCckDev::getForm( 'core_dev_select', '', $config, array( 'selectlabel'=>'', 'options'=>$field_options, 'bool8'=>0, 'css'=>'adminformlist-maxwidth map-data', 'attributes'=>'data-name="'.$field_name.'"', 'storage_field'=>'ajax_import['.$field_name.'][mapping]' ) ).'</td>'
+											.'<td>'.JCckDev::getForm( 'more_importer_prepare_input', $session_data['options']['prepare_input'], $config, array( 'type'=>'select_simple', 'storage_field'=>'ajax_import['.$field_name.'][input]' ) ).'</td>'
+											.'</tr>'
+											;
+									}
+								}
+								?>
+							</tbody>
+						</table>
+					</li>
+				</ul>
+			</div>
+			<?php } ?>
+			<div class="seblod cck-padding-top-0 cck-padding-bottom-0 seblod-fix">
+				<div class="progress progress-striped active" style="position:relative; top:5px;"><div id="progressbar" class="bar" style="width: 5%;"></div></div>
+			</div>
+			<?php if ( $wait ) { ?>
+			<div class="seblod cck-padding-top-0 cck-overflow-visible seblod-fix">
+				<ul class="adminformlist">
+					<li class="flt-right btn-toolbar">
+						<button type="button" class="btn" id="abort"><?php echo JText::_( 'COM_CCK_CANCEL' ); ?></button>
+						<button type="button" class="button btn btn-primary" id="go"><?php echo JText::_( 'COM_CCK_IMPORT_NOW' ); ?></button>
+					</li><li>&nbsp;</li>
+				</ul>
+			</div>
+			<?php }	?>
+		<?php } else { ?>
+			<div class="seblod">
 				<div id="loading" class="loading"></div>
-	            <ul class="adminformlist">
+				<ul class="adminformlist dest-params">
 					<?php
-					echo '<li><label>'.JText::_( 'COM_CCK_CONTENT_OBJECT' ).'<span class="star"> *</span></label>'
+					if ( $ajax ) {
+						echo '<li>'.JCckDev::getForm( 'more_importer_workflow', '', $config ).'</li>';
+					}
+					echo '<li class="required-params"><label>'.JText::_( 'COM_CCK_CONTENT_OBJECT' ).'<span class="star"> *</span></label>'
 					 .	 JCckDev::getFormFromHelper( array( 'component'=>'com_cck_importer', 'function'=>'getObjectPlugins', 'name'=>'more_importer_storage_location' ), '', $config, array( 'storage_field'=>'options[storage_location]' ) )
-					 .	 JCckDev::getForm( 'more_importer_storage', $this->params->get( 'storage', 'standard' ), $config )
+					 .	 JCckDev::getForm( 'more_importer_storage', $this->params->get( 'storage', 'standard' ), $config, array( 'css'=>'hide' ) )
 					 .	 '</li>';
-					echo '<li><label>'.JText::_( 'COM_CCK_CONTENT_TYPE_FORM' ).'<span class="star"> *</span></label>'
+					echo '<li class="required-params"><label>'.JText::_( 'COM_CCK_CONTENT_TYPE_FORM' ).'<span class="star"> *</span></label>'
 					 .	 JCckDev::getForm( 'more_importer_content_type', '', $config )
 					 .	 JCckDev::getForm( 'more_importer_content_type_new', '', $config )
 					 .	 '</li>';
-	                echo JCckDev::renderForm( 'more_importer_upload_file', '', $config );
-	                echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config );
-	                echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '1' ), $config );
-	                ?>
-	            </ul>
-	        </div>
-	        <div id="layer" class="cck-padding-top-0 cck-padding-bottom-0">
-	            <?php /* Loaded by AJAX */ ?>
-	        </div>
-	        <div class="seblod cck-padding-top-0 cck-overflow-visible">
-	            <ul class="adminformlist">
+					echo JCckDev::renderForm( 'more_importer_upload_file', '', $config, array(), array(), 'required-params' );
+					echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '1' ), $config );
+					echo JCckDev::renderForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config );
+					echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config );
+					?>
+				</ul>
+			</div>
+			<div id="layer" class="cck-padding-top-0 cck-padding-bottom-0">
+				<?php /* Loaded by AJAX */ ?>
+			</div>
+			<div class="seblod cck-padding-top-0 cck-overflow-visible">
+				<ul class="adminformlist">
 					<?php
 					if ( $ajax ) {
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFileAjax\');"';
 					} else {
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFile\');"';
 					}
-					echo '<li class="btn-group dropup flt-right">'
+					
+					echo '<li class="flt-right">'
+					 .	 '<div class="btn-group dropup">'
 					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ) );
 					echo '<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-unarchive"></span></a>';
+					echo '</div></li><li>&nbsp;</li>';
+					?>
+				</ul>
+			</div>
+		<?php } ?>
+		<?php if ( !$ajaxTotal ) { ?>
+		<?php echo JCckDevAccordion::open( 'cckOptions', 'collapse1', JText::_( 'COM_CCK_PANE_PREPARE_FILE' ) ); ?>
+			<div class="seblod">
+				<div id="loading" class="loading"></div>
+				<ul class="adminformlist dest-params"></ul>
+			</div>
+			<div class="seblod cck-padding-top-0 cck-overflow-visible">
+				<ul class="adminformlist">
+					<?php
+					echo '<li class="flt-right">'
+					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Prepare File', 'storage'=>'dev', 'attributes'=>'onclick="javascript:Joomla.submitbutton(\'prepareFile\');"', 'css'=>'btn-success' ) ).'&nbsp;';
 					echo '</li><li>&nbsp;</li>';
-	                ?>
-	            </ul>
-	        </div>
-        <?php } ?>
-        </div>
-        <?php echo JCckDevAccordion::end(); ?>
+					?>
+				</ul>
+			</div>
+		<?php } ?>
+		<?php echo JCckDevAccordion::end(); ?>
 	</div>
 </div>
 
@@ -107,7 +187,7 @@ $session->set( 'cck_importer_batch_ok', '' );
 	<input type="hidden" name="task" value="" />
 	<?php
 	JCckDev::validate( $config );
-    echo JHtml::_( 'form.token' );
+	echo JHtml::_( 'form.token' );
 	?>
 </div>
 
@@ -124,9 +204,14 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		ajaxStep:<?php echo $ajaxStep; ?>,
 		ajaxTotal:<?php echo $ajaxTotal; ?>,
 		token:Joomla.getOptions("csrf.token")+"=1",
+		wait:<?php echo (int)$wait; ?>,
 		ajaxLoopRequest: function(uri, start, end, len, total) {
+			var map_data = '';
+			if (start == 0) {
+				map_data = '&map_data='+JCck.Dev.getMapData();
+			}
 			$.ajax({
-				data: JCck.Dev.token,
+				data: JCck.Dev.token+map_data,
 				type: "POST",
 				url:  uri+"&start="+start+"&end="+end,
 				beforeSend:function(){},
@@ -203,6 +288,22 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 				success: function(){ $("#loading").html(""); document.location.reload(); }
 			});
 		},
+		getMapData: function(){
+			var map_data = {};
+			
+			$(".map-data").each(function(i) {
+				var n = $(this).attr("data-name");
+				
+				map_data[n] = {};
+				map_data[n].map = $(this).val();
+
+				if (map_data[n].map != 'clear') {
+					map_data[n].input = $('#ajax_import_'+n+'_input').val();
+				}
+			});
+
+			return $.toJSON(map_data);
+		},
 		setSession: function(opts) {
 			var data = $.evalJSON(opts);
 			$.each(data, function(k, v) {
@@ -217,6 +318,15 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 	                		$("label[for='options_force_utf80']").removeClass("active btn-success");
 	                		$("label[for='options_force_utf81']").addClass("active btn-danger");
 	                	}
+	                	break;
+					case "options_prepare_input":
+	                	if ( v == "1" ) {
+	                       	$("label[for='options_prepare_input0']").addClass("active btn-success");
+	                       	$("label[for='options_prepare_input1']").removeClass("active btn-danger");
+	                       } else {
+	                       	$("label[for='options_prepare_input0']").removeClass("active btn-success");
+	                       	$("label[for='options_prepare_input1']").addClass("active btn-danger");
+	                       }
 	                	break;
                 }
 			});
@@ -241,6 +351,9 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			if (clear && $('#options_content_type').val() != "-1") {
                 $('#options_content_type').val("");
             }
+		},
+		trigger: function() {
+			JCck.Dev.ajaxLoopRequest('index.php?option=com_cck_importer&task=importFromFileAjax&format=raw', 0, JCck.Dev.ajaxStep, JCck.Dev.ajaxStep, JCck.Dev.ajaxTotal);
 		}
 	};
 	Joomla.submitbutton = function(task) {
@@ -273,14 +386,29 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			JCck.Dev.ajaxSessionDelete($(this).attr("mydata"));
 		});
 		$('#options_content_type_new').isVisibleWhen('options_content_type','-1',false);
+
+		$('.accordion-toggle').on('click', function () {
+			$('.required-params').prependTo($(this).attr('href')+' .dest-params');
+		})
+
 		/* Ajax::start */
 		if (JCck.Dev.ajaxTotal > 0) {
-			var uri = "index.php?option=com_cck_importer&task=importFromFileAjax&format=raw";
-			JCck.Dev.ajaxLoopRequest(uri, 0, JCck.Dev.ajaxStep, JCck.Dev.ajaxStep, JCck.Dev.ajaxTotal);
+			if (JCck.Dev.wait) {
+				$("#abort").on("click", function() {
+					document.location.href="index.php?option=com_cck_importer";
+				});
+				$("#go").on("click", function() {
+					JCck.Dev.trigger();
+				});
+			} else {
+				JCck.Dev.trigger();
+			}
 		} else {
 			JCck.Dev.ajaxLayer("cck_importer", "default2", "#layer", "&ajax_type="+$("#options_storage_location").val());
 		}
 		/* Ajax::end */
+
+		<?php echo $js; ?>
 	});
 })(jQuery);
 </script>

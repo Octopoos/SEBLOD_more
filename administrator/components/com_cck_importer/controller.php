@@ -37,19 +37,19 @@ class CCK_ImporterController extends JControllerLegacy
 	{
 		JSession::checkToken() or jexit( JText::_( 'JINVALID_TOKEN' ) );
 				
-		$model	=	$this->getModel( 'cck_importer' );
-		$params	=	JComponentHelper::getParams( 'com_cck_importer' );
-		$output	=	$params->get( 'output', 1 );
-		$log	=	array( 'all'=>array(), 'cancelled'=>0, 'created'=>0, 'regressed'=>0, 'updated'=>0 );
+		$model			=	$this->getModel( 'cck_importer' );
+		$params			=	JComponentHelper::getParams( 'com_cck_importer' );
+		$output			=	$params->get( 'output', 1 );
+		$session_data	=	array();
 		
-		if ( $file = $model->importFromFile( $params, $log ) ) {
+		if ( $file = $model->importFromFile( $session_data, $params ) ) {
 			$file			=	JCckDevHelper::getRelativePath( $file, false );
 			if ( $output > 0 ) {
 				$msg		=	JText::_( 'COM_CCK_SUCCESSFULLY_IMPORTED' );
-				if ( $log['regressed'] > 0 ) {
-					$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG2', $log['created'], $log['updated'], $log['cancelled'], $log['regressed'] );
+				if ( $session_data['log']['count']['regressed'] > 0 ) {
+					$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG2', $session_data['log']['count']['created'], $session_data['log']['count']['updated'], $session_data['log']['count']['cancelled'], $session_data['log']['count']['regressed'] );
 				} else {
-					$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG', $log['created'], $log['updated'], $log['cancelled'] );
+					$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG', $session_data['log']['count']['created'], $session_data['log']['count']['updated'], $session_data['log']['count']['cancelled'] );
 				}
 				$msg		.=	' <a href="'.JUri::base().'index.php?option=com_cck&task=download&file='.$file.'" style="color:#000000;">( '.JText::_( 'COM_CCK_LOG' ).' )</a>';
 				$this->setRedirect( CCK_LINK, $msg, 'message' );
@@ -76,46 +76,31 @@ class CCK_ImporterController extends JControllerLegacy
 			$params			=	JComponentHelper::getParams( 'com_cck_importer' );
 			$session_data	=	array(
 									'auto_inc'=>0,
-									'content'=>array(),
-									'count'=>0,
-									'custom'=>'',
-									'data'=>array(),
-									'fieldnames'=>array(),
-									'fieldnames2'=>array(),
-									'fieldnames3'=>array(),
-									'header'=>'',
-									'header2'=>'',
-									'location'=>'',
-									'log'=>array( 'all'=>array(), 'cancelled'=>0, 'created'=>0, 'regressed'=>0, 'updated'=>0 ),
-									'log_buffer'=>array( 'cancelled'=>'', 'created'=>'', 'regressed'=>'', 'updated'=>'' ),
-									'options'=>array(),
-									'params'=>array(),
-									'storage'=>'',
-									'table'=>'',
-									'table_inc'=>'',
-									'table2'=>'',
-									'tasks'=>array(),
-									'values'=>array(),
-									'total'=>0
+									'tasks'=>array()
 								);
 			
 			$model->importFromFile_start( $session_data, $params );
 
-			if ( $session_data['total'] > 0 ) {
+			if ( $session_data['csv']['total'] > 0 ) {
 				$session->set( $session_id, $session_data );
-				$this->setRedirect( CCK_LINK.'&do='.$session_data['total'] );
+				$this->setRedirect( CCK_LINK.'&do='.$session_data['csv']['total'] );
 			} else {
 				$this->setRedirect( CCK_LINK, JText::_( 'JERROR_AN_ERROR_HAS_OCCURRED' ), 'error' );
 			}
 		} else {
+			$map_data	=	$app->input->post->getString( 'map_data', '' );
 			$start		=	$app->input->getInt( 'start', 0 );
 			$end		=	$app->input->getInt( 'end', 0 );
 			$return		=	'';
 
+			if ( $map_data ) {
+				$model->importFromFile_map( $session_data, $map_data );
+			}
+
 			$model->importFromFile_process( $session_data, $start, $end );
 			$session->set( $session_id, $session_data );
 
-			if ( $end >= $session_data['total'] ) {
+			if ( $end >= $session_data['csv']['total'] ) {
 				$params	=	JComponentHelper::getParams( 'com_cck_importer' );
 				$output	=	$params->get( 'output', 1 );
 				
@@ -123,10 +108,10 @@ class CCK_ImporterController extends JControllerLegacy
 					$file			=	JCckDevHelper::getRelativePath( $file, false );
 					if ( $output > 0 ) {
 						$msg		=	JText::_( 'COM_CCK_SUCCESSFULLY_IMPORTED' );
-						if ( $session_data['log']['regressed'] > 0 ) {
-							$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG2', $session_data['log']['created'], $session_data['log']['updated'], $session_data['log']['cancelled'], $session_data['log']['regressed'] );
+						if ( $session_data['log']['count']['regressed'] > 0 ) {
+							$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG2', $session_data['log']['count']['created'], $session_data['log']['count']['updated'], $session_data['log']['count']['cancelled'], $session_data['log']['count']['regressed'] );
 						} else {
-							$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG', $session_data['log']['created'], $session_data['log']['updated'], $session_data['log']['cancelled'] );
+							$msg	.=	'&nbsp;&nbsp;&nbsp;&nbsp;'.JText::sprintf( 'COM_CCK_IMPORTER_LOG', $session_data['log']['count']['created'], $session_data['log']['count']['updated'], $session_data['log']['count']['cancelled'] );
 						}
 						$msg		.=	' <a href="'.JUri::base().'index.php?option=com_cck&task=download&file='.$file.'" style="color:#000000;">( '.JText::_( 'COM_CCK_LOG' ).' )</a>';
 						$return		=	array(
@@ -155,7 +140,22 @@ class CCK_ImporterController extends JControllerLegacy
 			echo ( is_array( $return ) ) ? json_encode( $return ) : '{}';
 		}
 	}
-	
+
+	// prepareFile
+	public function prepareFile()
+	{
+		JSession::checkToken() or jexit( JText::_( 'JINVALID_TOKEN' ) );
+		
+		$model	=	$this->getModel( 'cck_importer' );
+		$params	=	JComponentHelper::getParams( 'com_cck_importer' );
+		
+		if ( $model->prepareFile( $params ) ) {
+			$this->setRedirect( CCK_LINK, JText::_( 'COM_CCK_SUCCESSFULLY_PREPARED' ), 'message' );
+		} else {
+			$this->setRedirect( CCK_LINK, JText::_( 'JERROR_AN_ERROR_HAS_OCCURRED' ), 'error' );
+		}
+	}
+
 	// purge
 	public function purge()
 	{
