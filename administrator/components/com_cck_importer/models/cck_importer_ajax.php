@@ -34,37 +34,37 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 	}
 
 	// importFromFile_init
-	public function importFromFile_map( &$session, $map_data )
+	public function importFromFile_map( &$session_data, $map_data )
 	{
 		$map_data	=	json_decode( $map_data, true );
 
 		require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_import.php';
 
 		foreach ( $map_data as $column_name=>$column ) {
-			$idx		=	array_search( $column_name, $session['csv']['columns'] );
+			$idx		=	array_search( $column_name, $session_data['csv']['columns'] );
 			
 			if ( $idx !== false ) {
 				$field_name	=	$column['map'];
 				
 				if ( $field_name == 'clear' ) {
-					unset( $session['csv']['columns'][$idx] );
-					unset( $session['fields'][$idx] );
+					unset( $session_data['csv']['columns'][$idx] );
+					unset( $session_data['fields'][$idx] );
 				} elseif ( $field_name != '' ) {
-					$session['csv']['columns'][$idx]	=	$field_name;
-					unset( $session['fields'][$idx] );
+					$session_data['csv']['columns'][$idx]	=	$field_name;
+					unset( $session_data['fields'][$idx] );
 
-					if ( !isset( $session['fields'][$field_name] ) ) {
-						$session['fields'][$field_name]	=	Helper_Import::findField( $field_name );
+					if ( !isset( $session_data['fields'][$field_name] ) ) {
+						$session_data['fields'][$field_name]	=	Helper_Import::findField( $field_name );
 					}
 				} else {
 					$field_name	=	$column_name;
 				}
 
 				// Input
-				if ( isset( $session['fields'][$field_name] ) ) {
-					$session['fields'][$field_name]->prepare_input	=	$column['input'];
-				} elseif ( isset( $session['fields'][$idx] ) ) {
-					$session['fields'][$idx]->prepare_input			=	$column['input'];
+				if ( isset( $session_data['fields'][$field_name] ) ) {
+					$session_data['fields'][$field_name]->prepare_input	=	$column['input'];
+				} elseif ( isset( $session_data['fields'][$idx] ) ) {
+					$session_data['fields'][$idx]->prepare_input			=	$column['input'];
 				}
 			}
 		}

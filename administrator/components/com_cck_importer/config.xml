@@ -6,8 +6,16 @@
 			<option value="0">COM_CCK_CONFIG_OPTION_STANDARD</option>
 		</field>
 		<field name="mode_ajax_count" type="text" size="8" default="25" label="COM_CCK_CONFIG_MODE_AJAX_COUNT" description="COM_CCK_CONFIG_MODE_AJAX_COUNT_DESC" class="inputbox" />
+		<field name="mode_ajax_mapping_field" type="list" default="0" label="COM_CCK_CONFIG_MODE_AJAX_MAPPING_FIELD" description="COM_CCK_CONFIG_MODE_AJAX_MAPPING_FIELD_DESC" showon="mode:1">
+			<option value="0">COM_CCK_CONFIG_OPTION_DATA_TYPE</option>
+			<option value="1">COM_CCK_CONFIG_OPTION_FIELD_TYPE</option>
+		</field>
 		<field name="csv_length" type="text" size="8" default="1000" label="COM_CCK_CONFIG_CSV_LENGTH" description="COM_CCK_CONFIG_CSV_LENGTH_DESC" class="inputbox" />
 		<field name="encoding_list" type="textarea" default="7bit,8bit,ASCII,BASE64,HTML-ENTITIES,ISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,ISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,UTF-32,UTF-32BE,UTF-32LE,UTF-16,UTF-16BE,UTF-16LE,UTF-7,UTF7-IMAP,UTF-8,Windows-1252,Windows-1254" cols="80" rows="5" label="COM_CCK_CONFIG_ENCODING_LIST" description="COM_CCK_CONFIG_ENCODING_LIST_DESC" class="inputbox input-xxlarge" />
+		<field name="input_error" type="list" default="0" label="COM_CCK_CONFIG_INPUT_ERROR" description="COM_CCK_CONFIG_INPUT_ERROR_DESC" class="inputbox">
+			<option value="1">COM_CCK_CANCEL_ROW_BEHAVIOR</option>
+			<option value="0">COM_CCK_INSERT_EMPTY_BEHAVIOR</option>
+		</field>
 		<field name="COM_CCK_CONFIG_LEGEND_DEFAULT_VALUES" type="spacer" hr="false" />
 		<field name="storage" type="list" default="standard" label="COM_CCK_CONFIG_STORAGE" description="COM_CCK_CONFIG_STORAGE_DESC" class="inputbox">
 			<option value="standard">COM_CCK_CONFIG_OPTION_STANDARD</option>

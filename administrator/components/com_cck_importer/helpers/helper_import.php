@@ -200,61 +200,145 @@ class Helper_Import
 		return $csv;
 	}
 
-	// getMappingOptions
-	public static function getMappingOptions( $session_data )
+	// getMappingFields
+	public static function getMappingFields( $session_data, $mapping_info )
 	{
-		$objects	=	array();
-		$options	=	array(
-							0=>'- '.JText::_( 'COM_CCK_IGNORED' ).' -=clear',
-							1=>JText::_( 'COM_CCK_IMPORT_INTO' ).' =optgroup',
-							2=>'- '.JText::_( 'COM_CCK_INHERITED' ).' -='
-						);
+		static $options	=	null;
 
-		if ( $session_data['options']['content_type'] ) {
-			$query	=	'SELECT DISTINCT a.id, a.name, a.type, a.label, b.label as label2,'
-					.	' a.storage, a.storage_location, a.storage_table, a.storage_field, a.storage_field2'
-					.	' FROM #__cck_core_fields AS a'
-					.	' LEFT JOIN #__cck_core_type_field as b ON b.fieldid = a.id'
-					.	' LEFT JOIN #__cck_core_types as c ON c.id = b.typeid'
-					.	' WHERE c.name = "'.$session_data['options']['content_type'].'"'
-					.	' ORDER BY a.name ASC';
+		if ( !is_array( $options ) ) {
+			$objects	=	array();
+			$options	=	array(
+								'opts'=>array(),
+								'attr'=>array( 'options'=>array() )
+							);
 
-			$fields	=	JCckDatabase::loadObjectList( $query );
-			$lang	=	JFactory::getLanguage();
-			$tables	=	array();
+			JPluginHelper::importPlugin( 'cck_field' );
 
-			foreach ( $fields as $field ) {
-				if ( !isset( $tables[$field->storage_table] ) ) {
-					$tables[$field->storage_table]	=	JCckDatabase::getTableFullColumns( $field->storage_table );
-				}
+			if ( $session_data['options']['content_type'] ) {
+				$query	=	'SELECT DISTINCT a.id, a.name, a.type, a.label, b.label as label2,'
+						.	' a.storage, a.storage_location, a.storage_table, a.storage_field, a.storage_field2'
+						.	' FROM #__cck_core_fields AS a'
+						.	' LEFT JOIN #__cck_core_type_field as b ON b.fieldid = a.id'
+						.	' LEFT JOIN #__cck_core_types as c ON c.id = b.typeid'
+						.	' WHERE c.name = "'.$session_data['options']['content_type'].'"'
+						.	' ORDER BY a.name ASC';
 
-				$data_type		=	'';
-				$field->label	=	( $field->label2 && $field->label2 != 'clear' && $field->label2 != ' ' ) ? $field->label2 : ( ( $field->label ) ? $field->label : $field->title );
-				
-				if ( trim( $field->label ) ) {
-					$key			=	'COM_CCK_' . str_replace( ' ', '_', trim( $field->label ) );
+				$fields	=	JCckDatabase::loadObjectList( $query );
+				$glue	=	'&nbsp;&nbsp;&mdash;&nbsp;&nbsp;';
+				$lang	=	JFactory::getLanguage();
+				$tables	=	array();
 
-					if ( $lang->hasKey( $key ) ) {
-						$field->label	=	JText::_( $key );
+				foreach ( $fields as $field ) {
+					$data_type		=	'';
+					$field->label	=	( $field->label2 && $field->label2 != 'clear' && $field->label2 != ' ' ) ? $field->label2 : ( ( $field->label ) ? $field->label : $field->title );
+					
+					if ( trim( $field->label ) ) {
+						$key			=	'COM_CCK_' . str_replace( ' ', '_', trim( $field->label ) );
+
+						if ( $lang->hasKey( $key ) ) {
+							$field->label	=	JText::_( $key );
+						}
 					}
+					if ( $mapping_info ) {
+						$lang->load( 'plg_cck_field_'.$field->type, JPATH_ADMINISTRATOR, null, false, true );
+
+						$data_type		=	$glue.JText::_( 'PLG_CCK_FIELD_'.strtoupper( $field->type ).'_LABEL2' );
+					} else {
+						if ( !isset( $tables[$field->storage_table] ) ) {
+							$tables[$field->storage_table]	=	JCckDatabase::getTableFullColumns( $field->storage_table );
+						}
+
+						if ( $field->storage == 'standard' && isset( $tables[$field->storage_table][$field->storage_field]->Type )
+						  && $tables[$field->storage_table][$field->storage_field]->Type ) {
+							$data_type		=	$glue.strtoupper( str_replace( ' unsigned', '', $tables[$field->storage_table][$field->storage_field]->Type ) );
+						}
+					}
+					
+					$objects[]	=	(object)array( 'text'=>$field->label.$data_type, 'value'=>$field->name, 'attr'=>(string)self::hasPreparedInput( $field->type ) );
 				}
 
-				if ( $field->storage == 'standard' && isset( $tables[$field->storage_table][$field->storage_field]->Type )
-				  && $tables[$field->storage_table][$field->storage_field]->Type ) {
-					$data_type		=	'&nbsp;&nbsp;&mdash;&nbsp;&nbsp;'.strtoupper( str_replace( ' unsigned', '', $tables[$field->storage_table][$field->storage_field]->Type ) );
+				JCckDevHelper::sortObjectsByProperty( $objects, 'text' );
+
+				foreach ( $objects as $object ) {
+					$options['attr']['options'][]	=	array( 'attr'=>array( $object->attr ) );
+					$options['opts'][]				=	$object->text.'='.$object->value;
 				}
-				
-				$objects[]	=	(object)array( 'text'=>$field->label.$data_type, 'value'=>$field->name );
-			}
-
-			JCckDevHelper::sortObjectsByProperty( $objects, 'text' );
-
-			foreach ( $objects as $object ) {
-				$options[]	=	$object->text.'='.$object->value;
 			}
 		}
 
-		return implode( '||', $options );
+		return $options;
+	}
+
+	// getMappingCells
+	public static function getMappingCells( $field_name, $session_data, &$config, $mapping_info )
+	{
+		$html			=	'';
+		$dev_fields		=	self::_getDevFields( array( 'core_dev_select', 'more_importer_prepare_input' ) );
+		$field_options	=	self::getMappingFields( $session_data, $mapping_info );
+		$html_after		=	'';
+		$options		=	array(
+								'input'=>array( 'Prepared=1', 'Raw=0' ),
+								'input_attr'=>'',
+								'mapping'=>array(),
+								'mapping2'=>array( 'options'=>array(
+																array( 'attr'=>array( '0' ) ),
+																array( 'attr'=>array( '0' ) ),
+																array( 'attr'=>array( '0' ) )
+															  ),
+												 ),
+								'mapping_attr'=>''
+							);
+		$required		=	'';
+
+		$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_IGNORED' ).' -=clear';
+		$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_IMPORT_INTO' ).'=optgroup';
+
+		if ( isset( $session_data['fields'][$field_name] ) ) {
+			if ( self::hasPreparedInput( $session_data['fields'][$field_name]->type ) ) {
+				$options['mapping_attr']	=	' data-field="1"';
+			} else {
+				$html_after					=	'<span class="info-raw disabled">'.JText::_( 'COM_CCK_RAW' ).'</span>';
+				$options['input_attr']		=	' style="display:none;" disabled="disabled"';
+				$options['mapping_attr']	=	' data-field="0"';
+			}
+			$options['mapping'][]		=	'- '.JText::_( 'COM_CCK_INHERITED' ).' -=';
+		} else {
+			$idx	=	array_search( $field_name, $session_data['csv']['columns'] );
+
+			if ( $idx !== false && isset( $session_data['fields'][$idx] ) ) {
+				$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_INHERITED' ).' -=';
+			} else {
+				$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_MAP_OR_IGNORE' ).' -=';
+				$required				=	'required';
+			}
+
+			$html_after					=	'<span class="info-raw disabled">'.JText::_( 'COM_CCK_RAW' ).'</span>';
+			$options['input_attr']		=	' style="display:none;" disabled="disabled"';
+			$options['mapping_attr']	=	' data-field="0"';
+		}
+
+		$location						=	'data-field-option';
+		$options['mapping']				=	array_merge( $options['mapping'], $field_options['opts'] );
+		$options['mapping2']['options']	=	array_merge( $options['mapping2']['options'], $field_options['attr']['options'] );
+
+		$html		.=	'<td>'.JCckDev::getForm( 'core_dev_select', '', $config, array( 'selectlabel'=>'', 'options'=>implode( '||', $options['mapping'] ), 'options2'=>json_encode( $options['mapping2'] ), 'bool8'=>0, 'css'=>'adminformlist-maxwidth map-data', 'attributes'=>'data-name="'.$field_name.'"'.$options['mapping_attr'], 'location'=>$location, 'required'=>$required, 'storage_field'=>'ajax_import['.$field_name.'][mapping]' ) ).'</td>'
+					.	'<td>'.JCckDev::getForm( $dev_fields['more_importer_prepare_input'], $session_data['options']['prepare_input'], $config, array( 'options'=>implode( '||', $options['input'] ), 'css'=>'input-data', 'attributes'=>$options['input_attr'], 'storage_field'=>'ajax_import['.$field_name.'][input]' ) ).$html_after.'</td>';
+
+		return $html;
+	}
+
+	// hasPreparedInput
+	public static function hasPreparedInput( $type )
+	{
+		static $cache	=	array();
+
+		if ( !isset( $cache[$type] ) ) {
+			$field_property	=	'prepared_input';
+
+			$cache[$type]	=	JCck::callFunc( 'plgCCK_Field'.$type, 'has', $field_property );
+		}
+
+		return $cache[$type];
 	}
 	
 	// findField
@@ -297,6 +381,7 @@ class Helper_Import
 		$session['options']						=	$app->input->get( 'options', array(), 'array' );
 		$session['options']['csv_length']		=	$params->get( 'csv_length', 1000 );
 		$session['options']['encoding_list']	=	$params->get( 'encoding_list', "7bit,8bit,ASCII,BASE64,HTML-ENTITIES,\r\nISO-8859-1,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,ISO-8859-7,\r\nISO-8859-8,ISO-8859-9,ISO-8859-10,ISO-8859-13,ISO-8859-14,ISO-8859-15,\r\nUTF-32,UTF-32BE,UTF-32LE,UTF-16,UTF-16BE,UTF-16LE,UTF-7,UTF7-IMAP,UTF-8,\r\nWindows-1252,Windows-1254" );
+		$session['options']['input_error']		=	$params->get( 'input_error', 0 );
 		$session['options']['key']				=	( isset( $session['options']['key'] ) ) ? $session['options']['key'] : '';
 			
 		if ( $session['options']['key'] == -1 && isset( $session['options']['key_fieldname'] ) && $session['options']['key_fieldname'] != '' ) {
@@ -347,8 +432,30 @@ class Helper_Import
 				}
 			}
 		}
-		$session['params']['ordering']		=	( isset( $session['options']['reordering'] ) && $session['options']['reordering'] ) ? -1 : -2;
+
+		// TODO: those should be automatically mapped
+		$session['params']['ordering']			=	( isset( $session['options']['reordering'] ) && $session['options']['reordering'] ) ? -1 : -2;
 		$session['params']['force_password']	=	( isset( $session['options']['force_password'] ) ) ? $session['options']['force_password'] : 0;
+
+		$opt_params	=	$app->input->get( 'params', array(), 'array' );
+
+		foreach ( $opt_params as $k=>$v ) {
+			$session['params'][$k]	=	$v;
+		}
+		if ( !isset( $session['params']['unknown_categories'] ) ) {
+			$session['params']['unknown_categories']	=	0;
+		} else {
+			$session['params']['unknown_categories']	=	1;
+		}
+		if ( !isset( $session['params']['unknown_tags'] ) ) {
+			$session['params']['unknown_tags']			=	0;
+		} else {
+			$session['params']['unknown_tags']			=	1;
+		}
+		if ( $session['params']['tags'] === '1' ) {
+			$session['params']['tags']	=	'';
+		}
+		// TODO: those should be automatically mapped
 
 		// Init (Processings)
 		$session['processings']		=	array();
@@ -440,6 +547,7 @@ class Helper_Import
 
 			// Prepare
 			for ( $i = 0; $i < $session['csv']['count']; $i++ ) {
+				$config['input_error']		=	(int)$session['options']['input_error'];
 				$config['prepare_input']	=	(int)$session['options']['prepare_input'];
 				$idx						=	isset( $fields[$session['csv']['columns'][$i]] ) ? $session['csv']['columns'][$i] : $i;
 				$isCore						=	false;
@@ -461,6 +569,12 @@ class Helper_Import
 				}
 				if ( $config['prepare_input'] && isset( $fields[$idx]->type ) && $fields[$idx]->type ) {
 					$dispatcher->trigger( 'onCCK_FieldPrepareImport', array( &$fields[$idx], $row[$i], &$config ) );
+
+					if ( $config['error'] ) {
+						$config['log']		=	'cancelled';
+						$config['pk']		=	$session['table_inc'] + $current + 1;
+						break;
+					}
 				} else {
 					$fields[$idx]->value	=	$row[$i];
 				}
@@ -496,64 +610,27 @@ class Helper_Import
 			}
 
 			// -------- --------- -------- //
-		
-			if ( count( $more ) ) {
-				foreach ( $more as $t=>$m ) {
-					// Get :: More Key		
-					if ( $config['key_table'] && $config['key_column'] ) {
-						if ( isset( $config['storages'][$t][$config['key']] ) && $config['storages'][$t][$config['key']] != '' ) {
-							$pk		=	(int)JCckDatabase::loadResult( 'SELECT id FROM '.$config['key_table'].' WHERE '.$config['key_column'].' = "'.$config['storages'][$t][$config['key']].'"' );
-							break;
-						}
-					}
-				}
-			}
 			
-			// BeforeImport
-			$event	=	'onCckPreBeforeImport';
-			if ( isset( $session['processings'][$event] ) ) {
-				foreach ( $session['processings'][$event] as $p ) {
-					if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
-						$options	=	new JRegistry( $p->options );
-
-						include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
-					}
-				}
-			}
-
-			/* TODO#SEBLOD: beforeImport */
-
-			$event	=	'onCckPostBeforeImport';
-			if ( isset( $session['processings'][$event] ) ) {
-				foreach ( $session['processings'][$event] as $p ) {
-					if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
-						$options	=	new JRegistry( $p->options );
-
-						include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
-					}
-				}
-			}
-
-			// Import Core
-			JCck::callFunc_Array( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'onCCK_Storage_LocationImport', array( $config['storages'][$session['table']], &$config, $pk ) );
-
-			// Log
-			$session['log']['count'][$config['log']]++;		
-			$session['log']['buffer'][$config['log']]	.=	str_putcsv( $session['csv']['rows'][$current], $session['options']['separator'] )."\n";
-			$session['log']['pks'][]					=	$config['pk'];
-
-			if ( !$config['error'] ) {
-				// Import More
+			if ( $config['error'] ) {
+				// Log
+				$session['log']['count'][$config['log']]++;		
+				$session['log']['buffer'][$config['log']]	.=	str_putcsv( $session['csv']['rows'][$current], $session['options']['separator'] )."\n";
+				$session['log']['pks'][]					=	$config['pk'];
+			} else {
 				if ( count( $more ) ) {
 					foreach ( $more as $t=>$m ) {
-						if ( $config['storages'][$t]['_']->table != 'none' ) {
-							JCck::callFunc_Array( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'onCCK_Storage_LocationImport', array( $config['storages'][$t], &$config, $config['pk'] ) );
+						// Get :: More Key		
+						if ( $config['key_table'] && $config['key_column'] ) {
+							if ( isset( $config['storages'][$t][$config['key']] ) && $config['storages'][$t][$config['key']] != '' ) {
+								$pk		=	(int)JCckDatabase::loadResult( 'SELECT id FROM '.$config['key_table'].' WHERE '.$config['key_column'].' = "'.$config['storages'][$t][$config['key']].'"' );
+								break;
+							}
 						}
 					}
 				}
-
-				// AfterImport
-				$event	=	'onCckPreAfterImport';
+				
+				// BeforeImport
+				$event	=	'onCckPreBeforeImport';
 				if ( isset( $session['processings'][$event] ) ) {
 					foreach ( $session['processings'][$event] as $p ) {
 						if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
@@ -564,15 +641,59 @@ class Helper_Import
 					}
 				}
 
-				/* TODO: afterImport */
+				/* TODO#SEBLOD: beforeImport */
 
-				$event	=	'onCckPostAfterImport';
+				$event	=	'onCckPostBeforeImport';
 				if ( isset( $session['processings'][$event] ) ) {
 					foreach ( $session['processings'][$event] as $p ) {
 						if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
 							$options	=	new JRegistry( $p->options );
 
 							include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+						}
+					}
+				}
+
+				// Import Core
+				JCck::callFunc_Array( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'onCCK_Storage_LocationImport', array( $config['storages'][$session['table']], &$config, $pk ) );
+
+				// Log
+				$session['log']['count'][$config['log']]++;		
+				$session['log']['buffer'][$config['log']]	.=	str_putcsv( $session['csv']['rows'][$current], $session['options']['separator'] )."\n";
+				$session['log']['pks'][]					=	$config['pk'];
+
+				if ( !$config['error'] ) {
+					// Import More
+					if ( count( $more ) ) {
+						foreach ( $more as $t=>$m ) {
+							if ( $config['storages'][$t]['_']->table != 'none' ) {
+								JCck::callFunc_Array( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'onCCK_Storage_LocationImport', array( $config['storages'][$t], &$config, $config['pk'] ) );
+							}
+						}
+					}
+
+					// AfterImport
+					$event	=	'onCckPreAfterImport';
+					if ( isset( $session['processings'][$event] ) ) {
+						foreach ( $session['processings'][$event] as $p ) {
+							if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
+								$options	=	new JRegistry( $p->options );
+
+								include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+							}
+						}
+					}
+
+					/* TODO: afterImport */
+
+					$event	=	'onCckPostAfterImport';
+					if ( isset( $session['processings'][$event] ) ) {
+						foreach ( $session['processings'][$event] as $p ) {
+							if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
+								$options	=	new JRegistry( $p->options );
+
+								include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+							}
 						}
 					}
 				}
@@ -599,6 +720,12 @@ class Helper_Import
 		}
 		
 		return $dest;
+	}
+
+	// _getDevFields
+	protected static function _getDevFields( $names )
+	{
+		return JCckDatabaseCache::loadObjectList( 'SELECT * FROM #__cck_core_fields WHERE name IN ("'.implode( '","', $names ).'")', 'name' );
 	}
 }
 

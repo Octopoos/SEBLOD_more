@@ -20,7 +20,7 @@ $session	=	JFactory::getSession();
 $ajax		=	$params->get( 'mode', 0 );
 $ajax_load	=	'components/com_cck/assets/styles/seblod/images/ajax.gif';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;} .seblod-fix{padding-left:0!important; padding-right:0!important;} .seblod-fix ul{margin-left:0;} .seblod-fix table td{vertical-align:middle;} .column-name.excluded{text-decoration:line-through;} .column-name.selected{font-weight:bold;}' );
+JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;} .seblod-fix{padding-left:0!important; padding-right:0!important;} .seblod-fix ul{margin-left:0;} .seblod-fix table td{vertical-align:middle;} .column-name.excluded{text-decoration:line-through;} .column-name.selected{font-weight:bold;} li .icon-help.hasTooltip{margin:12px 0 0 2px;} .info-raw.disabled{padding-left:8px;}' );
 
 $ajaxStep	=	0;
 $ajaxTotal	=	0;
@@ -77,22 +77,19 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 							<thead>
 								<tr>
 									<th width="30%"><?php echo JText::_( 'COM_CCK_CSV_COLUMN' )?></th>
-									<th><?php echo JText::_( 'COM_CCK_FIELD_MAPPING' )?></th>
-									<th width="20%"><?php echo JText::_( 'COM_CCK_INPUT' )?></th>
+									<th><?php echo JText::_( 'COM_CCK_FIELD_MAPPING' )?> <span class="icon-help hasTooltip" title="<?php echo JText::_( 'COM_CCK_AJAX_FIELD_MAPPING_DESC' ); ?>"></span></th>
+									<th width="20%"><?php echo JText::_( 'COM_CCK_INPUT' )?> <span class="icon-help hasTooltip" title="<?php echo JText::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ); ?>"></span></th>
 								</tr>
 							</thead>
 							<tbody>
 								<?php
-								$field_options	=	Helper_Import::getMappingOptions( $session_data );
-
 								if ( isset( $session_data['csv']['columns'] ) ) {
 									foreach ( $session_data['csv']['columns'] as $field_name ) {
-										$js	.=	'$("#ajax_import_'.$field_name.'_input").isDisabledWhen("ajax_import_'.$field_name.'_mapping","clear",false);';
+										$js	.=	'$("#ajax_import_'.$field_name.'_input").isUpdatedWhen("ajax_import_'.$field_name.'_mapping");';
 
 										echo '<tr>'
 											.'<td><span class="column-name selected">'.$field_name.'</span></td>'
-											.'<td>'.JCckDev::getForm( 'core_dev_select', '', $config, array( 'selectlabel'=>'', 'options'=>$field_options, 'bool8'=>0, 'css'=>'adminformlist-maxwidth map-data', 'attributes'=>'data-name="'.$field_name.'"', 'storage_field'=>'ajax_import['.$field_name.'][mapping]' ) ).'</td>'
-											.'<td>'.JCckDev::getForm( 'more_importer_prepare_input', $session_data['options']['prepare_input'], $config, array( 'type'=>'select_simple', 'storage_field'=>'ajax_import['.$field_name.'][input]' ) ).'</td>'
+											.Helper_Import::getMappingCells( $field_name, $session_data, $config, $params->get( 'mode_ajax_mapping_field', 0 ) )
 											.'</tr>'
 											;
 									}
@@ -120,11 +117,15 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 		<?php } else { ?>
 			<div class="seblod">
 				<div id="loading" class="loading"></div>
-				<ul class="adminformlist dest-params">
+				<ul class="adminformlist">
 					<?php
 					if ( $ajax ) {
 						echo '<li>'.JCckDev::getForm( 'more_importer_workflow', '', $config ).'</li>';
 					}
+					?>
+				</ul>
+				<ul class="adminformlist dest-params">
+					<?php
 					echo '<li class="required-params"><label>'.JText::_( 'COM_CCK_CONTENT_OBJECT' ).'<span class="star"> *</span></label>'
 					 .	 JCckDev::getFormFromHelper( array( 'component'=>'com_cck_importer', 'function'=>'getObjectPlugins', 'name'=>'more_importer_storage_location' ), '', $config, array( 'storage_field'=>'options[storage_location]' ) )
 					 .	 JCckDev::getForm( 'more_importer_storage', $this->params->get( 'storage', 'standard' ), $config, array( 'css'=>'hide' ) )
@@ -135,7 +136,9 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 					 .	 '</li>';
 					echo JCckDev::renderForm( 'more_importer_upload_file', '', $config, array(), array(), 'required-params' );
 					echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '1' ), $config );
-					echo JCckDev::renderForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config );
+					echo '<li><label>'.JText::_( 'COM_CCK_INPUT' ).'</label><div class="pull-left">'
+					 .	 JCckDev::getForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config, array(), array( 'after'=>' <span class="icon-help hasTooltip" title="'.JText::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ).'"></span>' ) )
+					 .	 '</div></li>';
 					echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config );
 					?>
 				</ul>
@@ -273,7 +276,7 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			var loading = "<img align='center' src='<?php echo $ajax_load; ?>' alt='' />"; 
 			var data = {};
 			var id = '';
-			$("#adminForm input.text, #adminForm select.select, #adminForm fieldset.checkbox, #adminForm fieldset.radios").each(function(i) {
+			$("#adminForm input.text, #adminForm select.select, #adminForm select.tag, #adminForm fieldset.checkboxes, #adminForm fieldset.radios").each(function(i) {
 				id = $(this).attr("id");
 				data[id] = String($(this).myVal());
 			});
@@ -298,7 +301,11 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 				map_data[n].map = $(this).val();
 
 				if (map_data[n].map != 'clear') {
-					map_data[n].input = $('#ajax_import_'+n+'_input').val();
+					if ($('#ajax_import_'+n+'_input').prop('disabled') !== true) {
+						map_data[n].input = $('#ajax_import_'+n+'_input').val();
+					} else {
+						map_data[n].input = '0';
+					}
 				}
 			});
 
@@ -318,15 +325,6 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 	                		$("label[for='options_force_utf80']").removeClass("active btn-success");
 	                		$("label[for='options_force_utf81']").addClass("active btn-danger");
 	                	}
-	                	break;
-					case "options_prepare_input":
-	                	if ( v == "1" ) {
-	                       	$("label[for='options_prepare_input0']").addClass("active btn-success");
-	                       	$("label[for='options_prepare_input1']").removeClass("active btn-danger");
-	                       } else {
-	                       	$("label[for='options_prepare_input0']").removeClass("active btn-success");
-	                       	$("label[for='options_prepare_input1']").addClass("active btn-danger");
-	                       }
 	                	break;
                 }
 			});
@@ -367,6 +365,37 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 			Joomla.submitform(task, document.getElementById('adminForm'));
 		}
 	};
+	$.fn.isUpdatedWhen = function(id) {
+		var $el = $(this);
+		var $trigger = $('#'+id);
+
+		if ($trigger != null) {
+			$trigger.change( function() {
+				var selected = $trigger.val();
+
+				if (selected == "clear") {
+					$el.prop("disabled",true).hide();
+					$el.parent().find('.info-raw').hide();
+				} else if (!selected) {
+					if ($trigger.attr('data-field') == "0") {
+						$el.prop("disabled",true).hide();
+						$el.parent().find('.info-raw').show();
+					} else {
+						$el.prop("disabled",false).show();
+						$el.parent().find('.info-raw').hide();
+					}
+				} else {
+					if ($trigger.find("option:selected").attr("data-field-option") == "1") {
+						$el.prop("disabled",false).show();
+						$el.parent().find('.info-raw').hide();
+					} else {
+						$el.prop("disabled",true).hide();
+						$el.parent().find('.info-raw').show();
+					}
+				}
+			});
+		}
+	};
 	$(document).ready(function() {
 		JCck.Dev.toggleOptions($("#options_storage_location").val(),false);
 
@@ -398,7 +427,9 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 					document.location.href="index.php?option=com_cck_importer";
 				});
 				$("#go").on("click", function() {
-					JCck.Dev.trigger();
+					if ($("#adminForm").validationEngine("validate","go") === true) {
+						JCck.Dev.trigger();
+					}
 				});
 			} else {
 				JCck.Dev.trigger();
