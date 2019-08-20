@@ -241,8 +241,26 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		}
 		
 		// Prepare
+		if ( !$isNew ) {
+			if ( isset( $data['configuration'] ) && $data['configuration'] != '' ) {
+				if ( $table->configuration != '' ) {
+					$new_params	=	json_decode( $data['configuration'] );
+					$params		=	json_decode( $table->configuration );
+
+					foreach ( $new_params as $k=>$v ) {
+						$params->$k	=	$v;
+					}
+
+					$table->configuration	=	json_encode( $params );
+
+					unset( $data['configuration'] );
+				}
+			}
+		}
 		$table->bind( $data );
+
 		$table->check();
+
 		self::_completeTable( $table, $data, $config );
 		
 		// Store
