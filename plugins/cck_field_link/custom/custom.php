@@ -161,7 +161,25 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 			}
 			
 			// Set
-			$field->link		=	$custom;
+			$pos	=	strpos( $custom, 'Itemid=' );
+
+			if ( $pos !== false && strpos( $custom, 'Itemid=$' ) === false ) {
+				$segment	=	'';
+				$pos2		=	strpos( $custom, '/' );
+
+				if ( $pos2 !== false && $pos2 > $pos ) {
+					$parts		=	explode( '/', $custom );
+					$segment	=	$parts[1];
+					$custom		=	$parts[0];
+				}
+				$custom		=	JRoute::_( $custom );
+
+				if ( $segment != '' ) {
+					$custom	.=	'/'.$segment;
+				}
+			}
+			$field->link	=	$custom;
+
 			if ( $vars ) {
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
 			}
@@ -212,10 +230,13 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				} else {
 					$value	=	$fields[$fieldname]->$target;
 				}
+
 				if ( $value && $process['itemId'] ) {
 					$value	.=	( strpos( $value, '?' ) !== false ) ? '&Itemid='.$process['itemId'] : '?Itemid='.$process['itemId'];
 					$value	=	JRoute::_( $value );
+
 				}
+
 				$fields[$name]->link        =	str_replace( $process['matches'][0][$k], $value, $fields[$name]->link );
 				$fields[$name]->html		=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->html );
 				
@@ -224,6 +245,30 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				}
 			}
 		}
+
+		$pre_link	=	$fields[$name]->link;
+
+		if ( strpos( $fields[$name]->link, 'Itemid=' ) !== false ) {
+			$segment	=	'';
+
+			if ( strpos( $fields[$name]->link, '/' ) !== false ) {
+				$parts		=	explode( '/', $fields[$name]->link );
+				$segment	=	$parts[1];
+				$fields[$name]->link		=	$parts[0];
+				$fields[$name]->link		=	JRoute::_( $fields[$name]->link );
+
+				if ( $segment != '' ) {
+					$fields[$name]->link	.=	'/'.$segment;
+
+					$fields[$name]->html		=	str_replace( $pre_link, $fields[$name]->link, $fields[$name]->html );
+
+					if ( isset( $fields[$name]->typo ) ) {
+						$fields[$name]->typo	=	str_replace( $pre_link, $fields[$name]->link, $fields[$name]->typo );
+					}
+				}
+			}
+		}
+
 		if ( $process['target_fieldname'] != '' ) {
 			$link_target				=	( isset( $fields[$process['target_fieldname']] ) ) ? $fields[$process['target_fieldname']]->value : '';
 
