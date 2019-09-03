@@ -36,29 +36,14 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 			return;
 		}
 		parent::g_onCCK_FieldPrepareContent( $field, $config );
-		
-		// Init
+
+		// Prepare
 		if ( $field->state ) {
-			$options2	=	json_decode( $field->options2 );
-
-			if ( is_object( $options2 ) && isset( $options2->itemid ) && $options2->itemid ) {
-				if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
-					$status_code	=	303;
-
-					if ( isset( $options2->status_code ) && $options2->status_code ) {
-						$status_code	=	(int)$options2->status_code;
-					}
-					JFactory::getApplication()->redirect( JCckDevHelper::getAbsoluteUrl( $options2->itemid ), $status_code );
-				} else {
-					$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $options2->itemid ).'\'';
-				
-					JFactory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$options2->timeout_ms.');' );
-				}
-			}	
+			parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'options2'=>$field->options2 ), 5 );
 		}
 
 		// Set
-		$field->value	=	$value;
+		$field->value	=	'';
 	}
 	
 	// onCCK_FieldPrepareForm
@@ -69,6 +54,11 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 		}
 		self::$path	=	parent::g_getPath( self::$type.'/' );
 		parent::g_onCCK_FieldPrepareForm( $field, $config );
+
+		// Prepare
+		if ( $field->state ) {
+			parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'options2'=>$field->options2 ), 5 );
+		}
 		
 		// Set
 		$field->display	=	0;
@@ -119,6 +109,10 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 		}
 		*/
 
+		if ( $field->state ) {
+			parent::g_addProcess( 'afterStore', self::$type, $config, array( 'name'=>$field->name, 'options2'=>$field->options2 ), 5 );
+		}		
+
 		// Prepare
 		$options2	=	json_decode( $field->options2 );
 
@@ -144,6 +138,86 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 	public static function onCCK_FieldRenderForm( $field, &$config = array() )
 	{
 		return parent::g_onCCK_FieldRenderForm( $field );
+	}
+
+	// -------- -------- -------- -------- -------- -------- -------- -------- // Special Events
+	
+	// onCCK_FieldAfterStore
+	public static function onCCK_FieldAfterStore( $process, &$fields, &$storages, &$config = array() )
+	{
+		$name	=	$process['name'];
+
+		if ( !$fields[$name]->state ) {
+			return;
+		}
+		
+		self::_process( $process, $fields );
+	}
+
+	// onCCK_FieldBeforeRenderContent
+	public static function onCCK_FieldBeforeRenderContent( $process, &$fields, &$storages, &$config = array() )
+	{
+		$name	=	$process['name'];
+
+		if ( !$fields[$name]->state ) {
+			return;
+		}
+		
+		self::_process( $process, $fields );
+	}
+
+	// onCCK_FieldBeforeRenderForm
+	public static function onCCK_FieldBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
+	{
+		$name	=	$process['name'];
+
+		if ( !$fields[$name]->state ) {
+			return;
+		}
+		
+		self::_process( $process, $fields );
+	}
+
+	// _process
+	protected static function _process( $process, &$fields )
+	{
+		$options2	=	json_decode( $process['options2'] );
+
+		if ( !is_object( $options2 ) ) {
+			return;
+		}
+
+		if ( isset( $options2->message_style ) && $options2->message_style ) {
+			$message	=	$options2->message;
+
+			if ( JCck::getConfig_Param( 'language_jtext', 1 ) ) {
+				$message	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $message ) ) );
+			}
+		}
+		if ( isset( $options2->itemid ) && $options2->itemid ) {
+			$itemId	=	$options2->itemid;
+
+			if ( $itemId == -1 ) {
+				$itemId	=	JFactory::getApplication()->input->getInt( 'Itemid' );
+			}
+			if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
+				$app			=	JFactory::getApplication();
+				$status_code	=	303;
+
+				if ( isset( $options2->status_code ) && $options2->status_code ) {
+					$status_code	=	(int)$options2->status_code;
+				}
+
+				$app->enqueueMessage( $message, $options2->message_style );
+				$app->redirect( JCckDevHelper::getAbsoluteUrl( $itemId, $status_code ) );
+			} else {
+				$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $itemId ).'\'';
+			
+				JFactory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$options2->timeout_ms.');' );
+			}
+		} elseif ( $message ) {
+			JFactory::getApplication()->enqueueMessage( $message, $options2->message_style );
+		}
 	}
 }
 ?>
