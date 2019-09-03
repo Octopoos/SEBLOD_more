@@ -50,7 +50,7 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 
 		if ( !$task ) {
 			return;
-		} else {
+		} elseif ( $task != 'impersonate' ) {
 			$task_id	=	$link->get( 'task_id_'.$task, '' );
 
 			if ( !$task_id ) {
@@ -58,19 +58,29 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 			}
 		}
 
-		// Check
-		$user 	=	JCck::getUser();
-
-		if ( !$user->authorise( 'core.'.$task, 'com_cck.form.'.$config['type_id'] ) ) {
-			if ( !$link->get( 'no_access', 0 ) ) {
-				$field->display	=	0;
-			}
-			return;
-		}
-
 		$uri		=	JUri::getInstance()->toString();
 		$pre_task	=	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\'<input type="hidden" name="return" value="'.base64_encode( $uri ).'">\');' )
 					.	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\''.JHtml::_( 'form.token' ).'\');' );
+		$user 		=	JCck::getUser();
+
+		// Check
+		if ( $task == 'impersonate' ) {
+			$task_id	=	$pk;
+
+			if ( !$user->authorise( 'core.admin', 'com_users' ) ) {
+				if ( !$link->get( 'no_access', 0 ) ) {
+					$field->display	=	0;
+				}
+				return;
+			}
+		} else {
+			if ( !$user->authorise( 'core.'.$task, 'com_cck.form.'.$config['type_id'] ) ) {
+				if ( !$link->get( 'no_access', 0 ) ) {
+					$field->display	=	0;
+				}
+				return;
+			}
+		}
 
 		// $field->onclick	=	'';
 		$field->link		=	'javascript: '.$pre_task.'JCck.Core.submitTask(\''.$task.'\','.$task_id.',\'cb'.($i - 1).'\',\''.$config['formId'].'\');';
