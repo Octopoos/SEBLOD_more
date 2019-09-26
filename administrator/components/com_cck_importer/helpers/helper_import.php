@@ -221,16 +221,22 @@ class Helper_Import
 						.	' LEFT JOIN #__cck_core_type_field as b ON b.fieldid = a.id'
 						.	' LEFT JOIN #__cck_core_types as c ON c.id = b.typeid'
 						.	' WHERE c.name = "'.$session_data['options']['content_type'].'"'
+						.	' AND a.storage != "none"'
 						.	' ORDER BY a.name ASC';
 
 				$fields	=	JCckDatabase::loadObjectList( $query );
 				$glue	=	'&nbsp;&nbsp;&mdash;&nbsp;&nbsp;';
 				$lang	=	JFactory::getLanguage();
 				$tables	=	array();
-
+				
 				foreach ( $fields as $field ) {
 					$data_type		=	'';
-					$field->label	=	( $field->label2 && $field->label2 != 'clear' && $field->label2 != ' ' ) ? $field->label2 : ( ( $field->label ) ? $field->label : $field->title );
+
+					if ( $field->label2 && $field->label2 != 'clear' && $field->label2 != ' ' ) {
+						$field->label	=	$field->label2;
+					} elseif ( !$field->label && isset( $field->title ) ) {
+						$field->label	=	$field->title;
+					}
 					
 					if ( trim( $field->label ) ) {
 						$key			=	'COM_CCK_' . str_replace( ' ', '_', trim( $field->label ) );
@@ -244,7 +250,7 @@ class Helper_Import
 
 						$data_type		=	$glue.JText::_( 'PLG_CCK_FIELD_'.strtoupper( $field->type ).'_LABEL2' );
 					} else {
-						if ( !isset( $tables[$field->storage_table] ) ) {
+						if ( $field->storage_table && !isset( $tables[$field->storage_table] ) ) {
 							$tables[$field->storage_table]	=	JCckDatabase::getTableFullColumns( $field->storage_table );
 						}
 
