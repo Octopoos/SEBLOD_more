@@ -116,6 +116,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 						'key_column'=>@$session['options']['key_column'],
 						'key_table'=>@$session['options']['key_table'],
 						'params'=>$session['params'],
+						'table'=>$session['table'],
 						'tasks'=>$session['tasks'],
 						'type'=>$session['options']['content_type'],
 						'type_fields_intro'=>$session['options']['content_type_fields_intro']

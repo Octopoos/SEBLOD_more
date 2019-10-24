@@ -54,7 +54,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 							'key_column'=>@$session['options']['key_column'],
 							'key_table'=>@$session['options']['key_table'],
 							'params'=>$session['params'],
-							'table'=>( ( isset( $session['options']['table'] ) && $session['options']['table'] ) ? $session['options']['table'] : '' ),
+							'table'=>$session['table'],
 							'tasks'=>array(),
 							'type'=>$session['options']['content_type']
 						);
