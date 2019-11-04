@@ -24,9 +24,23 @@ class plgCCK_Field_ValidationDate_Mask extends JCckPluginValidation
 		if ( self::$type != $field->validation ) {
 			return;
 		}
-		
-		// $field->attributes	.=	' data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy-mm-dd"';
-		$field->attributes	.=	' data-inputmask="\'alias\':\'datetime\', \'inputformat\':\'yyyy-mm-dd\'"';
+
+		$validation	=	parent::g_getValidation( $field->validation_options );
+
+		$format		=	$validation->format;
+
+		if ( $format == '-1' ) {
+			$format	=	$validation->format_custom;
+		}
+		if ( $format ) {
+			if ( strpos( $format, 'COM_CCK_' ) !== false || strpos( $format, 'DATE_FORMAT_' ) !== false ) {
+				$format	=	JText::_( $format );
+			}
+		} else {
+			$format	=	'yyyy-mm-dd';
+		}
+
+		$field->attributes	.=	' data-inputmask="\'alias\':\'datetime\', \'inputformat\':\''.$format.'\'"';
 
 		JFactory::getDocument()->addScript( JUri::root( true ).'/media/cck/js/jquery.inputmask.min.js' );
 		JFactory::getDocument()->addScript( JUri::root( true ).'/media/cck/js/jquery.inputmask.binding.min.js' );

@@ -9,10 +9,16 @@
 **/
 
 defined( '_JEXEC' ) or die;
+
+echo JCckDev::renderForm( 'core_dev_select', 'Y-m-d', $config, array( 'label'=>'Format', 'defaultvalue'=>'', 'selectlabel'=>'International',
+						  'options'=>'Free=-1',
+						  'storage_field'=>'format' ) );
+echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Free Format', 'storage_field'=>'format_custom' ) );
 ?>
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
+	$('#format_custom').isVisibleWhen('format','-1');
 	$('#alert').parent().hide();
 });
 </script>
