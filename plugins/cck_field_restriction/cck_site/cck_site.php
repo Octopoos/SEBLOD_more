@@ -61,8 +61,21 @@ class plgCCK_Field_RestrictionCck_Site extends JCckPluginRestriction
 		$sites	=	$restriction->get( 'sites', '' );
 		
 		if ( $sites ) {
-			if ( JCck::isSite() && JCck::getSite()->id != $sites ) {
-				return ( $do ) ? true : false;
+			$state	=	false;
+
+			if ( JCck::isSite() ) {
+				$current	=	JCck::getSite()->id;
+				$sites		=	explode( ',', $sites );
+
+				foreach ( $sites as $site_id ) {
+					if ( $site_id == $current ) {
+						$state	=	true;
+					}
+				}
+
+				if ( !$state ) {
+					return ( $do ) ? true : false;
+				}
 			}
 		}
 		
