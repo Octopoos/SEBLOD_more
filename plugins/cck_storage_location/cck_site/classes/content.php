@@ -13,6 +13,18 @@ defined( '_JEXEC' ) or die;
 // JCckContent
 class JCckContentCck_Site extends JCckContent
 {
+	protected $_tmp_data	=	null;
+
+	// create (^)
+	public function create( $content_type, $data, $data_more = array(), $data_more2 = array() )
+	{
+		if ( isset( $data['_'] ) ) {
+			$this->_tmp_data	=	$data['_'];
+		}
+
+		return parent::create( $content_type, $data, $data_more, $data_more2 );
+	}
+
 	// preSave
 	protected function preSave( $table_instance_name, &$data )
 	{
@@ -24,14 +36,14 @@ class JCckContentCck_Site extends JCckContent
 						);
 			$fields		=	array();
 
-			if ( isset( $data['_'] ) ) {
-				foreach ( $data['_'] as $k=>$v ) {
+			if ( isset( $this->_tmp_data ) ) {
+				foreach ( $this->_tmp_data as $k=>$v ) {
 					$fields[$k]	=	new stdClass;
 					
 					$fields[$k]->value	=	$v;
 				}
 
-				unset( $data['_'] );
+				unset( $this->_tmp_data );
 			}
 
 			$groups	=	$this->_preSave_onCckPostBeforeStore( $config, $fields );
@@ -60,7 +72,7 @@ class JCckContentCck_Site extends JCckContent
 				if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
 					$options	=	new JRegistry( $p->options );
 
-					include_once JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config, $user */
+					include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config, $user */
 				}
 			}
 		}
