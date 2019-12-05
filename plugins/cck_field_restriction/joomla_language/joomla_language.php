@@ -61,7 +61,17 @@ class plgCCK_Field_RestrictionJoomla_Language extends JCckPluginRestriction
 		$languages	=	$restriction->get( 'languages', '' );
 		
 		if ( $languages ) {
-			if ( $lang->getTag() != $languages ) {
+			$current	=	$lang->getTag();
+			$languages	=	explode( ',', $languages );
+			$state		=	false;
+
+			foreach ( $languages as $lang_tag ) {
+				if ( $lang_tag == $current ) {
+					$state	=	true;
+				}
+			}
+
+			if ( !$state ) {
 				return ( $do ) ? true : false;
 			}
 		}
