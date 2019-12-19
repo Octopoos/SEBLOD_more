@@ -50,6 +50,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		$config		=	array(
 							'auto_inc'=>0,
 							'component'=>'com_cck_importer',
+							'glue'=>$session['options']['glue'],
 							'key'=>$session['options']['key'],
 							'key_column'=>@$session['options']['key_column'],
 							'key_table'=>@$session['options']['key_table'],

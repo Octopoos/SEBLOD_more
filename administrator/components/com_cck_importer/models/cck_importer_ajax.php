@@ -112,6 +112,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 		$config		=	array(
 						'auto_inc'=>$session['auto_inc'],
 						'component'=>'com_cck_importer',
+						'glue'=>$session['options']['glue'],
 						'key'=>$session['options']['key'],
 						'key_column'=>@$session['options']['key_column'],
 						'key_table'=>@$session['options']['key_table'],

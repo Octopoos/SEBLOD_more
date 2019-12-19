@@ -16,6 +16,10 @@
 			<option value="1">COM_CCK_CANCEL_ROW_BEHAVIOR</option>
 			<option value="0">COM_CCK_INSERT_EMPTY_BEHAVIOR</option>
 		</field>
+		<field name="nested_separator" type="list" default="/" label="COM_CCK_CONFIG_NESTED_SEPARATOR" description="COM_CCK_CONFIG_NESTED_SEPARATOR_DESC" class="inputbox">
+			<option value="/">COM_CCK_SLASH</option>
+			<option value="\">COM_CCK_BACKSLASH</option>
+		</field>
 		<field name="COM_CCK_CONFIG_LEGEND_DEFAULT_VALUES" type="spacer" hr="false" />
 		<field name="storage" type="list" default="standard" label="COM_CCK_CONFIG_STORAGE" description="COM_CCK_CONFIG_STORAGE_DESC" class="inputbox">
 			<option value="standard">COM_CCK_CONFIG_OPTION_STANDARD</option>
