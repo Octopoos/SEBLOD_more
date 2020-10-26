@@ -90,7 +90,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 				$options2	=	new JRegistry( $field->options2 );
 
 				if ( $field->state ) {
-					parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'id'=>$id, 'variation'=>$field->variation, 'api_key'=>trim($this->params->get( 'api_key', '' )), 'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */, 'lat'=>$options2->get( 'latitude' ), 'lng'=>$options2->get( 'longitude' ), 'postal_code'=>$options2->get( 'postal_code' ), 'city'=>$options2->get( 'city' ), 'country'=>$options2->get( 'country' ), 'country_type'=>$options2->get( 'country_type', '0' ), 'r_type'=>$options2->get( 'types' ), 'r_country'=>$options2->get( 'restrictions_country' ) ) );
+					parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'id'=>$id, 'variation'=>$field->variation, 'api_key'=>trim($this->params->get( 'api_key', '' )), 'bypass'=>'0'/* $options2->get( 'bypass', '0' ) */, 'lat'=>$options2->get( 'latitude' ), 'lng'=>$options2->get( 'longitude' ), 'postal_code'=>$options2->get( 'postal_code' ), 'street'=>$options2->get( 'street' ), 'city'=>$options2->get( 'city' ), 'country'=>$options2->get( 'country' ), 'country_type'=>$options2->get( 'country_type', '0' ), 'r_type'=>$options2->get( 'types' ), 'r_country'=>$options2->get( 'restrictions_country' ) ) );
 				}
 			}
 			if ( $field->script ) {
@@ -219,6 +219,7 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 									'lat'=>$process['lat'],
 									'lng'=>$process['lng'],
 									'postal_code'=>$process['postal_code'],
+									'street'=>$process['street'],
 									'city'=>$process['city'],
 									'country'=>$process['country'],
 									'country_type'=>$process['country_type'],
@@ -258,8 +259,13 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 						var $lng = $("#"+"'.$params['lng'].'");
 						var $lng2 = $("#_"+"'.$params['lng'].'");
 						var $country = $("#"+"'.@$params['country'].'");
+						var $country2 = $("#_"+"'.@$params['country'].'");
+						var $street = $("#"+"'.@$params['street'].'");
+						var $street2 = $("#_"+"'.@$params['street'].'");
 						var $city = $("#"+"'.@$params['city'].'");
+						var $city2 = $("#_"+"'.@$params['city'].'");
 						var $zipcode = $("#"+"'.@$params['postal_code'].'");
+						var $zipcode2 = $("#_"+"'.@$params['postal_code'].'");
 						
 						var autocomplete = new google.maps.places.Autocomplete($el,{'.$opts.'});
 						var country_target = "'.( $params['country_type'] == '1' ? 'long_name' : 'short_name' ).'";
@@ -288,15 +294,37 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 								if ($zipcode.length) {
 									if (components_by_type["postal_code"] !== undefined) {
 										$zipcode.val(components_by_type["postal_code"].long_name);
+										if ($zipcode2.length){
+											$zipcode2.val(components_by_type["postal_code"].long_name);
+										}
+									}
+								}
+								if ($street.length) {
+									if (components_by_type["route"] !== undefined) {
+										var va = components_by_type["route"].long_name;
+
+										if (components_by_type["street_number"].long_name) {
+											va = components_by_type["street_number"].long_name+" "+va;
+										}
+										$street.val(va);
+										if ($street2.length){
+											$street2.val(va);
+										}
 									}
 								}
 								if ($city.length) {
 									if (components_by_type["locality"] !== undefined) {
 										$city.val(components_by_type["locality"].long_name);
+										if ($city2.length){
+											$city2.val(components_by_type["locality"].long_name);
+										}
 									}
 								}
 								if ($country.length) {
-									$country.val(components_by_type["country"][country_target]);
+									$country.myVal(components_by_type["country"][country_target]);
+									if ($country2.length){
+										$country2.myVal(components_by_type["country"][country_target]);
+									}
 								}
 							}
 							if (place.geometry.location) {
@@ -306,8 +334,8 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 								var latitude = "";
 								var longitude = "";
 							}
-							$lat.val(latitude); if ($lat2.length){ $lat2.text(latitude); }
-							$lng.val(longitude); if ($lng2.length){ $lng2.text(longitude); }
+							$lat.val(latitude); if ($lat2.length){ $lat2.myVal(latitude); }
+							$lng.val(longitude); if ($lng2.length){ $lng2.myVal(longitude); }
 							'.$js2.'
 						});
 					});

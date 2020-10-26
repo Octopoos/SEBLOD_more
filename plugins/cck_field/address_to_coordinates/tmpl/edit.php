@@ -32,6 +32,8 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
          .   JCckDev::getForm( 'core_dev_select', @$options2['country_type'], $config, array( 'label'=>'', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'Full=1||Short=0', 'storage_field'=>'json[options2][country_type]' ) )
          .   '</li>';
         echo JCckDev::renderForm( 'core_dev_select', @$options2['bypass'], $config, array( 'label'=>'Bypass', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'No=0||Yes=optgroup||Countries=1||Countries and Regions=2', 'storage_field'=>'json[options2][bypass]' ) );
+        echo JCckDev::renderForm( 'core_dev_text', @$options2['street'], $config, array( 'label'=>'Street Field', 'storage_field'=>'json[options2][street]', 'required'=>'' ) );
+        echo JCckDev::renderBlank();
         echo JCckDev::renderForm( 'core_dev_text', @$options2['city'], $config, array( 'label'=>'City Field', 'storage_field'=>'json[options2][city]', 'required'=>'required' ) );
         echo JCckDev::renderBlank();
         echo JCckDev::renderForm( 'core_dev_text', @$options2['postal_code'], $config, array( 'label'=>'Postal Code Field', 'storage_field'=>'json[options2][postal_code]', 'required'=>'required' ) );
