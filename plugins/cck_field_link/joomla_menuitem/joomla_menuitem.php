@@ -43,16 +43,35 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		// Prepare
 		if ( !$itemId ) {
 			$itemId			=	$app->input->getInt( 'Itemid', 0 );
+		} elseif ( (int)$itemId == -2 ) {
+			$itemId	=	JCckDatabaseCache::loadResult( 'SELECT id FROM #__menu WHERE parent_id = '.(int)$app->input->getInt( 'Itemid', 0 ).' ORDER BY lft ASC' );
+
+			if ( !$itemId ) {
+				return;
+			}
 		}
 		$link_attr			=	$link->get( 'attributes', '' );
 		$link_class			=	$link->get( 'class', '' );
 		$link_rel			=	$link->get( 'rel', '' );
 		$link_target		=	$link->get( 'target', '' );
+		$link_title			=	$link->get( 'title', '' );
+		$link_title2		=	$link->get( 'title_custom', '' );
 		$tmpl				=	$link->get( 'tmpl', '' );
 		$tmpl				=	( $tmpl == '-1' ) ? $app->input->getCmd( 'tmpl', '' ) : $tmpl;
 		$tmpl				=	( $tmpl ) ? 'tmpl='.$tmpl : '';
 		$vars				=	$tmpl;
 		$custom				=	parent::g_getCustomVars( self::$type, $field, $custom, $config );
+
+		if ( $link_target == 'modal' ) {
+			if ( strpos( $link_attr, 'data-cck-modal' ) === false ) {
+				$modal_json	=	$link->get( 'target_params', '' );
+
+				if ( $modal_json != '' ) {
+					$modal_json	=	'=\''.$modal_json.'\'';
+				}
+				$link_attr	=	trim( $link_attr.' data-cck-modal'.$modal_json );				
+			}
+		}
 		
 		// Set
 		$field->link		=	JRoute::_( 'index.php?Itemid='.$itemId );
@@ -79,7 +98,20 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		$field->link_class		=	$link_class ? $link_class : ( isset( $field->link_class ) ? $field->link_class : '' );
 		$field->link_rel		=	$link_rel ? $link_rel : ( isset( $field->link_rel ) ? $field->link_rel : '' );
 		$field->link_state		=	$link->get( 'state', 1 );
-		$field->link_target		=	$link_target ? $link_target : ( isset( $field->link_target ) ? $field->link_target : '' );
+		$field->link_target		=	$link_target ? ( $link_target == 'modal' ? '' : $link_target ) : ( isset( $field->link_target ) ? $field->link_target : '' );
+
+		if ( $link_title ) {
+			if ( $link_title == '2' ) {
+				$field->link_title	=	$link_title2;
+			} elseif ( $link_title == '3' ) {
+				$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+			}
+			if ( !isset( $field->link_title ) ) {
+				$field->link_title	=	'';
+			}
+		} else {
+			$field->link_title		=	'';
+		}
 	}
 }
 ?>
