@@ -58,6 +58,18 @@ class plgCCK_Field_TypoPhp_String extends JCckPluginTypo
 			case 'number_format':
 				$value		=	number_format( (float)$value, $arg1, ( $arg2 ? $arg2 : '.' ), ( $arg3 ? $arg3 : '' ) );
 				break;
+			case 'split':
+				if ( StringHelper::strlen( $value ) > $arg1 ) {
+					$str2	=	StringHelper::substr( $value, $arg1 );
+					$str	=	StringHelper::substr( $value, 0, $arg1 );
+
+					if ( $str2 ) {
+						$str2	=	$arg2.$str2;
+					}
+
+					$value	=	$str.$str2;
+				}
+				break;
 			case 'str_repeat':
 				$value		=	str_repeat( $arg1, (int)$value );
 				break;

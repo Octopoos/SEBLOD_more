@@ -34,7 +34,7 @@ foreach ( $texts as $t ) {
 	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_TYPO_'.$this->item->name.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
-		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Function', 'selectlabel'=>'Select', 'options'=>'number_format||str_repeat||str_replace||strip_tags||strtolower||strtoupper||substr||substr_count||truncate||ucfirst||ucwords||wordwrap', 'bool8'=>0, 'storage_field'=>'function' ) );
+		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Function', 'selectlabel'=>'Select', 'options'=>'number_format||split||str_repeat||str_replace||strip_tags||strtolower||strtoupper||substr||substr_count||truncate||ucfirst||ucwords||wordwrap', 'bool8'=>0, 'storage_field'=>'function' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Php String Start', 'storage_field'=>'arg1', 'required'=>'required' ) );
 		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Php String Lower first', 'defaultvalue'=>'0', 'storage_field'=>'force' ) );
 		echo JCckDev::renderBlank( '<input type="hidden" id="blank_li" value="" />' );
@@ -63,6 +63,13 @@ jQuery(document).ready(function($) {
 	if (v == 'str_replace') {
 		$('#force').parent().hide();
 		$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_SEARCH')+'<span class="star"> *</span>');
+		$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_REPLACE'));
+		$('#arg1,#arg2,#blank_li').parent().show();
+		$('#arg3,#blank_li3').parent().hide();
+		$('#suffix_overflow,#blank_li2').parent().hide();
+	} else if (v == 'split') {
+		$('#force').parent().hide();
+		$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LENGTH')+'<span class="star"> *</span>');
 		$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_REPLACE'));
 		$('#arg1,#arg2,#blank_li').parent().show();
 		$('#arg3,#blank_li3').parent().hide();
@@ -113,6 +120,13 @@ jQuery(document).ready(function($) {
 		if (v == 'str_replace') {
 			$('#force').parent().hide();
 			$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_SEARCH')+'<span class="star"> *</span>');
+			$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_REPLACE'));
+			$('#arg1,#arg2,#blank_li').parent().show();
+			$('#arg3,#blank_li3').parent().hide();
+			$('#suffix_overflow,#blank_li2').parent().hide();
+		} else if (v == 'split') {
+			$('#force').parent().hide();
+			$('#arg1').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_LENGTH')+'<span class="star"> *</span>');
 			$('#arg2').parent().find('label').html(Joomla.JText._('COM_CCK_PHP_STRING_REPLACE'));
 			$('#arg1,#arg2,#blank_li').parent().show();
 			$('#arg3,#blank_li3').parent().hide();
