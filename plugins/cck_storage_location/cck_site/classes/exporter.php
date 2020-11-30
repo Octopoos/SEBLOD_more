@@ -15,8 +15,8 @@ require_once JPATH_SITE.'/plugins/cck_storage_location/cck_site/cck_site.php';
 // Class
 class plgCCK_Storage_LocationCck_Site_Exporter extends plgCCK_Storage_LocationCck_Site
 {
-	protected static $columns_excluded	=	array( 'guest', 'guest_only_group', 'guest_only_viewlevel', 'groups', 'viewlevels' );
-	protected static $columns_ignored	=	array( 'id', 'guest', 'guest_only_group', 'guest_only_viewlevel', 'groups', 'viewlevels', 'checked_out', 'checked_out_time' );
+	protected static $columns_excluded	=	array( 'guest', 'guest_only_group', 'guest_only_viewlevel', 'usergroups', 'viewlevels' );
+	protected static $columns_ignored	=	array( 'id', 'guest', 'guest_only_group', 'guest_only_viewlevel', 'usergroups', 'viewlevels', 'checked_out', 'checked_out_time' );
 
 	// getColumnsToExport
 	public static function getColumnsToExport()

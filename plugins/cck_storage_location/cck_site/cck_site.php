@@ -267,12 +267,12 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		JPluginHelper::importPlugin( 'content' );
 		$dispatcher	=	JEventDispatcher::getInstance();
 		if ( $isNew ) {
-			$groups	=	@$table->groups;
+			$usergroups	=	@$table->usergroups;
 		}
 		$dispatcher->trigger( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
 		if ( $isNew ) {
-			if ( $groups != '' && $groups == $table->groups ) {
-				$table->groups	=	'';
+			if ( $usergroups != '' && $usergroups == $table->usergroups ) {
+				$table->usergroups	=	'';
 			}
 		}
 		if ( !$table->store() ) {

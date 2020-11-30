@@ -46,10 +46,10 @@ class JCckContentCck_Site extends JCckContent
 				unset( $this->_tmp_data );
 			}
 
-			$groups	=	$this->_preSave_onCckPostBeforeStore( $config, $fields );
+			$usergroups	=	$this->_preSave_onCckPostBeforeStore( $config, $fields );
 
-			if ( $groups ) {
-				$data['groups']	=	$groups;
+			if ( $usergroups ) {
+				$data['usergroups']	=	$usergroups;
 			}
 
 			unset( $config );
@@ -77,8 +77,8 @@ class JCckContentCck_Site extends JCckContent
 			}
 		}
 
-		if ( isset( $config['storages']['#__cck_core_sites']['groups'] ) ) {
-			return $config['storages']['#__cck_core_sites']['groups'];
+		if ( isset( $config['storages']['#__cck_core_sites']['usergroups'] ) ) {
+			return $config['storages']['#__cck_core_sites']['usergroups'];
 		}
 	}
 }
