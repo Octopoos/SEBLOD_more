@@ -151,8 +151,12 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 			$end					=	( $config['total'] < $end ) ? $config['total'] : $end;
 
 			if ( $jtext != '' ) {
-				if ( $config['total'] == 1 && $alt && JFactory::getLanguage()->hasKey( $jtext.'_1' ) ) {
-					$jtext	.=	'_1';
+				if ( $alt ) {
+					if ( $config['total'] == 1 && JFactory::getLanguage()->hasKey( $jtext.'_1' ) ) {
+						$jtext	.=	'_1';
+					} elseif ( $config['total'] == 0 && JFactory::getLanguage()->hasKey( $jtext.'_0' ) ) {
+						$jtext	.=	'_0';
+					}
 				}
 				$fields[$name]->form	=	JText::sprintf( $jtext, $config['total'], $step, $start, $end );
 			} else {
