@@ -649,6 +649,8 @@ class Helper_Import
 			$pk							=	0;
 			$row						=	$session['csv']['rows'][$start];
 
+			$config['storages'][$session['table']][$session['custom']]	=	'';
+
 			// Prepare
 			for ( $i = 0; $i < $session['csv']['count']; $i++ ) {
 				$config['input_error']		=	(int)$session['options']['input_error'];
@@ -688,9 +690,10 @@ class Helper_Import
 						$config['storages'][$session['table']][$fields[$idx]->storage_field]	=  	$fields[$idx]->value;
 					} else {
 						if ( $session['custom'] != '' ) {
+							$pre_custom		=	$config['storages'][$session['table']][$session['custom']];
 							$custom_value	=	JCck::callFunc_Array( 'plgCCK_Storage'.$fields[$idx]->storage, 'onCCK_StoragePrepareImport', array( $fields[$idx], $fields[$idx]->value, &$config ) );
 							
-							$config['storages'][$session['table']][$session['custom']]		.=	$custom_value;
+							$config['storages'][$session['table']][$session['custom']]	=	$pre_custom.$custom_value;
 						}
 					}
 					$config['storages'][$session['table']]['_']				=	new stdClass;
