@@ -196,9 +196,14 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 		}
 		if ( isset( $options2->itemid ) && $options2->itemid ) {
 			$itemId	=	$options2->itemid;
+			$url	=	'';
 
 			if ( $itemId == -1 ) {
 				$itemId	=	JFactory::getApplication()->input->getInt( 'Itemid' );
+			} elseif ( $itemId == -2 ) {
+				$itemId	=	0;
+				$url	=	trim( JUri::current(), '/' );
+				$url	=	substr( $url, 0, strrpos( $url, '/' ) );
 			}
 			if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
 				$app			=	JFactory::getApplication();
@@ -209,7 +214,12 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 				}
 
 				$app->enqueueMessage( $message, $options2->message_style );
-				$app->redirect( JCckDevHelper::getAbsoluteUrl( $itemId ), $status_code );
+
+				if ( $url ) {
+					$app->redirect( $url );
+				} else {
+					$app->redirect( JCckDevHelper::getAbsoluteUrl( $itemId ), $status_code );
+				}
 			} else {
 				$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $itemId ).'\'';
 			
