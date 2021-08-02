@@ -65,15 +65,6 @@ class plgCCK_FieldCaptcha_Math extends JCckPluginField
 		self::$path	=	parent::g_getPath( self::$type.'/' );
 		parent::g_onCCK_FieldPrepareForm( $field, $config );
 		
-		// Captcha only for Guest
-		$user	=	JFactory::getUser();
-		if ( $user->id > 0 && $user->guest != 1 ) { 
-			$field->form	=	'';
-			$field->value	=	'';
-			$field->display	=	0;
-			return;
-		}
-		
 		// Init
 		if ( count( $inherit ) ) {
 			$id		=	( isset( $inherit['id'] ) && $inherit['id'] != '' ) ? $inherit['id'] : $field->name;
