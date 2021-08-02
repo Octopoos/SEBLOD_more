@@ -209,7 +209,7 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 				}
 
 				$app->enqueueMessage( $message, $options2->message_style );
-				$app->redirect( JCckDevHelper::getAbsoluteUrl( $itemId, $status_code ) );
+				$app->redirect( JCckDevHelper::getAbsoluteUrl( $itemId ), $status_code );
 			} else {
 				$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $itemId ).'\'';
 			
