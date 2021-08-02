@@ -111,7 +111,9 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 
 		if ( $field->state ) {
 			parent::g_addProcess( 'afterStore', self::$type, $config, array( 'name'=>$field->name, 'options2'=>$field->options2 ), 5 );
-		}		
+
+			return;
+		}
 
 		// Prepare
 		$options2	=	json_decode( $field->options2 );
