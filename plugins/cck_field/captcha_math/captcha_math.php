@@ -119,7 +119,25 @@ class plgCCK_FieldCaptcha_Math extends JCckPluginField
 			// Special
 			$session	=	JFactory::getSession();
 			$session->set( 'secure_cckaptcha', $name );
+
+			if ( $config['client'] == 'search' ) {
+				$secure	=	$session->get( 'secure_'.$name );
+
+				if ( isset( $secure ) && is_array( $secure ) ) {
+					if ( isset( $secure[1] ) ) {
+						$secure[0]	=	$secure[1];
+					}
+
+					$secure[1]	=	$secure_session_var;
+				} else {
+					$secure		=	array( 0=>$secure_session_var );
+				}
+
+				$secure_session_var	=	$secure;
+			}
+			
 			$session->set( 'secure_'.$name, $secure_session_var );
+
 			if ( $field->script ) {
 				parent::g_addScriptDeclaration( $field->script );
 			}
