@@ -184,9 +184,8 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	// onCCK_Storage_LocationDelete
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
-		$app		=	JFactory::getApplication();
-		$dispatcher	=	JEventDispatcher::getInstance();
-		$table		=	self::_getTable( $pk );	
+		$app	=	JFactory::getApplication();
+		$table	=	self::_getTable( $pk );	
 		
 		if ( !$table ) {
 			return false;
@@ -204,14 +203,14 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		}
 		
 		// Process
-		$result	=	$dispatcher->trigger( 'onCckConstructionBeforeDelete', array( self::$context, $table ) );
+		$result	=	$app->triggerEvent( 'onCckConstructionBeforeDelete', array( self::$context, $table ) );
 		if ( in_array( false, $result, true ) ) {
 			return false;
 		}
 		if ( !$table->delete( $pk ) ) {
 			return false;
 		}
-		$dispatcher->trigger( 'onCckConstructionAfterDelete', array( self::$context, $table ) );
+		$app->triggerEvent( 'onCckConstructionAfterDelete', array( self::$context, $table ) );
 		
 		return true;
 	}
@@ -229,6 +228,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		}
 		
 		// Init
+		$app	=	JFactory::getApplication();
 		$table	=	self::_getTable( $pk );
 		$isNew	=	( $pk > 0 ) ? false : true;
 		self::_initTable( $table, $data, $config );
@@ -265,11 +265,11 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		
 		// Store
 		JPluginHelper::importPlugin( 'content' );
-		$dispatcher	=	JEventDispatcher::getInstance();
+
 		if ( $isNew ) {
 			$usergroups	=	@$table->usergroups;
 		}
-		$dispatcher->trigger( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
+		$app->triggerEvent( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
 		if ( $isNew ) {
 			if ( $usergroups != '' && $usergroups == $table->usergroups ) {
 				$table->usergroups	=	'';
@@ -296,7 +296,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 		$config['author']	=	$table->{self::$author};
 		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
-		$dispatcher->trigger( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
+		$app->triggerEvent( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 	
 	// _getTable

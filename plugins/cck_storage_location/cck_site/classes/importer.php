@@ -47,6 +47,8 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 					$pk		=	( isset( $data[self::$key] ) && (int)$data[self::$key] > 0 ) ? (int)$data[self::$key] : 0;
 				}
 			}
+
+			$app	=	JFactory::getApplication();
 			$table	=	self::_getTable( $pk );
 			$isNew	=	( $table->{self::$key} > 0 ) ? false : true;
 			$iPk	=	0;
@@ -80,8 +82,7 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 			
 			// Store
 			JPluginHelper::importPlugin( 'content' );
-			$dispatcher	=	JEventDispatcher::getInstance();
-			$dispatcher->trigger( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
+			$app->triggerEvent( 'onCckConstructionBeforeSave', array( self::$context, &$table, $isNew ) );
 
 			if ( !$table->store() ) {
 				$config['error']	=	true;
@@ -90,7 +91,7 @@ class plgCCK_Storage_LocationCck_Site_Importer extends plgCCK_Storage_LocationCc
 				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
 				return false;
 			}
-			$dispatcher->trigger( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
+			$app->triggerEvent( 'onCckConstructionAfterSave', array( self::$context, &$table, $isNew ) );
 			
 			// Tweak
 			if ( $iPk > 0 ) {
