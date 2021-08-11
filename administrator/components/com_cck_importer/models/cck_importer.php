@@ -106,7 +106,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_import.php';
 
 		$app				=	JFactory::getApplication();
-		$file				=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', null, 'files', 'array' ) );
+		$file				=	Helper_Import::uploadFile( $app->input->files->get( 'upload_file', null ) );
 		$session			=	array();
 		$session['options']	=	$app->input->get( 'options', array(), 'array' );
 		

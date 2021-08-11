@@ -364,7 +364,7 @@ class Helper_Import
 	public static function initSession( &$session, $params )
 	{
 		$app	=	JFactory::getApplication();
-		$file	=	Helper_Import::uploadFile( JRequest::getVar( 'upload_file', null, 'files', 'array' ) );
+		$file	=	Helper_Import::uploadFile( $app->input->files->get( 'upload_file', null ) );
 
 		if ( $file === false ) {
 			$session['csv']['total']	=	0;
