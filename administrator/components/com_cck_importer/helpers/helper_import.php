@@ -635,8 +635,8 @@ class Helper_Import
 	{
 		JPluginHelper::importPlugin( 'cck_field' );
 
-		$dispatcher	=	JEventDispatcher::getInstance();
-		$fields		=	$session['fields'];
+		$app	=	JFactory::getApplication();
+		$fields	=	$session['fields'];
 
 		for ( ; $start < $end; $start++ ) {
 			$config['error']			=	false;
@@ -674,7 +674,7 @@ class Helper_Import
 					$config['prepare_input']	=	$fields[$idx]->prepare_input;
 				}
 				if ( $config['prepare_input'] && isset( $fields[$idx]->type ) && $fields[$idx]->type ) {
-					$dispatcher->trigger( 'onCCK_FieldPrepareImport', array( &$fields[$idx], $row[$i], &$config ) );
+					$app->triggerEvent( 'onCCK_FieldPrepareImport', array( &$fields[$idx], $row[$i], &$config ) );
 
 					if ( $config['error'] ) {
 						$config['log']		=	'cancelled';
