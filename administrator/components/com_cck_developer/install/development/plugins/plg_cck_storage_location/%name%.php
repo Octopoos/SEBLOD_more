@@ -227,7 +227,6 @@ class plgCCK_Storage_Location%class% extends JCckPluginLocation
 		self::_completeTable( $table, $data, $config );
 		
 		// Store
-		$dispatcher	=	JEventDispatcher::getInstance();
 		$table->store();
 		
 		// Checkin
