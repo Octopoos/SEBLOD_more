@@ -85,7 +85,7 @@ class plgCCK_Storage_LocationJoomla_Tag_Importer extends plgCCK_Storage_Location
 			
 			// Store
 			JPluginHelper::importPlugin( 'content' );
-			$app->triggerEvent( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
+			$app->triggerEvent( 'onContentBeforeSave', array( self::$context, &$table, $isNew, $data ) );
 			if ( !$table->store() ) {
 				$error		=	true;
 
