@@ -47,6 +47,8 @@ class plgCCK_Storage_LocationJoomla_Tag_Importer extends plgCCK_Storage_Location
 					$pk		=	( isset( $data[self::$key] ) && (int)$data[self::$key] > 0 ) ? (int)$data[self::$key] : 0;
 				}
 			}
+
+			$app	=	JFactory::getApplication();
 			$table	=	self::_getTable( $pk );
 			$isNew	=	( $table->{self::$key} > 0 ) ? false : true;
 			$iPk	=	0;
@@ -83,8 +85,7 @@ class plgCCK_Storage_LocationJoomla_Tag_Importer extends plgCCK_Storage_Location
 			
 			// Store
 			JPluginHelper::importPlugin( 'content' );
-			$dispatcher	=	JEventDispatcher::getInstance();
-			$dispatcher->trigger( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
+			$app->triggerEvent( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
 			if ( !$table->store() ) {
 				$error		=	true;
 
@@ -114,7 +115,7 @@ class plgCCK_Storage_LocationJoomla_Tag_Importer extends plgCCK_Storage_Location
 			$table->rebuildPath( $table->id );
 			$table->rebuild( $table->id, $table->lft, $table->level, $table->path );
 
-			$dispatcher->trigger( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
+			$app->triggerEvent( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 			
 			// Tweak
 			if ( $iPk > 0 ) {
