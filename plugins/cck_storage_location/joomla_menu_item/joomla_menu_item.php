@@ -340,7 +340,7 @@ class plgCCK_Storage_LocationJoomla_Menu_Item extends JCckPluginLocation
 		self::_completeTable( $table, $data, $config );
 
 		// Store
-		$app->triggerEvent( 'onContentBeforeSave', array( self::$context, &$table, $isNew ) );
+		$app->triggerEvent( 'onContentBeforeSave', array( self::$context, &$table, $isNew, $data ) );
         if ( !$table->store() ) {
 			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
 
