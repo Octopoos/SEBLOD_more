@@ -189,9 +189,8 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 	// onCCK_Storage_LocationDelete
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
-		$app		=	JFactory::getApplication();
-		$dispatcher	=	JEventDispatcher::getInstance();
-		$table		=	self::_getTable( $pk );
+		$app	=	JFactory::getApplication();
+		$table	=	self::_getTable( $pk );
 		
 		if ( !$table ) {
 			return false;
@@ -209,14 +208,14 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 		}
 		
 		// Process
-		$result	=	$dispatcher->trigger( 'onContentBeforeDelete', array( self::$context, $table ) );
+		$result	=	$app->triggerEvent( 'onContentBeforeDelete', array( self::$context, $table ) );
 		if ( in_array( false, $result, true ) ) {
 			return false;
 		}
 		if ( !$table->delete( $pk ) ) {
 			return false;
 		}
-		$dispatcher->trigger( 'onContentAfterDelete', array( self::$context, $table ) );
+		$app->triggerEvent( 'onContentAfterDelete', array( self::$context, $table ) );
 		
 		return true;
 	}
@@ -267,7 +266,6 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 		self::_completeTable( $table, $data, $config );
 		
 		// Store
-		$dispatcher	=	JEventDispatcher::getInstance();
 		$table->store();
 		
 		// Checkin
