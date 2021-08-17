@@ -339,7 +339,7 @@ class plgCCK_Storage_LocationJoomla_Module extends JCckPluginLocation
 	}
 	
 	// parseRoute
-	public static function parseRoute( &$vars, $segments, $n, $config )
+	public static function parseRoute( &$vars, &$segments, $n, $config )
 	{
 	}
 	
