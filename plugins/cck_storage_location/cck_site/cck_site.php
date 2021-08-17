@@ -360,7 +360,7 @@ class plgCCK_Storage_LocationCck_Site extends JCckPluginLocation
 	}
 	
 	// parseRoute
-	public static function parseRoute( &$vars, $segments, $n, $config )
+	public static function parseRoute( &$vars, &$segments, $n, $config )
 	{
 	}
 	
