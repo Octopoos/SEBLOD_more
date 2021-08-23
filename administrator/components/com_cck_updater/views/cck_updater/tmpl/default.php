@@ -12,6 +12,7 @@ defined( '_JEXEC' ) or die;
 
 $canDo  =   Helper_Admin::getActions();
 $config	=	JCckDev::init( array( '42', 'button_submit', 'select_simple', 'text', 'textarea' ), true );
+$data_bs=   JCck::on( '4.0' ) ? 'data-bs-' : 'data-';
 $params	=	JComponentHelper::getParams( 'com_cck_updater' );
 $rows   =   0;
 $text   =   '';
@@ -125,7 +126,7 @@ JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button 
                 $attr   =   'onclick="if (document.adminForm.boxchecked.value==0){alert(\''.htmlspecialchars( addslashes( JText::_( 'JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST' ) ) ).'\');}else{ Joomla.submitbutton(\'update\')}"';
                 echo '<li class="btn-group dropup flt-right">'
                  .   JCckDev::getForm( 'more_updater_submit', '', $config, array( 'label'=>'Update Now', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ) );
-                echo '<a href="javascript:void(0);" id="to_be_updated" class="btn btn-primary hasTooltip hasTip" data-toggle="modal" data-target="#collapseModal" title="'.JText::_( 'COM_CCK_COPY_PASTE_ITEMS' ).'"><span class="icon-copy"></span></a>';
+                echo '<a href="javascript:void(0);" id="to_be_updated" class="btn btn-primary hasTooltip hasTip" '.$data_bs.'toggle="modal" '.$data_bs.'target="#collapseModal" title="'.JText::_( 'COM_CCK_COPY_PASTE_ITEMS' ).'"><span class="icon-copy"></span></a>';
                 echo '</li>';
                 ?>
             </ul>
@@ -159,7 +160,7 @@ Helper_Display::quickCopyright();
 ?>
 </div>
 </form>
-<div class="modal modal-small hide fade" id="collapseModal">
+<div class="modal modal-small hide fade" id="collapseModal"><div class="modal-dialog modal-lg"><div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
         <h3><?php echo JText::_( 'COM_CCK_COPY_PASTE_ITEMS'); ?></h3>
@@ -174,7 +175,7 @@ Helper_Display::quickCopyright();
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" onclick="" data-dismiss="modal"><?php echo JText::_( 'COM_CCK_CLOSE' ); ?></button>
     </div>
-</div>
+</div></div></div>
 
 <script type="text/javascript">
 (function ($){
