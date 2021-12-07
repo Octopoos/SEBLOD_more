@@ -77,6 +77,13 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		$field->link		=	JRoute::_( 'index.php?Itemid='.$itemId );
 		
 		if ( $field->link ) {
+			$link_link	=	$field->link;
+			$len		=	strlen( $field->link );
+
+			if ( $link_link[($len - 1)] == '/' ) {
+				$field->link	=	substr( $link_link, 0, -1 );
+			}
+
 			if ( $vars ) {
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
 			}
