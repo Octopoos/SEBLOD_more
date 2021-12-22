@@ -35,7 +35,7 @@ $options2	=	JCckDev::fromJSON( $this->item->options2 );
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#json_options2_status').isVisibleWhen('json_options2_timeout','0',false);
+	$('#json_options2_status_code').isVisibleWhen('json_options2_timeout','0');
 	$('#json_options2_timeout_ms').isVisibleWhen('json_options2_timeout','1',false);
 });
 </script>
