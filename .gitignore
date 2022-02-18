@@ -1663,7 +1663,6 @@ sftp-config.json
 /templates/seb_one/*
 /templates/seb_table/*
 
-
 ######## SEBLOD Deprecated
 
 /plugins/system/blank/*
