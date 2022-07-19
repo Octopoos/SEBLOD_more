@@ -303,8 +303,10 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 									if (components_by_type["route"] !== undefined) {
 										var va = components_by_type["route"].long_name;
 
-										if (components_by_type["street_number"].long_name) {
-											va = components_by_type["street_number"].long_name+" "+va;
+										if (components_by_type["street_number"] !== undefined) {
+											if (components_by_type["street_number"].long_name) {
+												va = components_by_type["street_number"].long_name+" "+va;
+											}
 										}
 										$street.val(va);
 										if ($street2.length){
