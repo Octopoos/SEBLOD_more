@@ -100,6 +100,8 @@ class plgCCK_FieldSearch_Variables extends JCckPluginField
 					$value		=	$app->input->$request( $name, '' );
 					$value		=	htmlspecialchars( $value, ENT_COMPAT, 'UTF-8' );
 					$form		.=	'<input class="inputbox hidden" type="hidden" id="'.$name.'" name="'.$name.'" value="'.$value.'"'.( $field->attributes ? ' '.$field->attributes : '' ).' />';
+
+					$config['pagination_vars'][$name]	=	true;
 				}
 			}
 		}
