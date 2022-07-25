@@ -10,21 +10,32 @@
 
 defined( '_JEXEC' ) or die;
 
-JCckDev::initScript( 'field', $this->item, array( 'hasOptions'=>true,
-												  'customAttr'=>array( 'type' ), 'customAttrLabel'=>JText::_( 'COM_CCK_VARIABLE_TYPE_FORMATS' ) ) );
 JCckDev::forceStorage();
-$options	=	JCckDev::fromSTRING( $this->item->options );
-?>
+JCckDev::initScript( 'field', $this->item, array( 'hasOptions'=>true, 'doTranslation'=>0, 'customAttr'=>JCck::getConfig_Param( 'development_attr', 1 ) ) );
 
-<div class="seblod">
-	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_'.$this->item->type.'_DESC' ) ); ?>
-    <ul class="adminformlist adminformlist-2cols">
-        <?php
-		echo JCckDev::renderForm( 'core_options', $options, $config, array( 'label'=>'Variables' ) );
-		echo JCckDev::renderBlank();
-		
-		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
-		echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
-        ?>
-    </ul>
-</div>
+// Set
+$displayData	=	array(
+						'config'=>$config,
+						'form'=>array(
+							array(
+								'fields'=>array(
+									JCckDev::renderForm( 'core_options', JCckDev::fromSTRING( $this->item->options ), $config ),
+									JCckDev::renderBlank()
+								)
+							),
+							array(
+								'fields'=>array(
+									JCckDev::getForm( 'core_storage', $this->item->storage, $config )
+								),
+								'mode'=>'storage'
+							)
+						),
+						'help'=>array(),
+						'html'=>'',
+						'item'=>$this->item,
+						'script'=>'',
+						'type'=>'field'
+					);
+
+echo JCckDev::renderLayoutFile( 'cck'.JCck::v().'.construction.cck_field.edit', $displayData );
+?>
