@@ -10,10 +10,23 @@
 
 defined( '_JEXEC' ) or die;
 
-JLoader::register( 'InstallerModelUpdate', JPATH_ADMINISTRATOR.'/components/com_installer/models/update.php' );
+use Joomla\Component\Installer\Administrator\Model\UpdateModel;
+
+if ( JCck::on( '4.0' ) ) {
+	class CCK_UpdaterModelCCK_UpdaterPlaceholder extends UpdateModel
+	{
+	}
+} else {
+	JLoader::register( 'InstallerModelUpdate', JPATH_ADMINISTRATOR.'/components/com_installer/models/update.php' );
+
+	class CCK_UpdaterModelCCK_UpdaterPlaceholder extends InstallerModelUpdate
+	{
+	}
+}
+
 
 // Model
-class CCK_UpdaterModelCCK_Updater extends InstallerModelUpdate
+class CCK_UpdaterModelCCK_Updater extends CCK_UpdaterModelCCK_UpdaterPlaceholder
 {
 	// update
 	public function update( $pks, $minimum_stability = JUpdater::STABILITY_STABLE )
