@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die;
 // JCckImporterVersion
 final class JCckImporterVersion
 {
-	public $RELEASE = '1.13';
+	public $RELEASE = '4.0';
 	
 	public $DEV_LEVEL = '0';
 
