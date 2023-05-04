@@ -13,6 +13,14 @@ defined( '_JEXEC' ) or die;
 // View
 class CCK_ImporterViewCCK_Importer extends JCckBaseLegacyView
 {
+	// display
+	public function display( $tpl = null )
+	{
+		\Joomla\CMS\HTML\HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', []);
+
+		parent::display( $tpl );
+	}
+
 	// prepareToolbar
 	protected function prepareToolbar()
 	{

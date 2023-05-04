@@ -88,6 +88,8 @@ class Helper_Import
 							'type'=>'text'
 						);
 
+		$field->check();
+
 		if ( $field->store() ) {
 			$field_obj['id']	=	$field->id;
 		}
@@ -102,7 +104,7 @@ class Helper_Import
 		$position	=	'mainbody';
 		$access		=	1;
 		$values		= 	"( ". "'$type_id'," ."'$field_id',"."'$client',". "'$ordering',". "'$access',"."'$position' )";
-		$query		= 	'INSERT INTO #__cck_core_type_field ( typeid, fieldid , client, ordering , access, position )'
+		$query		= 	'INSERT IGNORE INTO #__cck_core_type_field ( typeid, fieldid , client, ordering , access, position )'
 		   	     	.	' VALUES ' . $values;
 		JCckDatabase::execute( $query );
 	}
@@ -118,7 +120,7 @@ class Helper_Import
 		$field_id	=	JCckDatabase::loadResult( $query );
 		
 		$values		= 	"(". "'$type_id'," ."'$field_id',"."'$client',". "'$ordering',"."'$access',"."'$position')";
-		$query		= 	'INSERT INTO #__cck_core_type_field ( typeid, fieldid , client, ordering , access, position)'
+		$query		= 	'INSERT IGNORE INTO #__cck_core_type_field ( typeid, fieldid , client, ordering , access, position)'
 		   	     	.	' VALUES ' . $values;
 		JCckDatabase::execute( $query );
 	}
@@ -545,7 +547,7 @@ class Helper_Import
 						// OK
 					} else {
 						if ( $session['storage'] == 'standard' ) {
-							JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
+							JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldname.' '.$data_type.' NOT NULL DEFAULT \'\'' );
 						}
 						
 						$session['fields'][$fieldname]	=	Helper_Import::addField( $fieldname, ( $session['storage'] == 'standard' ? $session['table2'] : $session['table'] ), $session['location'], $session['storage'], $session['custom'], $session['csv']['columns_info'] );
@@ -556,7 +558,7 @@ class Helper_Import
 					$session['fields'][$fieldname]	=	Helper_Import::findField( $fieldname );
 
 					if ( $session['fields'][$fieldname]->storage == 'standard' && !$session['fields'][$fieldname]->storage_table ) {
-						JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$session['fields'][$fieldname]->storage_field.' '.$data_type.' NOT NULL' );
+						JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$session['fields'][$fieldname]->storage_field.' '.$data_type.' NOT NULL DEFAULT \'\'' );
 					}
 				}
 			}
@@ -598,7 +600,7 @@ class Helper_Import
 						// OK
 					} else {
 						if ( $session['storage'] == 'standard' ) {
-							JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldname.' '.$data_type.' NOT NULL' );
+							JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$fieldname.' '.$data_type.' NOT NULL DEFAULT \'\'' );
 						}
 
 						$session['fields'][$fieldname]	=	Helper_Import::addField( $fieldname, ( $session['storage'] == 'standard' ? $session['table2'] : $session['table'] ), $session['location'], $session['storage'], $session['custom'], $session['csv']['columns_info'] );
@@ -607,7 +609,7 @@ class Helper_Import
 					$session['fields'][$fieldname]	=	Helper_Import::findField( $fieldname );
 
 					if ( $session['fields'][$fieldname]->storage == 'standard' && !$session['fields'][$fieldname]->storage_table ) {
-						JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$session['fields'][$fieldname]->storage_field.' '.$data_type.' NOT NULL' );
+						JCckDatabase::execute( 'ALTER TABLE '.$session['table2'].' ADD '.$session['fields'][$fieldname]->storage_field.' '.$data_type.' NOT NULL DEFAULT \'\'' );
 					}
 				}
 

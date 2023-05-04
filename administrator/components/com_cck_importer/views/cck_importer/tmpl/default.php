@@ -67,7 +67,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 		</div>
 	</div>
 	<div class="seblod-less cpanel_news full">
-		<?php echo JCckDevAccordion::start( 'cckOptions', 'collapse0', JText::_( 'COM_CCK_PANE_FROM_FILE' ), array( 'active'=>'collapse0', 'parent'=>'.accordion', 'useCookie'=>'1' ) ); ?>
+		<?php echo JCckDevAccordion::start( 'cckOptions', 'collapse0', JText::_( 'COM_CCK_PANE_FROM_FILE' ), array( 'active'=>'collapse0',  'useCookie'=>'1' ) ); ?>
 		<?php if ( $ajaxTotal ) { ?>
 			<?php if ( $wait ) { ?>
 			<div class="seblod cck-padding-top-0 cck-padding-bottom-0 cck-overflow-visible seblod-fix">
@@ -102,82 +102,108 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 			</div>
 			<?php } ?>
 			<div class="seblod cck-padding-top-0 cck-padding-bottom-0 seblod-fix">
-				<div class="progress progress-striped active" style="position:relative; top:5px;"><div id="progressbar" class="bar" style="width: 5%;"></div></div>
+				<div class="progress active" style="position:relative; top:5px;"><div id="progressbar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 5%;"></div></div>
 			</div>
 			<?php if ( $wait ) { ?>
 			<div class="seblod cck-padding-top-0 cck-overflow-visible seblod-fix">
-				<ul class="adminformlist">
-					<li class="flt-right btn-toolbar">
-						<button type="button" class="btn" id="abort"><?php echo JText::_( 'COM_CCK_CANCEL' ); ?></button>
-						<button type="button" class="button btn btn-primary" id="go"><?php echo JText::_( 'COM_CCK_IMPORT_NOW' ); ?></button>
-					</li><li>&nbsp;</li>
-				</ul>
+				<div class="form-grid">
+					<div class="control-group">
+						<div class="controls text-center">
+							<button type="button" class="btn" id="abort"><?php echo JText::_( 'COM_CCK_CANCEL' ); ?></button>
+							<button type="button" class="button btn btn-primary" id="go"><?php echo JText::_( 'COM_CCK_IMPORT_NOW' ); ?></button>
+						</div>
+					</div>
+				</div>
 			</div>
 			<?php }	?>
 		<?php } else { ?>
 			<div class="seblod">
 				<div id="loading" class="loading"></div>
-				<ul class="adminformlist">
+				<?php if ( $ajax ) { ?>
+				<div class="form-grid">
+					<div class="control-group">
+						<div class="controls text-center">
+							<?php echo JCckDev::getForm( 'more_importer_workflow', '', $config ); ?>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
+				<div class="form-grid dest-params">
+					<div class="control-group required-params">
+						<div class="control-label">
+							<label><?php echo JText::_( 'COM_CCK_CONTENT_OBJECT' ); ?><span class="star"> *</span></label>
+						</div>
+						<div class="controls">
+							<?php
+							echo JCckDev::getFormFromHelper( array( 'component'=>'com_cck_importer', 'function'=>'getObjectPlugins', 'name'=>'more_importer_storage_location' ), '', $config, array( 'storage_field'=>'options[storage_location]', 'css'=>'form-select' ) )
+							.	 JCckDev::getForm( 'more_importer_storage', $this->params->get( 'storage', 'standard' ), $config, array( 'attributes'=>'hidden' ) );
+							?>
+						</div>
+					</div>
+					<div class="control-group required-params">
+						<div class="control-label">
+							<label><?php echo JText::_( 'COM_CCK_CONTENT_TYPE_FORM' ); ?><span class="star"> *</span></label>
+						</div>
+						<div class="controls">
+						<?php echo JCckDev::getForm( 'more_importer_content_type', '', $config )
+						 .	 JCckDev::getForm( 'more_importer_content_type_new', '', $config );
+					 	?>
+						</div>
+					</div>
 					<?php
-					if ( $ajax ) {
-						echo '<li>'.JCckDev::getForm( 'more_importer_workflow', '', $config ).'</li>';
-					}
-					?>
-				</ul>
-				<ul class="adminformlist dest-params">
-					<?php
-					echo '<li class="required-params"><label>'.JText::_( 'COM_CCK_CONTENT_OBJECT' ).'<span class="star"> *</span></label>'
-					 .	 JCckDev::getFormFromHelper( array( 'component'=>'com_cck_importer', 'function'=>'getObjectPlugins', 'name'=>'more_importer_storage_location' ), '', $config, array( 'storage_field'=>'options[storage_location]' ) )
-					 .	 JCckDev::getForm( 'more_importer_storage', $this->params->get( 'storage', 'standard' ), $config, array( 'css'=>'hide' ) )
-					 .	 '</li>';
-					echo '<li class="required-params"><label>'.JText::_( 'COM_CCK_CONTENT_TYPE_FORM' ).'<span class="star"> *</span></label>'
-					 .	 JCckDev::getForm( 'more_importer_content_type', '', $config )
-					 .	 JCckDev::getForm( 'more_importer_content_type_new', '', $config )
-					 .	 '</li>';
 					echo JCckDev::renderForm( 'more_importer_upload_file', '', $config, array(), array(), 'required-params' );
 					echo JCckDev::renderForm( 'more_importer_force_utf8', $this->params->get( 'force_utf8', '1' ), $config );
-					echo '<li><label>'.JText::_( 'COM_CCK_INPUT' ).'</label><div class="pull-left">'
-					 .	 JCckDev::getForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config, array(), array( 'after'=>' <span class="icon-help hasTooltip" title="'.JText::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ).'"></span>' ) )
-					 .	 '</div></li>';
-					echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config );
 					?>
-				</ul>
+					<div class="control-group">
+						<div class="control-label">
+							<label><?php echo JText::_( 'COM_CCK_INPUT' ); ?>
+							</label>
+						</div>
+						<div class="controls">
+					 		<?php echo JCckDev::getForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config, array(), array( 'after'=>' <span class="icon-help hasTooltip" title="'.JText::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ).'"></span>' ) ); ?>
+						</div>
+					</div>
+					<?php echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config ); ?>
+				</div>
 			</div>
 			<div id="layer" class="cck-padding-top-0 cck-padding-bottom-0">
 				<?php /* Loaded by AJAX */ ?>
 			</div>
 			<div class="seblod cck-padding-top-0 cck-overflow-visible">
-				<ul class="adminformlist">
+				<div class="form-grid">
 					<?php
 					if ( $ajax ) {
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFileAjax\');"';
 					} else {
 						$attr	=	'onclick="javascript:Joomla.submitbutton(\'importFromFile\');"';
 					}
-					
-					echo '<li class="flt-right">'
-					 .	 '<div class="btn-group dropup">'
-					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ) );
-					echo '<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-unarchive"></span></a>';
-					echo '</div></li><li>&nbsp;</li>';
 					?>
-				</ul>
+					
+					<div class="control-group">
+						<div class="controls text-center">
+							<div class="btn-group dropup">
+								<?php echo JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Import from File', 'storage'=>'dev', 'attributes'=>$attr, 'css'=>'btn-primary' ) ); ?>
+								<a href="javascript:void(0);" id="featured_session" class="btn btn-primary hasTooltip hasTip" title="Remember this session"><span class="icon-unarchive"></span></a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		<?php } ?>
 		<?php if ( !$ajaxTotal ) { ?>
 		<?php echo JCckDevAccordion::open( 'cckOptions', 'collapse1', JText::_( 'COM_CCK_PANE_PREPARE_FILE' ) ); ?>
 			<div class="seblod">
 				<div id="loading" class="loading"></div>
-				<ul class="adminformlist dest-params"></ul>
+				<div class="control-grid dest-params"></div>
 			</div>
 			<div class="seblod cck-padding-top-0 cck-overflow-visible">
-				<ul class="adminformlist">
-					<?php
-					echo '<li class="flt-right">'
-					 .	 JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Prepare File', 'storage'=>'dev', 'attributes'=>'onclick="javascript:Joomla.submitbutton(\'prepareFile\');"', 'css'=>'btn-success' ) ).'&nbsp;';
-					echo '</li><li>&nbsp;</li>';
-					?>
-				</ul>
+				<div class="form-grid">
+					<div class="control-group">
+						<div class="controls text-center">
+							<?php echo JCckDev::getForm( 'more_importer_submit', '', $config, array( 'label'=>'Prepare File', 'storage'=>'dev', 'attributes'=>'onclick="javascript:Joomla.submitbutton(\'prepareFile\');"', 'css'=>'btn-success' ) ); ?>
+						</div>
+					</div>
+				</div>
 			</div>
 		<?php } ?>
 		<?php echo JCckDevAccordion::end(); ?>
@@ -416,8 +442,8 @@ Helper_Display::quickSession( array( 'extension'=>'com_cck_importer' ) );
 		});
 		$('#options_content_type_new').isVisibleWhen('options_content_type','-1',false);
 
-		$('.accordion-toggle').on('click', function () {
-			$('.required-params').prependTo($(this).attr('href')+' .dest-params');
+		$('.accordion-button').on('click', function () {
+			$('.required-params').prependTo($(this).attr('data-bs-target')+' .dest-params');
 		})
 
 		/* Ajax::start */

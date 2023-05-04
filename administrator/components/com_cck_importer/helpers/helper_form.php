@@ -19,8 +19,9 @@ class Helper_Form extends CommonHelper_Form
 	public static function getObjectPlugins( &$field, $value, $name, $id, $config )
 	{
 		$value	=	( $value ) ? $value : 'joomla_article';
-		
-		return JHtml::_( 'select.genericlist', Helper_Admin::getPluginOptions( 'storage_location', 'cck_', false, false, true, array(), '/classes/importer.php' ), $name, 'class="inputbox select" '.$field->attributes, 'value', 'text', $value, $id );
+		$class	=	'class="inputbox select' . ( $field->css ? ' ' . $field->css : '' ) .'" ';
+
+		return JHtml::_( 'select.genericlist', Helper_Admin::getPluginOptions( 'storage_location', 'cck_', false, false, true, array(), '/classes/importer.php' ), $name, $class.$field->attributes, 'value', 'text', $value, $id );
 	}
 }
 ?>

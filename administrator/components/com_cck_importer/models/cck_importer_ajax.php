@@ -154,7 +154,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 					);
 
 		ob_start();
-		JCck::callFunc_Array( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'onCCK_Storage_LocationAfterImport', array( array(), &$config ) );
+		JCck::callFunc_Array( 'plgCCK_Storage_Location'.$session['location'].'_Importer', 'onCCK_Storage_LocationAfterImports', array( array(), &$config ) );
 		ob_get_clean();
 
 		if ( $session['auto_inc'] > 0 && $session['auto_inc'] >= $session['table_inc'] ) {
