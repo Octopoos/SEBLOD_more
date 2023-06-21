@@ -10,33 +10,32 @@
 
 defined( '_JEXEC' ) or die;
 
-JLoader::register('RedirectTableLink', JPATH_ADMINISTRATOR .'/components/com_redirect/tables/link.php' );
-
 // Plugin
-class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
+class plgCCK_Storage_LocationJoomla_Menu extends JCckPluginLocation
 {
-	protected static $type			=	'joomla_redirection';
-	protected static $type_alias	=	'Redirection';
-	protected static $table			=	'#__redirect_links';
-	protected static $table_object	=	array( 'Link', 'RedirectTable' );
+	protected static $type			=	'joomla_menu';
+	protected static $type_alias	=	'Menu';
+	protected static $table			=	'#__menu_types';
+	protected static $table_object	=	array( 'MenuType', 'JTable' );
 	protected static $key			=	'id';
+	protected static $key_field		=	'nav_list_pk';
 	
-	protected static $access		=	'';
+	protected static $access		=	'access';
 	protected static $author		=	'';
 	protected static $author_object	=	'';
 	protected static $bridge_object	=	'';
 	protected static $child_object	=	'';
-	protected static $created_at	=	'created_date';
+	protected static $created_at	=	'';
 	protected static $custom		=	'';
-	protected static $modified_at	=	'modified_date';
+	protected static $modified_at	=	'';
 	protected static $parent		=	'';
 	protected static $parent_object	=	'';
-	protected static $status		=	'published';
-	protected static $to_route		=	'a.id as pk, a.old_url';
+	protected static $status		=	'';
+	protected static $to_route		=	'';
 	
-	protected static $context		=	'com_redirect.link'; /* used for Delete/Save events */
+	protected static $context		=	''; /* TODO */
 	protected static $context2		=	'';
-	protected static $contexts		=	array(); /* used for Content/Intro views */
+	protected static $contexts		=	array(); /* TODO */
 	protected static $error			=	false;
 	protected static $events		=	array(
 											'afterDelete'=>'onContentAfterDelete',
@@ -44,12 +43,16 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 											'beforeDelete'=>'onContentBeforeDelete',
 											'beforeSave'=>'onContentBeforeSave'
 										);
-	protected static $ordering		=	array( 'alpha'=>'old_url ASC', 'newest'=>'created_date DESC', 'oldest'=>'created_date ASC', 'popular'=>'hits DESC' );
+	protected static $ordering		=	array( 'alpha'=>'title ASC' ); /* TODO */
 	protected static $ordering2		=	array();
 	protected static $pk			=	0;
 	protected static $routes		=	array();
-	protected static $sef			=	array();
-	
+	protected static $sef			=	array( '1'=>'full',
+											   '2'=>'full', '22'=>'id', '23'=>'alias', '24'=>'alias',
+											   '3'=>'full', '32'=>'id', '33'=>'alias',
+											   '4'=>'full', '42'=>'id', '43'=>'alias'
+										);
+
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Construct
 	
 	// onCCK_Storage_LocationConstruct
@@ -77,15 +80,34 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		
 		// Set
 		if ( $table == self::$table ) {
-			$storage = self::_getTable( $pk );
+			$storage			=	self::_getTable( $pk );
+			/* TODO */
 		} else {
 			$storage	=	parent::g_onCCK_Storage_LocationPrepareContent( $table, $pk );
 			if ( ! isset( $config['storages'][self::$table] ) ) {
-                $config['storages'][self::$table] =	self::_getTable( $pk );
+				/* TODO */
 			}
 		}
 	}
 	
+	// onCCK_Storage_LocationPrepareDelete
+	public function onCCK_Storage_LocationPrepareDelete( &$field, &$storage, $pk = 0, &$config = array() )
+	{
+		if ( self::$type != $field->storage_location ) {
+			return;
+		}
+		
+		// Init
+		$table	=	$field->storage_table;
+		
+		// Set
+		if ( $table == self::$table ) {
+			$storage	=	self::_getTable( $pk );
+		} else {
+			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
+		}
+	}
+
 	// onCCK_Storage_LocationPrepareForm
 	public function onCCK_Storage_LocationPrepareForm( &$field, &$storage, $pk = 0, &$config = array() )
 	{
@@ -98,9 +120,10 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		
 		// Set
 		if ( $table == self::$table ) {
-			$storage = self::_getTable( $pk );
+			$storage			=	self::_getTable( $pk );
+			/* TODO */
 		} else {
-			$storage = parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
+			$storage	=	parent::g_onCCK_Storage_LocationPrepareForm( $table, $pk );
 		}
 	}
 	
@@ -126,13 +149,15 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 				}
 			}
 		}
+		// $config['author']	=	$storages[self::$table][$config['pk']]->{self::$author};
 	}
-	
+
 	// onCCK_Storage_LocationPrepareList
 	public static function onCCK_Storage_LocationPrepareList( &$params )
 	{
+		/* TODO */
 	}
-	
+
 	// onCCK_Storage_LocationPrepareOrder
 	public function onCCK_Storage_LocationPrepareOrder( $type, &$order, &$tables, &$config = array() )
 	{
@@ -151,53 +176,42 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		}
 		
 		// Prepare
-		if ( ! isset( $tables[self::$table] ) ) {
-			$tables[self::$table]	=	array( '_'=>'t'.$t++,
-												'fields' => array(),
-											   'join' => 1,
-											   'location'=> self::$type
-										);
-		}
+		/* TODO */
 		
 		// Set
-		$t_pk	=	$tables[self::$table]['_'];
-		if ( ! isset( $tables[self::$table]['fields']['published'] ) ) {
-			$query->where( $t_pk.'.published = 1' );
-		}
+		/* TODO */
 	}
 
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Store
-
+	
 	// onCCK_Storage_LocationDelete
 	public static function onCCK_Storage_LocationDelete( $pk, &$config = array() )
 	{
-		$app	=	JFactory::getApplication();
-		$table	=	self::_getTable( $pk );
+		/* TODO */
 		
-		if ( !$table ) {
-			return false;
-		}
-		
-		// Check
-		$user 			=	JCck::getUser();
-		$canDelete		=	$user->authorise( 'core.delete', 'com_cck.form.'.$config['type_id'] );
-		$canDeleteOwn	=	$user->authorise( 'core.delete.own', 'com_cck.form.'.$config['type_id'] );
-		if ( !$canDelete && !$canDeleteOwn ) {
-			$app->enqueueMessage( JText::_( 'COM_CCK_ERROR_DELETE_NOT_PERMITTED' ), 'error' );
+		return false;
+	}
+	
+	// onCCK_Storage_LocationStore
+	public function onCCK_Storage_LocationStore( $type, $data, &$config = array(), $pk = 0 )
+	{
+		if ( self::$type != $type ) {
 			return;
 		}
 		
-		// Process
-		$result	=	$app->triggerEvent( 'onContentBeforeDelete', array( self::$context, $table ) );
-		if ( in_array( false, $result, true ) ) {
-			return false;
+		if ( ! @$config['storages'][self::$table]['_']->pk ) {
+			if ( isset( $config['storages'][self::$table] )
+			  && $config['storages'][self::$table]['_']->table == self::$table && isset( $config['storages'][self::$table][self::$key] ) ) {
+				unset( $config['storages'][self::$table][self::$key] );
+			}
+			self::_core( $config['storages'][self::$table], $config, $pk );
+			$config['storages'][self::$table]['_']->pk	=	self::$pk;
 		}
-		if ( !$table->delete( $pk ) ) {
-			return false;
+		if ( $data['_']->table != self::$table ) {
+			parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
 		}
-		$app->triggerEvent( 'onContentAfterDelete', array( self::$context, $table ) );
 		
-		return true;
+		return self::$pk;
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Protected
@@ -206,25 +220,19 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	protected function _core( $data, &$config = array(), $pk = 0 )
 	{
 		if ( ! $config['id'] ) {
-			$isNew			=	true;
+			$isNew	=	true;
 			$config['id']	=	parent::g_onCCK_Storage_LocationPrepareStore();
 		} else {
-			$isNew			=	false;
+			$isNew	=	false;
 		}
 		
 		// Init
-		$app	=	JFactory::getApplication();
 		$table	=	self::_getTable( $pk );
 		$isNew	=	( $pk > 0 ) ? false : true;
-
-		$config['params']	=	$this->params->toArray();
-		
 		self::_initTable( $table, $data, $config );
 		
 		// Check Error
 		if ( self::$error === true ) {
-			$config['error']	=	true;
-
 			return false;
 		}
 		
@@ -234,17 +242,8 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		self::_completeTable( $table, $data, $config );
 		
 		// Store
-		$app->triggerEvent( 'onContentBeforeSave', array( self::$context, &$table, $isNew, $data ) );
-		if ( !$table->store() ) {
-			JFactory::getApplication()->enqueueMessage( $table->getError(), 'error' );
-
-			if ( $isNew ) {
-				parent::g_onCCK_Storage_LocationRollback( $config['id'] );
-			}
-			$config['error']	=	true;
-			
-			return false;
-		}
+		$dispatcher	=	JEventDispatcher::getInstance();
+		$table->store();
 		
 		// Checkin
 		// parent::g_checkIn( $table );
@@ -253,14 +252,16 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 			$config['pk']	=	self::$pk;
 		}
 		
+		// $config['author']	=	$table->{self::$author}; /* TODO */
+		// $config['parent']	=	$table->{self::$parent}; /* TODO */
+		
 		parent::g_onCCK_Storage_LocationStore( $data, self::$table, self::$pk, $config );
-		$app->triggerEvent( 'onContentAfterSave', array( self::$context, &$table, $isNew ) );
 	}
 	
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
-		$table	=	JTable::getInstance( 'Link', 'RedirectTable' );
+		$table	=	JTable::getInstance( 'MenuType' );
 		
 		if ( $pk > 0 ) {
 			$table->load( $pk );
@@ -270,21 +271,29 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	}
 	
 	// _initTable
-	protected static function _initTable( &$table, &$data, &$config, $force = false )
+	protected function _initTable( &$table, &$data, &$config, $force = false )
 	{
 		if ( ! $table->{self::$key} ) {
-			parent::g_initTable( $table, $config['params'], $force );
+			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
+			/* TODO */
 		}
+		/* TODO */
+		// $table->{self::$custom}	=	'';
 	}
 	
 	// _completeTable
-	protected static function _completeTable( &$table, &$data, &$config )
+	protected function _completeTable( &$table, &$data, &$config )
 	{
+		if ( ! $table->{self::$key} ) {
+			/* TODO */
+		}
+		/* TODO */
+		
 		parent::g_completeTable( $table, self::$custom, $config );
 	}
 	
 	// -------- -------- -------- -------- -------- -------- -------- -------- // SEF
-	
+
 	// buildRoute
 	public static function buildRoute( &$query, &$segments, $config, $menuItem = null )
 	{
@@ -294,6 +303,7 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	public static function getRoute( $item, $sef, $itemId, $config = array() )
 	{
 		$route		=	'';
+		/* TODO */
 		
 		return JRoute::_( $route );
 	}
@@ -306,16 +316,16 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 		}
 		
 		if ( $sef ) {
-			$storage[self::$table]->_route	=	'';
+			$storage[self::$table]->_route	=	''; /* TODO */
 		} else {
-			$storage[self::$table]->_route	=	'';
+			$storage[self::$table]->_route	=	''; /* TODO */
 		}
 		
 		return JRoute::_( $storage[self::$table]->_route );
 	}
 	
 	// parseRoute
-	public static function parseRoute( &$vars, &$segments, $n, $config )
+	public static function parseRoute( &$vars, $segments, $n, $config )
 	{
 	}
 	
@@ -332,15 +342,19 @@ class plgCCK_Storage_LocationJoomla_Redirection extends JCckPluginLocation
 	// _getRoute
 	public static function _getRoute( $itemId, $id, $option = '' )
 	{
-        return '';
+		$link	=	'';
+		
+		/* TODO */
+		
+		return $link;
 	}
-	
-	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff
 
+	// -------- -------- -------- -------- -------- -------- -------- -------- // Stuff
+	
 	// checkIn
 	public static function checkIn( $pk = 0 )
 	{
-		return true;
+		return true; /* TODO */
 	}
 }
 ?>

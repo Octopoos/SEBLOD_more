@@ -149,7 +149,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	}
 	
 	// onCCK_Storage_LocationPrepareSearch
-	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
+	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config, &$inherit, $user )
 	{
 		if ( self::$type != $type ) {
 			return;
@@ -223,6 +223,9 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 		$app	=JFactory::getApplication();
 		$table	=	self::_getTable( $pk );
 		$isNew	=	( $pk > 0 ) ? false : true;
+
+		$config['params']	=	$this->params->toArray();
+		
 		self::_initTable( $table, $data, $config );
 		
 		// Check Error
@@ -288,12 +291,12 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	}
 	
 	// _initTable
-	protected function _initTable( &$table, &$data, &$config, $force = false )
+	protected static function _initTable( &$table, &$data, &$config, $force = false )
 	{
 		$user	=	JFactory::getUser();
 		
 		if ( ! $table->{self::$key} ) {
-			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
+			parent::g_initTable( $table, $config['params'], $force );
 			$table->{self::$author}	=	$table->{self::$author} ? $table->{self::$author} : JCck::getConfig_Param( 'integration_user_default_author', 42 );
 			if ( ( $user->id > 0 && @$user->guest != 1 ) && !isset( $data[self::$author] ) ) {
 				$data[self::$author]	=	$user->id;
@@ -303,7 +306,7 @@ class plgCCK_Storage_LocationJoomla_User_Note extends JCckPluginLocation
 	}
 	
 	// _completeTable
-	protected function _completeTable( &$table, &$data, &$config )
+	protected static function _completeTable( &$table, &$data, &$config )
 	{
 		if ( ! $table->{self::$key} ) {
 			$table->modified_user_id	=	0;

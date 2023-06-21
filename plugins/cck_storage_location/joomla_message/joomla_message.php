@@ -172,7 +172,7 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 	}
 	
 	// onCCK_Storage_LocationPrepareSearch
-	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config = array(), &$inherit = array(), $user )
+	public function onCCK_Storage_LocationPrepareSearch( $type, &$query, &$tables, &$t, &$config, &$inherit, $user )
 	{
 		if ( self::$type != $type ) {
 			return;
@@ -237,6 +237,9 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 		// Init
 		$table	=	self::_getTable( $pk );
 		$isNew	=	( $pk > 0 ) ? false : true;
+
+		$config['params']	=	$this->params->toArray();
+		
 		self::_initTable( $table, $data, $config );
 		
 		// Check Error
@@ -314,15 +317,15 @@ class plgCCK_Storage_LocationJoomla_Message extends JCckPluginLocation
 	}
 	
 	// _initTable
-	protected function _initTable( &$table, &$data, &$config, $force = false )
+	protected static function _initTable( &$table, &$data, &$config, $force = false )
 	{
 		if ( ! $table->{self::$key} ) {
-			parent::g_initTable( $table, ( ( isset( $config['params'] ) ) ? $config['params'] : $this->params->toArray() ), $force );
+			parent::g_initTable( $table, $config['params'], $force );
 		}
 	}
 	
 	// _completeTable
-	protected function _completeTable( &$table, &$data, &$config )
+	protected static function _completeTable( &$table, &$data, &$config )
 	{
 		if ( ! (int)$table->date_time ) {
 			$table->date_time	=	JFactory::getDate()->toSql();
