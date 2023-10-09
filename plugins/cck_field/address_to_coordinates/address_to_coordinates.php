@@ -178,20 +178,27 @@ class plgCCK_FieldAddress_To_Coordinates extends JCckPluginField
 			return;
 		}
 
-		$map		=	new JGoogleEmbedMaps();
+		$url	=	'https://maps.googleapis.com/maps/api/geocode/json?sensor=false';
 
 		if ( isset( $process['api_key'] ) && $process['api_key'] ) {
-			$map->setKey( $process['api_key'] );
+			$url	.= '&key=' . $process['api_key'];
 		}
 
 		$address	=	'';
+
 		if ( count( $process['fieldnames'] ) && $process['latitude'] && $process['longitude'] ) {
 			foreach ( $process['fieldnames'] as $name ) {
 				$address	.=	$fields[$name]->value.' ';
 			}
 			$address		=	trim( $address );
+
 			if ( $address ) {
-				$geocode	=	$map->geocodeAddress( $address );
+				$url		.=	'&address=' . str_replace( ' ', '+', $address );
+
+				$json			=	file_get_contents( $url, 0, null, null );
+    			$json_output	=	json_decode( $json, true );
+    			$geocode		=	$json_output['results'][0];
+
 				$lat		=	$process['latitude'];
 				$lng		=	$process['longitude'];
 				$fields[$lat]->value	=	$geocode['geometry']['location']['lat'];
