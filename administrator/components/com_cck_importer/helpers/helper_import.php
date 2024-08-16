@@ -638,7 +638,17 @@ class Helper_Import
 		JPluginHelper::importPlugin( 'cck_field' );
 
 		$app	=	JFactory::getApplication();
-		$fields	=	$session['fields'];
+		$fields		=	$session['fields'];
+		$my_app		=	JCckApp::getInstance( 'default' );
+		$settings	=	(string)JCckDatabaseCache::loadResult( 'SELECT relationships FROM #__cck_core_types WHERE name = "'.$config['type'].'"' );
+
+		if ( $settings !== '' ) {
+			$settings	=	json_decode( $settings, true );
+
+			if ( !isset( $settings['properties'] ) ) {
+				$settings['properties']	=	array();
+			}
+		}
 
 		for ( ; $start < $end; $start++ ) {
 			$config['error']			=	false;
@@ -761,6 +771,27 @@ class Helper_Import
 							$options	=	new JRegistry( $p->options );
 
 							include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
+						}
+					}
+				}
+
+				// Encrypt
+				foreach ( $config['storages'] as $table_name=>$table_data ) {
+					if ( $table_data['_']->table != 'none' ) {
+						foreach ( $table_data as $table_column_name=>$table_column_value ) {
+							if ( $table_column_name == '_' ) {
+								continue;
+							}
+
+							if ( isset( $settings['properties'][$table_column_name] ) ) {
+								if ( isset( $settings['properties'][$table_column_name]['crypt'] ) ) {
+									if ( $settings['properties'][$table_column_name]['crypt'] === true ) {
+										if ( $table_column_value !== '' ) {
+											$config['storages'][$table_name][$table_column_name]	=	$my_app->encrypt( $table_column_value );
+										}
+									}
+								}
+							}
 						}
 					}
 				}
