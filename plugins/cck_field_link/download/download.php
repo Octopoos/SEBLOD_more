@@ -10,6 +10,9 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 // Plugin
 class plgCCK_Field_LinkDownload extends JCckPluginLink
 {
@@ -67,14 +70,14 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 				$field->hits	=	(int)JCckDatabase::loadResult( $query ); //@
 				
 				$link_more2		=	$link_more.'&collection='.$collection.'&xi='.$xi;
-				$f->link		=	JRoute::_( 'index.php?option=com_cck&task='.$type.$link_more2.'&file='.$f->name.'&id='.$config['id'].$itemId );
+				$f->link		=	Route::_( 'index.php?option=com_cck&task='.$type.$link_more2.'&file='.$f->name.'&id='.$config['id'].$itemId );
 				$f->link_class	=	$link_class ? $link_class : ( isset( $f->link_class ) ? $f->link_class : '' );
 
 				if ( $link_title ) {
 					if ( $link_title == '2' ) {
 						$f->link_title	=	$link_title2;
 					} elseif ( $link_title == '3' ) {
-						$f->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+						$f->link_title	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
 					}
 					if ( !isset( $f->link_title ) ) {
 						$f->link_title	=	'';
@@ -99,7 +102,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 			} else {
 				$query			=	'SELECT a.hits FROM #__cck_core_downloads AS a WHERE a.id = '.(int)$pk.' AND a.field = "'.(string)$field_name.'" AND a.collection = "'.(string)$collection.'" AND a.x = '.(int)$xi;
 				$field->hits	=	(int)JCckDatabase::loadResult( $query ); //@
-				$field->link	=	JRoute::_( 'index.php?option=com_cck&task='.$type.$link_more.'&file='.$file_fieldname.'&id='.$pk.$itemId );
+				$field->link	=	Route::_( 'index.php?option=com_cck&task='.$type.$link_more.'&file='.$file_fieldname.'&id='.$pk.$itemId );
 			}
 
 			$field->link_attributes	=	$link_attr ? $link_attr : ( isset( $field->link_attributes ) ? $field->link_attributes : '' );
@@ -110,7 +113,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 				if ( $link_title == '2' ) {
 					$field->link_title	=	$link_title2;
 				} elseif ( $link_title == '3' ) {
-					$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+					$field->link_title	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
 				}
 				if ( !isset( $field->link_title ) ) {
 					$field->link_title	=	'';
@@ -129,7 +132,7 @@ class plgCCK_Field_LinkDownload extends JCckPluginLink
 		$pk			=	isset( $fields[$fieldname] ) ? (int)$fields[$fieldname]->value : $process['pk'];
 
 		if ( $pk ) {
-			$fields[$name]->link	=	JRoute::_( 'index.php?option=com_cck&task='.$process['type'].$process['link_more'].'&file='.$process['file_fieldname'].'&id='.$pk.$itemId );
+			$fields[$name]->link	=	Route::_( 'index.php?option=com_cck&task='.$process['type'].$process['link_more'].'&file='.$process['file_fieldname'].'&id='.$pk.$itemId );
 			$target					=	 $fields[$name]->typo_target;
 
 			if ( isset( $fields[$name]->typo_mode ) && $fields[$name]->typo_mode ) {
