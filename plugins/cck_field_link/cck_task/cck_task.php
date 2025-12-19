@@ -10,6 +10,10 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 // Plugin
 class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 {
@@ -50,7 +54,7 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 
 		if ( !$task ) {
 			return;
-		} elseif ( $task != 'impersonate' ) {
+		} elseif ( !( $task == 'impersonate' || $task == 'toggle' ) ) {
 			$task_id	=	$link->get( 'task_id_'.$task, '' );
 
 			if ( !$task_id ) {
@@ -58,9 +62,9 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 			}
 		}
 
-		$uri		=	JUri::getInstance()->toString();
+		$uri		=	Uri::getInstance()->toString();
 		$pre_task	=	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\'<input type="hidden" name="return" value="'.base64_encode( $uri ).'">\');' )
-					.	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\''.JHtml::_( 'form.token' ).'\');' );
+					.	htmlspecialchars( 'jQuery("#'.$config['formId'].'").append(\''.HTMLHelper::_( 'form.token' ).'\');' );
 		$user 		=	JCck::getUser();
 
 		// Check
@@ -73,6 +77,8 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 				}
 				return;
 			}
+		} elseif ( $task == 'toggle' ) {
+			$task_id	=	$config['id'];
 		} else {
 			if ( !$user->authorise( 'core.'.$task, 'com_cck.form.'.$config['type_id'] ) ) {
 				if ( !$link->get( 'no_access', 0 ) ) {
@@ -90,7 +96,7 @@ class plgCCK_Field_LinkCck_Task extends JCckPluginLink
 			if ( $link_title == '2' ) {
 				$field->link_title	=	$link_title2;
 			} elseif ( $link_title == '3' ) {
-				$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+				$field->link_title	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
 			}
 			if ( !isset( $field->link_title ) ) {
 				$field->link_title	=	'';
