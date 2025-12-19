@@ -21,8 +21,8 @@ echo JCckDev::renderLayoutFile( 'cck'.JCck::v().'.construction.admin.edit', arra
 	'form'=>array(
 		array(
 			'fields'=>array(
-				JCckDev::renderForm( 'core_dev_select', 'Y-m-d', $config, array( 'label'=>'Format', 'defaultvalue'=>'', 'selectlabel'=>'Auto',
-									  'options'=>'Free=-1||Use JText=optgroup||DATE_FORMAT_LC=DATE_FORMAT_LC||DATE_FORMAT_LC1=DATE_FORMAT_LC1||DATE_FORMAT_LC2=DATE_FORMAT_LC2||DATE_FORMAT_LC3=DATE_FORMAT_LC3||DATE_FORMAT_LC4=DATE_FORMAT_LC4||DATE_FORMAT_JS1=DATE_FORMAT_JS1||DATE_FORMAT_TZ=DATE_FORMAT_TZ',
+				JCckDev::renderForm( 'core_dev_select', 'Y-m-d', $config, array( 'label'=>'Format', 'defaultvalue'=>'', 'selectlabel'=>'Auto Alias',
+									  'options'=>'AUTO_SQL_DATE=auto||Free=-1||Use JText=optgroup||DATE_FORMAT_LC=DATE_FORMAT_LC||DATE_FORMAT_LC1=DATE_FORMAT_LC1||DATE_FORMAT_LC2=DATE_FORMAT_LC2||DATE_FORMAT_LC3=DATE_FORMAT_LC3||DATE_FORMAT_LC4=DATE_FORMAT_LC4||DATE_FORMAT_JS1=DATE_FORMAT_JS1||DATE_FORMAT_TZ=DATE_FORMAT_TZ',
 									  'storage_field'=>'format' ) ),
 				JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Free Format', 'storage_field'=>'format_custom' ) ),
 				JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Modifier', 'storage_field'=>'modify' ) ),
