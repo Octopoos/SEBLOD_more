@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Language\Text;
+
 // Plugin
 class plgCCK_Field_ValidationDate extends JCckPluginValidation
 {
@@ -49,7 +51,7 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 			$alert	=	$validation->range_alert;
 			if ( $config['doTranslation'] ) {
 				if ( trim( $alert ) ) {
-					$alert	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $alert ) ) );
+					$alert	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $alert ) ) );
 				}
 			}
 			$prefix	=	JCck::getConfig_Param( 'validation_prefix', '* ' );
@@ -84,7 +86,7 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 			$regex	=	self::$regexs[$region];
 		} else {
 			$region	=	'auto';
-			$regex	=	JText::_( 'COM_CCK_DATE_FORMAT_AUTO_REGEX' );
+			$regex	=	Text::_( 'COM_CCK_DATE_FORMAT_AUTO_REGEX' );
 		}
 		
 		if ( isset( $options->separator ) && $options->separator && $region != 'international' ) {
@@ -92,7 +94,11 @@ class plgCCK_Field_ValidationDate extends JCckPluginValidation
 		}
 
 		if ( isset( $options->time ) && $options->time ) {
-			$regex	.=	' ((0|1)[0-9]|2[0-3]):((0|1|2|3|4|5)[0-9]):((0|1|2|3|4|5)[0-9])';
+			$regex	.=	' ((0|1)[0-9]|2[0-3]):((0|1|2|3|4|5)[0-9])';
+
+			if ( (int)$options->time > 0 ) {
+				$regex	.=	':((0|1|2|3|4|5)[0-9])';
+			}
 		}
 		$regex	=	'/^'.$regex.'$/';
 		
