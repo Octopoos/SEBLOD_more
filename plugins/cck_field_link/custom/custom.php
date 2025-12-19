@@ -10,6 +10,11 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 // Plugin
 class plgCCK_Field_LinkCustom extends JCckPluginLink
 {
@@ -35,7 +40,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
-		$app			=	JFactory::getApplication();
+		$app			=	Factory::getApplication();
 		$custom			=	$link->get( 'custom', '#' );
 		$itemId			=	$link->get( 'itemid', 0 );
 		$link_attr		=	$link->get( 'attributes', '' );
@@ -79,7 +84,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 					if ( $link_title == '2' ) {
 						$f->link_title	=	$link_title2;
 					} elseif ( $link_title == '3' ) {
-						$f->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+						$f->link_title	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
 					}
 					if ( !isset( $f->link_title ) ) {
 						$f->link_title	=	'';
@@ -121,9 +126,9 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 						$variable	=	$matches[2][$k];
 						if ( $v == 'Current' || $v == 'CurrentUrl' || $v == 'EncodedUrl' ) {
 							if ( $v == 'CurrentUrl' || $v == 'EncodedUrl' || $variable == 'true' ) { 
-                                $request = JUri::getInstance()->toString();
+                                $request = Uri::getInstance()->toString();
                             } else {
-                                $request = JUri::current();
+                                $request = Uri::current();
                             }
                             if ( $v == 'EncodedUrl' ) {
                                 $request=   urlencode( $request );
@@ -172,7 +177,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 					$segment	=	$parts[1];
 					$custom		=	$parts[0];
 				}
-				$custom		=	JRoute::_( $custom );
+				$custom		=	Route::_( $custom );
 
 				if ( $segment != '' ) {
 					$custom	.=	'/'.$segment;
@@ -193,7 +198,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				if ( $link_title == '2' ) {
 					$field->link_title	=	$link_title2;
 				} elseif ( $link_title == '3' ) {
-					$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+					$field->link_title	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
 				}
 				if ( !isset( $field->link_title ) ) {
 					$field->link_title	=	'';
@@ -233,13 +238,16 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 
 				if ( $value && $process['itemId'] ) {
 					$value	.=	( strpos( $value, '?' ) !== false ) ? '&Itemid='.$process['itemId'] : '?Itemid='.$process['itemId'];
-					$value	=	JRoute::_( $value );
+					$value	=	Route::_( $value );
 
 				}
 
 				$fields[$name]->link        =	str_replace( $process['matches'][0][$k], $value, $fields[$name]->link );
-				$fields[$name]->html		=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->html );
-				
+
+				if ( isset( $fields[$name]->html ) ) {
+					$fields[$name]->html		=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->html );
+				}
+
 				if ( isset( $fields[$name]->typo ) ) {
 					$fields[$name]->typo	=	str_replace( $process['matches'][0][$k], $value, $fields[$name]->typo );
 				}
@@ -255,7 +263,7 @@ class plgCCK_Field_LinkCustom extends JCckPluginLink
 				$parts		=	explode( '/', $fields[$name]->link );
 				$segment	=	$parts[1];
 				$fields[$name]->link		=	$parts[0];
-				$fields[$name]->link		=	JRoute::_( $fields[$name]->link );
+				$fields[$name]->link		=	Route::_( $fields[$name]->link );
 
 				if ( $segment != '' ) {
 					$fields[$name]->link	.=	'/'.$segment;
