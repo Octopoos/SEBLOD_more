@@ -10,6 +10,9 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
+
 // Script
 class com_cck_importerInstallerScript extends JCckInstallerScriptComponent
 {
@@ -44,11 +47,11 @@ class com_cck_importerInstallerScript extends JCckInstallerScriptComponent
 	// postflight
 	public function postflight( $type, $parent )
 	{
-		$db		=	JFactory::getDbo();
+		$db		=	Factory::getDbo();
 		
 		$db->setQuery( 'SELECT manifest_cache FROM #__extensions WHERE element = "com_cck"' );
 		$res	=	$db->loadResult();
-		$reg	=	new JRegistry;
+		$reg	=	new Registry;
 		$reg->loadString( $res );
 		$v		=	substr( $reg->get( 'version', '2.0.0' ), 0, 5 );
 		
@@ -72,7 +75,7 @@ class com_cck_importerInstallerScript extends JCckInstallerScriptComponent
 			$db->setQuery( 'DELETE a.* FROM #__assets AS a WHERE a.name = "com_'.$this->cck_name.'"' );
 			$db->execute();
 			
-			JFactory::getApplication()->enqueueMessage( 'SEBLOD 2.1.0 (or >) is required.', 'error' );
+			Factory::getApplication()->enqueueMessage( 'SEBLOD 2.1.0 (or >) is required.', 'error' );
 		} else {
 			CCK_Install::manageAddon( $type, array( 'title'=>$this->cck_title, 'name'=>$this->cck_name ) );
 			CCK_Install::import( $parent, 'admin/install', $this->cck );

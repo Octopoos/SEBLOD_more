@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 require_once JPATH_ADMINISTRATOR.'/components/com_cck/helpers/common/form.php';
 
 // Helper
@@ -21,7 +23,7 @@ class Helper_Form extends CommonHelper_Form
 		$value	=	( $value ) ? $value : 'joomla_article';
 		$class	=	'class="inputbox select' . ( $field->css ? ' ' . $field->css : '' ) .'" ';
 
-		return JHtml::_( 'select.genericlist', Helper_Admin::getPluginOptions( 'storage_location', 'cck_', false, false, true, array(), '/classes/importer.php' ), $name, $class.$field->attributes, 'value', 'text', $value, $id );
+		return HTMLHelper::_( 'select.genericlist', Helper_Admin::getPluginOptions( 'storage_location', 'cck_', false, false, true, array(), '/classes/importer.php' ), $name, $class.$field->attributes, 'value', 'text', $value, $id );
 	}
 }
 ?>

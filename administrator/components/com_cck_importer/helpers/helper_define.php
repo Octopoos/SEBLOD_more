@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Language\Text;
+
 if ( is_file( JPATH_COMPONENT.'/_VERSION.php' ) ) {
 	require_once JPATH_COMPONENT.'/_VERSION.php';
 	$version	=	new JCckImporterVersion;
@@ -21,7 +23,7 @@ define( 'CCK_VERSION', 			( isset( $version ) && is_object( $version ) ) ? $vers
 define( 'CCK_NAME',				'cck_importer' );
 define( 'CCK_TITLE',			'CCK_IMPORTER' );
 define( 'CCK_ADDON',			'com_'.CCK_NAME );
-define( 'CCK_LABEL',			JText::_( CCK_ADDON.'_ADDON' ) );
+define( 'CCK_LABEL',			Text::_( CCK_ADDON.'_ADDON' ) );
 define( 'CCK_COM',				'com_cck' );
 define( 'CCK_MODEL',			CCK_TITLE.'Model' );
 define( 'CCK_TABLE',			CCK_NAME.'_Table' );

@@ -10,6 +10,12 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 // View
 class CCK_ImporterViewCCK_Importer extends JCckBaseLegacyView
 {
@@ -24,22 +30,22 @@ class CCK_ImporterViewCCK_Importer extends JCckBaseLegacyView
 	// prepareToolbar
 	protected function prepareToolbar()
 	{
-		$bar	=	JToolBar::getInstance( 'toolbar' );
+		$bar	=	Toolbar::getInstance( 'toolbar' );
 		$canDo	=	Helper_Admin::getActions();
 		
 		require_once JPATH_ADMINISTRATOR.'/components/com_cck/helpers/toolbar/separator.php';
 		
-		JToolBarHelper::title( CCK_LABEL, 'cck-seblod' );
+		ToolbarHelper::title( CCK_LABEL, 'cck-seblod' );
 		
 		if ( $canDo->get( 'core.admin' ) ) {
-			if ( JComponentHelper::getParams( 'com_cck_importer' )->get( 'output', 0 ) < 2 ) {
-				JToolBarHelper::custom( 'purge', 'delete', 'delete', 'COM_CCK_PURGE', false );
+			if ( ComponentHelper::getParams( 'com_cck_importer' )->get( 'output', 0 ) < 2 ) {
+				ToolbarHelper::custom( 'purge', 'delete', 'delete', 'COM_CCK_PURGE', false );
 				$bar->appendButton( 'CckSeparator' );
 			}
-			JToolBarHelper::preferences( CCK_ADDON, 560, 840, 'JTOOLBAR_OPTIONS' );
+			ToolbarHelper::preferences( CCK_ADDON, 560, 840, 'JTOOLBAR_OPTIONS' );
 		}
 		
-		$bar->appendButton( 'CckLink', 'archive', JText::_( 'COM_CCK_SESSIONS' ), JRoute::_( 'index.php?option=com_cck&view=sessions&extension=com_cck_importer' ), '_self' );
+		$bar->appendButton( 'CckLink', 'archive', Text::_( 'COM_CCK_SESSIONS' ), Route::_( 'index.php?option=com_cck&view=sessions&extension=com_cck_importer' ), '_self' );
 		Helper_Admin::addToolbarSupportButton();
 	}
 }

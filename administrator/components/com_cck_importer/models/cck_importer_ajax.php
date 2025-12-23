@@ -10,10 +10,11 @@
 
 defined( '_JEXEC' ) or die;
 
-jimport( 'joomla.filesystem.file' );
+use Joomla\Filesystem\File;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 // Model
-class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
+class CCK_ImporterModelCCK_Importer_Ajax extends BaseDatabaseModel
 {
 	// importFromFile_preflight
 	protected function importFromFile_preflight( $session )
@@ -174,7 +175,7 @@ class CCK_ImporterModelCCK_Importer_Ajax extends JModelLegacy
 				} else {
 					$buffer	=	$session['log']['header'].$v;
 				}
-				JFile::write( $output->root.'/'.$k.'.csv', $buffer );
+				File::write( $output->root.'/'.$k.'.csv', $buffer );
 			}
 		}
 		

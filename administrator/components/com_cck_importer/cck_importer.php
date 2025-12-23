@@ -10,11 +10,17 @@
 
 defined( '_JEXEC' ) or die;
 
-if ( ! JFactory::getUser()->authorise( 'core.manage', 'com_cck_importer' ) ) {
-	return JError::raiseWarning( 404, JText::_( 'JERROR_ALERTNOAUTHOR' ) );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
+
+$app	=	Factory::getApplication();
+
+if ( ! Factory::getUser()->authorise( 'core.manage', 'com_cck_importer' ) ) {
+	return $app->enqueueMessage( Text::_( 'JERROR_ALERTNOAUTHOR' ), 'error' );
 }
 
-$lang	=	JFactory::getLanguage();
+$lang	=	Factory::getLanguage();
 $lang->load( 'com_cck_default', JPATH_SITE );
 $lang->load( 'com_cck_core' );
 
@@ -24,7 +30,7 @@ require_once JPATH_COMPONENT.'/helpers/helper_include.php';
 require_once JPATH_COMPONENT.'/helpers/helper_admin.php';
 require_once JPATH_COMPONENT.'/helpers/helper_output.php';
 
-$controller	=	JControllerLegacy::getInstance( 'CCK_Importer' );
-$controller->execute( JFactory::getApplication()->input->get( 'task' ) );
+$controller	=	BaseController::getInstance( 'CCK_Importer' );
+$controller->execute( $app->input->get( 'task' ) );
 $controller->redirect();
 ?>

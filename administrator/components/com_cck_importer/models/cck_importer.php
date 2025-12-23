@@ -10,10 +10,12 @@
 
 defined( '_JEXEC' ) or die;
 
-jimport( 'joomla.filesystem.file' );
+use Joomla\Filesystem\File;
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 // Model
-class CCK_ImporterModelCCK_Importer extends JModelLegacy
+class CCK_ImporterModelCCK_Importer extends BaseDatabaseModel
 {
 	// importFromFile
 	public function importFromFile( &$session, $params )
@@ -93,7 +95,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 				} else {
 					$buffer	=	$session['log']['header'].$v;
 				}
-				JFile::write( $output->root.'/'.$k.'.csv', $buffer );
+				File::write( $output->root.'/'.$k.'.csv', $buffer );
 			}
 		}
 		
@@ -105,7 +107,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 	{
 		require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_import.php';
 
-		$app				=	JFactory::getApplication();
+		$app				=	Factory::getApplication();
 		$file				=	Helper_Import::uploadFile( $app->input->files->get( 'upload_file', null ) );
 		$session			=	array();
 		$session['options']	=	$app->input->get( 'options', array(), 'array' );
@@ -132,7 +134,7 @@ class CCK_ImporterModelCCK_Importer extends JModelLegacy
 		JCckDatabase::execute( 'CREATE TABLE IF NOT EXISTS '.$table_name.' ( '.implode( ',', $columns ).', PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;' );
 
 		if ( $csv['total'] ) {
-			$db		=	JFactory::getDbo();
+			$db		=	Factory::getDbo();
 			$query	=	$db->getQuery( true );
 
 			$query->insert( $table_name )

@@ -10,17 +10,24 @@
 
 defined( '_JEXEC' ) or die;
 
-JPluginHelper::importPlugin( 'cck_storage_location' );
-JText::script( 'COM_CCK_CONFIRM_PURGE_OUTPUT_FOLDER' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
 
-$app		=	JFactory::getApplication();
+PluginHelper::importPlugin( 'cck_storage_location' );
+Text::script( 'COM_CCK_CONFIRM_PURGE_OUTPUT_FOLDER' );
+
+$app		=	Factory::getApplication();
 $config		=	JCckDev::init( array(), true );
-$params		=	JComponentHelper::getParams( 'com_cck_importer' );
-$session	=	JFactory::getSession();
+$params		=	ComponentHelper::getParams( 'com_cck_importer' );
+$session	=	Factory::getSession();
 $ajax		=	$params->get( 'mode', 0 );
 $ajax_load	=	'components/com_cck/assets/styles/seblod/images/ajax.gif';
 Helper_Include::addDependencies( $this->getName(), $this->getLayout() );
-JFactory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;} .seblod-fix{padding-left:0!important; padding-right:0!important;} .seblod-fix ul{margin-left:0;} .seblod-fix table td{vertical-align:middle;} .column-name.excluded{text-decoration:line-through;} .column-name.selected{font-weight:bold;} li .icon-help.hasTooltip{margin:12px 0 0 2px;} .info-raw.disabled{padding-left:8px;}' );
+Factory::getDocument()->addStyleDeclaration( 'div.seblod .adminformlist button {margin:0;} div.seblod .adminformlist-2cols li {margin:0;} #system-message-container.j-toggle-main.span10{width: 100%;} .seblod-fix{padding-left:0!important; padding-right:0!important;} .seblod-fix ul{margin-left:0;} .seblod-fix table td{vertical-align:middle;} .column-name.excluded{text-decoration:line-through;} .column-name.selected{font-weight:bold;} li .icon-help.hasTooltip{margin:12px 0 0 2px;} .info-raw.disabled{padding-left:8px;}' );
 
 $ajaxStep	=	0;
 $ajaxTotal	=	0;
@@ -51,23 +58,23 @@ $session->set( 'cck_importer_batch_ok', '' );
 require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_import.php';
 ?>
 
-<form enctype="multipart/form-data" action="<?php echo JRoute::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
+<form enctype="multipart/form-data" action="<?php echo Route::_( 'index.php?option=' . $this->option ); ?>" method="post" id="adminForm" name="adminForm">
 <div>
 
 <div class="<?php echo $this->css['wrapper']; ?> hidden-phone">
 	<div class="<?php echo $this->css['w100']; ?>">
 		<div class="seblod first cpanel_news full">
-			<div class="legend top center plus"><?php echo CCK_LABEL .' &rarr; '. JText::_( 'COM_CCK_ADDON_'.CCK_NAME ); ?></div>
+			<div class="legend top center plus"><?php echo CCK_LABEL .' &rarr; '. Text::_( 'COM_CCK_ADDON_'.CCK_NAME ); ?></div>
 			<ul class="adminformlist">
 				<li style="text-align:center;">
-					<?php echo JText::_( 'COM_CCK_ADDON_'.CCK_NAME.'_DESC' ); ?>
+					<?php echo Text::_( 'COM_CCK_ADDON_'.CCK_NAME.'_DESC' ); ?>
 				</li>
 			</ul>
 			<div class="clr"></div>
 		</div>
 	</div>
 	<div class="seblod-less cpanel_news full">
-		<?php echo JCckDevAccordion::start( 'cckOptions', 'collapse0', JText::_( 'COM_CCK_PANE_FROM_FILE' ), array( 'active'=>'collapse0',  'useCookie'=>'1' ) ); ?>
+		<?php echo JCckDevAccordion::start( 'cckOptions', 'collapse0', Text::_( 'COM_CCK_PANE_FROM_FILE' ), array( 'active'=>'collapse0',  'useCookie'=>'1' ) ); ?>
 		<?php if ( $ajaxTotal ) { ?>
 			<?php if ( $wait ) { ?>
 			<div class="seblod cck-padding-top-0 cck-padding-bottom-0 cck-overflow-visible seblod-fix">
@@ -76,9 +83,9 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th width="30%"><?php echo JText::_( 'COM_CCK_CSV_COLUMN' )?></th>
-									<th><?php echo JText::_( 'COM_CCK_FIELD_MAPPING' )?> <span class="icon-help hasTooltip" title="<?php echo JText::_( 'COM_CCK_AJAX_FIELD_MAPPING_DESC' ); ?>"></span></th>
-									<th width="20%"><?php echo JText::_( 'COM_CCK_INPUT' )?> <span class="icon-help hasTooltip" title="<?php echo JText::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ); ?>"></span></th>
+									<th width="30%"><?php echo Text::_( 'COM_CCK_CSV_COLUMN' )?></th>
+									<th><?php echo Text::_( 'COM_CCK_FIELD_MAPPING' )?> <span class="icon-help hasTooltip" title="<?php echo Text::_( 'COM_CCK_AJAX_FIELD_MAPPING_DESC' ); ?>"></span></th>
+									<th width="20%"><?php echo Text::_( 'COM_CCK_INPUT' )?> <span class="icon-help hasTooltip" title="<?php echo Text::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ); ?>"></span></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -109,8 +116,8 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 				<div class="form-grid">
 					<div class="control-group">
 						<div class="controls text-center">
-							<button type="button" class="btn" id="abort"><?php echo JText::_( 'COM_CCK_CANCEL' ); ?></button>
-							<button type="button" class="button btn btn-primary" id="go"><?php echo JText::_( 'COM_CCK_IMPORT_NOW' ); ?></button>
+							<button type="button" class="btn" id="abort"><?php echo Text::_( 'COM_CCK_CANCEL' ); ?></button>
+							<button type="button" class="button btn btn-primary" id="go"><?php echo Text::_( 'COM_CCK_IMPORT_NOW' ); ?></button>
 						</div>
 					</div>
 				</div>
@@ -131,7 +138,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 				<div class="form-grid dest-params">
 					<div class="control-group required-params">
 						<div class="control-label">
-							<label><?php echo JText::_( 'COM_CCK_CONTENT_OBJECT' ); ?><span class="star"> *</span></label>
+							<label><?php echo Text::_( 'COM_CCK_CONTENT_OBJECT' ); ?><span class="star"> *</span></label>
 						</div>
 						<div class="controls">
 							<?php
@@ -142,7 +149,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 					</div>
 					<div class="control-group required-params">
 						<div class="control-label">
-							<label><?php echo JText::_( 'COM_CCK_CONTENT_TYPE_FORM' ); ?><span class="star"> *</span></label>
+							<label><?php echo Text::_( 'COM_CCK_CONTENT_TYPE_FORM' ); ?><span class="star"> *</span></label>
 						</div>
 						<div class="controls">
 						<?php echo JCckDev::getForm( 'more_importer_content_type', '', $config )
@@ -156,11 +163,11 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 					?>
 					<div class="control-group">
 						<div class="control-label">
-							<label><?php echo JText::_( 'COM_CCK_INPUT' ); ?>
+							<label><?php echo Text::_( 'COM_CCK_INPUT' ); ?>
 							</label>
 						</div>
 						<div class="controls">
-					 		<?php echo JCckDev::getForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config, array(), array( 'after'=>' <span class="icon-help hasTooltip" title="'.JText::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ).'"></span>' ) ); ?>
+					 		<?php echo JCckDev::getForm( 'more_importer_prepare_input', $this->params->get( 'prepare_input', '0' ), $config, array(), array( 'after'=>' <span class="icon-help hasTooltip" title="'.Text::_( 'COM_CCK_AJAX_PREPARE_INPUT_DESC' ).'"></span>' ) ); ?>
 						</div>
 					</div>
 					<?php echo JCckDev::renderForm( 'more_importer_separator', $this->params->get( 'separator', ';' ), $config ); ?>
@@ -191,7 +198,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 			</div>
 		<?php } ?>
 		<?php if ( !$ajaxTotal ) { ?>
-		<?php echo JCckDevAccordion::open( 'cckOptions', 'collapse1', JText::_( 'COM_CCK_PANE_PREPARE_FILE' ) ); ?>
+		<?php echo JCckDevAccordion::open( 'cckOptions', 'collapse1', Text::_( 'COM_CCK_PANE_PREPARE_FILE' ) ); ?>
 			<div class="seblod">
 				<div id="loading" class="loading"></div>
 				<div class="control-grid dest-params"></div>
@@ -216,7 +223,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_cck_importer/helpers/helper_im
 	<input type="hidden" name="task" value="" />
 	<?php
 	JCckDev::validate( $config );
-	echo JHtml::_( 'form.token' );
+	echo HTMLHelper::_( 'form.token' );
 	?>
 </div>
 

@@ -10,6 +10,9 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+
 require_once JPATH_ADMINISTRATOR.'/components/'.CCK_COM.'/helpers/common/include.php';
 
 // Helper
@@ -18,12 +21,12 @@ class Helper_Include extends CommonHelper_Include
 	// addDependencies
 	public static function addDependencies( $view, $layout, $tmpl = '' )
 	{		
-		$doc	=	JFactory::getDocument();
+		$doc	=	Factory::getDocument();
 		$script	=	( $tmpl == 'ajax' ) ? false : true;
 		
 		if ( $script === true ) {
-			JHtml::_( 'bootstrap.tooltip' );
-			// JHtml::_( 'formbehavior.chosen', 'select:not(.no-chosen)' );
+			HTMLHelper::_( 'bootstrap.tooltip' );
+			// HTMLHelper::_( 'formbehavior.chosen', 'select:not(.no-chosen)' );
 			
 			JCck::loadjQuery( true, true, array( 'cck.dev-3.22.0.js', 'jquery.ui.effects.min.js', 'jquery.json.min.js' ) );
 		}

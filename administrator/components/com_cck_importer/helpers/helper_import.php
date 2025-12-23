@@ -10,6 +10,13 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\Filesystem\File;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Table\Table;
+
 // Helper
 class Helper_Import 
 {
@@ -21,7 +28,7 @@ class Helper_Import
 		
 		$style						=	Helper_Workshop::getDefaultStyle();
 		
-		$table						=	JTable::getInstance( 'Type', 'CCK_Table' );
+		$table						=	Table::getInstance( 'Type', 'CCK_Table' );
 		$table->title				=	$title;
         $table->folder				=	1;
 		$table->template_admin		=	$style->id;
@@ -56,7 +63,7 @@ class Helper_Import
 	// addField
 	public static function addField( $name , $sto_table, $sto_location, $sto, $custom, $overrides = array() )
 	{
-		$field						=	JTable::getInstance( 'Field', 'CCK_Table' );
+		$field						=	Table::getInstance( 'Field', 'CCK_Table' );
 		$field->title				=	ucwords( str_replace( '_', ' ', $name ) );   
 		$field->name				=	$name;
 		$field->folder				=	1;
@@ -150,7 +157,7 @@ class Helper_Import
 			if ( !preg_match( '/./u', $data ) ) {
 				$data	=	iconv( $encoding, 'UTF-8', $data );
 				
-				JFile::write( $file, $data );
+				File::write( $file, $data );
 			}
 		}
 
@@ -176,7 +183,7 @@ class Helper_Import
 				// Get More Info
 				if ( $pos !== false ) {
 					$info		=	substr( $column, $pos );
-					$info		=	new JRegistry( $info );
+					$info		=	new Registry( $info );
 					$column	=	substr( $column, 0, $pos );
 				}
 
@@ -215,7 +222,7 @@ class Helper_Import
 								'attr'=>array( 'options'=>array() )
 							);
 
-			JPluginHelper::importPlugin( 'cck_field' );
+			PluginHelper::importPlugin( 'cck_field' );
 
 			if ( $session_data['options']['content_type'] ) {
 				$query	=	'SELECT DISTINCT a.id, a.name, a.type, a.label, b.label as label2,'
@@ -229,7 +236,7 @@ class Helper_Import
 
 				$fields	=	JCckDatabase::loadObjectList( $query );
 				$glue	=	'&nbsp;&nbsp;&mdash;&nbsp;&nbsp;';
-				$lang	=	JFactory::getLanguage();
+				$lang	=	Factory::getLanguage();
 				$tables	=	array();
 				
 				foreach ( $fields as $field ) {
@@ -245,13 +252,13 @@ class Helper_Import
 						$key			=	'COM_CCK_' . str_replace( ' ', '_', trim( $field->label ) );
 
 						if ( $lang->hasKey( $key ) ) {
-							$field->label	=	JText::_( $key );
+							$field->label	=	Text::_( $key );
 						}
 					}
 					if ( $mapping_info ) {
 						$lang->load( 'plg_cck_field_'.$field->type, JPATH_ADMINISTRATOR, null, false, true );
 
-						$data_type		=	$glue.JText::_( 'PLG_CCK_FIELD_'.strtoupper( $field->type ).'_LABEL2' );
+						$data_type		=	$glue.Text::_( 'PLG_CCK_FIELD_'.strtoupper( $field->type ).'_LABEL2' );
 					} else {
 						if ( $field->storage_table && !isset( $tables[$field->storage_table] ) ) {
 							$tables[$field->storage_table]	=	JCckDatabase::getTableFullColumns( $field->storage_table );
@@ -299,29 +306,29 @@ class Helper_Import
 							);
 		$required		=	'';
 
-		$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_IGNORED' ).' -=clear';
-		$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_IMPORT_INTO' ).'=optgroup';
+		$options['mapping'][]	=	'- '.Text::_( 'COM_CCK_IGNORED' ).' -=clear';
+		$options['mapping'][]	=	'- '.Text::_( 'COM_CCK_IMPORT_INTO' ).'=optgroup';
 
 		if ( isset( $session_data['fields'][$field_name] ) ) {
 			if ( self::hasPreparedInput( $session_data['fields'][$field_name]->type ) ) {
 				$options['mapping_attr']	=	' data-field="1"';
 			} else {
-				$html_after					=	'<span class="info-raw disabled">'.JText::_( 'COM_CCK_RAW' ).'</span>';
+				$html_after					=	'<span class="info-raw disabled">'.Text::_( 'COM_CCK_RAW' ).'</span>';
 				$options['input_attr']		=	' style="display:none;" disabled="disabled"';
 				$options['mapping_attr']	=	' data-field="0"';
 			}
-			$options['mapping'][]		=	'- '.JText::_( 'COM_CCK_INHERITED' ).' -=';
+			$options['mapping'][]		=	'- '.Text::_( 'COM_CCK_INHERITED' ).' -=';
 		} else {
 			$idx	=	array_search( $field_name, $session_data['csv']['columns'] );
 
 			if ( $idx !== false && isset( $session_data['fields'][$idx] ) ) {
-				$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_INHERITED' ).' -=';
+				$options['mapping'][]	=	'- '.Text::_( 'COM_CCK_INHERITED' ).' -=';
 			} else {
-				$options['mapping'][]	=	'- '.JText::_( 'COM_CCK_MAP_OR_IGNORE' ).' -=';
+				$options['mapping'][]	=	'- '.Text::_( 'COM_CCK_MAP_OR_IGNORE' ).' -=';
 				$required				=	'required';
 			}
 
-			$html_after					=	'<span class="info-raw disabled">'.JText::_( 'COM_CCK_RAW' ).'</span>';
+			$html_after					=	'<span class="info-raw disabled">'.Text::_( 'COM_CCK_RAW' ).'</span>';
 			$options['input_attr']		=	' style="display:none;" disabled="disabled"';
 			$options['mapping_attr']	=	' data-field="0"';
 		}
@@ -365,7 +372,7 @@ class Helper_Import
 	// initSession
 	public static function initSession( &$session, $params )
 	{
-		$app	=	JFactory::getApplication();
+		$app	=	Factory::getApplication();
 		$file	=	Helper_Import::uploadFile( $app->input->files->get( 'upload_file', null ) );
 
 		if ( $file === false ) {
@@ -417,8 +424,8 @@ class Helper_Import
 		$session['log']['pks']		=	array();
 
 		// Init (Params)
-		$plg_location		=	JPluginHelper::getPlugin( 'cck_storage_location', $session['location'] );
-		$plg_params			=	new JRegistry( $plg_location->params );
+		$plg_location		=	PluginHelper::getPlugin( 'cck_storage_location', $session['location'] );
+		$plg_params			=	new Registry( $plg_location->params );
 		$values				=	$app->input->get( 'values', array(), 'array' );
 		
 		$session['params']	=	$plg_params->toArray();
@@ -463,8 +470,8 @@ class Helper_Import
 		}
 
 		// --
-		if ( $file && JFile::exists( $file ) ) {
-			JFile::delete( $file );
+		if ( $file && is_file( $file ) ) {
+			File::delete( $file );
 		}
 	}
 
@@ -635,9 +642,9 @@ class Helper_Import
 	// process
 	public static function process( &$session, $start, $end, $current, &$config )
 	{
-		JPluginHelper::importPlugin( 'cck_field' );
+		PluginHelper::importPlugin( 'cck_field' );
 
-		$app	=	JFactory::getApplication();
+		$app	=	Factory::getApplication();
 		$fields		=	$session['fields'];
 		$my_app		=	JCckApp::getInstance( 'default' );
 		$settings	=	(string)JCckDatabaseCache::loadResult( 'SELECT relationships FROM #__cck_core_types WHERE name = "'.$config['type'].'"' );
@@ -755,7 +762,7 @@ class Helper_Import
 				if ( isset( $session['processings'][$event] ) ) {
 					foreach ( $session['processings'][$event] as $p ) {
 						if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
-							$options	=	new JRegistry( $p->options );
+							$options	=	new Registry( $p->options );
 
 							include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
 						}
@@ -768,7 +775,7 @@ class Helper_Import
 				if ( isset( $session['processings'][$event] ) ) {
 					foreach ( $session['processings'][$event] as $p ) {
 						if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
-							$options	=	new JRegistry( $p->options );
+							$options	=	new Registry( $p->options );
 
 							include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
 						}
@@ -819,7 +826,7 @@ class Helper_Import
 					if ( isset( $session['processings'][$event] ) ) {
 						foreach ( $session['processings'][$event] as $p ) {
 							if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
-								$options	=	new JRegistry( $p->options );
+								$options	=	new Registry( $p->options );
 
 								include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
 							}
@@ -832,7 +839,7 @@ class Helper_Import
 					if ( isset( $session['processings'][$event] ) ) {
 						foreach ( $session['processings'][$event] as $p ) {
 							if ( is_file( JPATH_SITE.$p->scriptfile ) ) {
-								$options	=	new JRegistry( $p->options );
+								$options	=	new Registry( $p->options );
 
 								include JPATH_SITE.$p->scriptfile; /* Variables: $fields, $config */
 							}
@@ -849,15 +856,15 @@ class Helper_Import
 	// uploadFile
 	public static function uploadFile( $file )
 	{
-		$tempFolder			=	JFactory::getConfig()->get( 'tmp_path' );
-		$fileName 			=	JFile::makeSafe( $file['name'] );
+		$tempFolder			=	Factory::getConfig()->get( 'tmp_path' );
+		$fileName 			=	File::makeSafe( $file['name'] );
 		$src				=	$file['tmp_name'];
 		$dest				=	$tempFolder.'/'.$fileName;
-		$ext				=	strtolower( JFile::getExt( $fileName ) );
+		$ext				=	strtolower( File::getExt( $fileName ) );
 		if ( !( $ext == 'csv' || $ext == 'txt' ) ) {
 			return false;
 		}
-		if ( ! JFile::upload( $src, $dest ) ) {
+		if ( ! File::upload( $src, $dest ) ) {
 			return false;
 		}
 		

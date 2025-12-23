@@ -10,9 +10,11 @@
 
 defined( '_JEXEC' ) or die;
 
-$app	=	JFactory::getApplication();
+use Joomla\CMS\Factory;
+
+$app	=	Factory::getApplication();
 $config	=	JCckDev::init( array(), true, array( 'item'=>new stdClass, 'tmpl'=>'ajax' ) );
-$lang 	=	JFactory::getLanguage();
+$lang 	=	Factory::getLanguage();
 $type	=	$app->input->getString( 'ajax_type', 'joomla_article' );
 $lang->load( 'plg_cck_storage_location_'.$type, JPATH_ADMINISTRATOR, null, false, true );
 Helper_Include::addDependencies( $this->getName(), $this->getLayout(), 'ajax' );
