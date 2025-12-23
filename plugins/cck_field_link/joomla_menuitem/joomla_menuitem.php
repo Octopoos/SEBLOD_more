@@ -10,6 +10,11 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 // Plugin
 class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 {
@@ -35,7 +40,7 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 	// _link
 	protected static function _link( $link, &$field, &$config )
 	{
-		$app			=	JFactory::getApplication();
+		$app			=	Factory::getApplication();
 		$custom			=	$link->get( 'custom', '' );
 		$itemId			=	$link->get( 'itemid', '' );
 		$redirection	=	$link->get( 'redirection', '' );
@@ -74,7 +79,7 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 		}
 		
 		// Set
-		$field->link		=	JRoute::_( 'index.php?Itemid='.$itemId );
+		$field->link		=	Route::_( 'index.php?Itemid='.$itemId );
 		
 		if ( $field->link ) {
 			$link_link	=	$field->link;
@@ -88,7 +93,7 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&'.$vars : '?'.$vars;
 			}
 			if ( $redirection == 'current' ) {
-				$uri			=	JUri::getInstance()->toString();
+				$uri			=	Uri::getInstance()->toString();
 				$return			=	base64_encode( $uri );
 				$field->link	.=	( strpos( $field->link, '?' ) !== false ) ? '&return='.$return : '?return='.$return;
 			}
@@ -111,7 +116,7 @@ class plgCCK_Field_LinkJoomla_Menuitem extends JCckPluginLink
 			if ( $link_title == '2' ) {
 				$field->link_title	=	$link_title2;
 			} elseif ( $link_title == '3' ) {
-				$field->link_title	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
+				$field->link_title	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $link_title2 ) ) );
 			}
 			if ( !isset( $field->link_title ) ) {
 				$field->link_title	=	'';
