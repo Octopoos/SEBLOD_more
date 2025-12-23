@@ -10,13 +10,16 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
+
 // Plugin
 class plgCCK_Storage_LocationJoomla_Menu extends JCckPluginLocation
 {
 	protected static $type			=	'joomla_menu';
 	protected static $type_alias	=	'Menu';
 	protected static $table			=	'#__menu_types';
-	protected static $table_object	=	array( 'MenuType', 'JTable' );
+	protected static $table_object	=	array( 'MenuType', 'Table' );
 	protected static $key			=	'id';
 	protected static $key_field		=	'nav_list_pk';
 	
@@ -261,7 +264,7 @@ class plgCCK_Storage_LocationJoomla_Menu extends JCckPluginLocation
 	// _getTable
 	protected static function _getTable( $pk = 0 )
 	{
-		$table	=	JTable::getInstance( 'MenuType' );
+		$table	=	Table::getInstance( 'MenuType' );
 		
 		if ( $pk > 0 ) {
 			$table->load( $pk );
@@ -305,14 +308,14 @@ class plgCCK_Storage_LocationJoomla_Menu extends JCckPluginLocation
 		$route		=	'';
 		/* TODO */
 		
-		return JRoute::_( $route );
+		return Route::_( $route );
 	}
 	
 	// getRouteByStorage
 	public static function getRouteByStorage( &$storage, $sef, $itemId, $config = array() )
 	{
 		if ( isset( $storage[self::$table]->_route ) ) {
-			return JRoute::_( $storage[self::$table]->_route );
+			return Route::_( $storage[self::$table]->_route );
 		}
 		
 		if ( $sef ) {
@@ -321,7 +324,7 @@ class plgCCK_Storage_LocationJoomla_Menu extends JCckPluginLocation
 			$storage[self::$table]->_route	=	''; /* TODO */
 		}
 		
-		return JRoute::_( $storage[self::$table]->_route );
+		return Route::_( $storage[self::$table]->_route );
 	}
 	
 	// parseRoute
