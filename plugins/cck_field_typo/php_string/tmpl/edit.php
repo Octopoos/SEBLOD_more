@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Language\Text;
+
 JCckDev::initScript( 'typo', $this->item );
 $texts	=	array(
 				'COM_CCK_PHP_STRING_START',
@@ -26,12 +28,12 @@ $texts	=	array(
 				'COM_CCK_THOUSANDS_SEPARATOR'
 			);
 foreach ( $texts as $t ) {
-	JText::script( $t );
+	Text::script( $t );
 }
 ?>
 
 <div class="seblod">
-	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_TYPO_'.$this->item->name.'_DESC' ) ); ?>
+	<?php echo JCckDev::renderLegend( Text::_( 'COM_CCK_CONSTRUCTION' ), Text::_( 'PLG_CCK_FIELD_TYPO_'.$this->item->name.'_DESC' ) ); ?>
     <ul class="adminformlist adminformlist-2cols">
         <?php
 		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Function', 'selectlabel'=>'Select', 'options'=>'number_format||split||str_repeat||str_replace||strip_tags||strtolower||strtoupper||substr||substr_count||truncate||ucfirst||ucwords||wordwrap', 'bool8'=>0, 'storage_field'=>'function' ) );
@@ -50,7 +52,7 @@ foreach ( $texts as $t ) {
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Php String Prefix', 'storage_field'=>'prefix' ) );
 		echo JCckDev::renderForm( 'core_dev_text', '', $config, array( 'label'=>'Php String Suffix', 'storage_field'=>'suffix' ) );
 
-		echo JCckDev::renderSpacer( JText::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.JText::_( 'COM_CCK_GENERIC' ).')</span>' );
+		echo JCckDev::renderSpacer( Text::_( 'COM_CCK_CONSTRUCTION' ) . '<span class="mini">('.Text::_( 'COM_CCK_GENERIC' ).')</span>' );
 		echo JCckDev::renderForm( 'core_dev_bool', '', $config, array( 'label'=>'Behavior', 'selectlabel'=>'', 'defaultvalue'=>'0', 'options'=>'Auto=0||Typo Label=1', 'storage_field'=>'typo_label' ) );
 		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Typo Target', 'selectlabel'=>'Auto', 'defaultvalue'=>'', 'options'=>'Value=value', 'storage_field'=>'typo_target' ) );
         ?>
