@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+
 // Plugin
 class plgCCK_Field_RestrictionCck_Site extends JCckPluginRestriction
 {
@@ -57,7 +59,7 @@ class plgCCK_Field_RestrictionCck_Site extends JCckPluginRestriction
 	protected static function _authorise( $restriction, &$field, &$config )
 	{
 		$do		=	$restriction->get( 'do', 0 );
-		$lang	=	JFactory::getLanguage();
+		$lang	=	Factory::getLanguage();
 		$sites	=	$restriction->get( 'sites', '' );
 		
 		if ( $sites ) {

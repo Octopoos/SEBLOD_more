@@ -19,14 +19,21 @@ foreach ( $items as $item ) {
 	$options[]	=		$item->title.'='.$item->id;
 }
 $options	=	implode( '||', $options );
-?>
 
-<div class="seblod">
-	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_RESTRICTION_'.$this->item->name.'_DESC' ) ); ?>
-    <ul class="adminformlist adminformlist-2cols">
-        <?php
-		echo JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Site', 'options'=>$options, 'required'=>'required', 'bool8'=>0, 'storage_field'=>'sites' ) );
-		echo JCckDev::renderForm( 'core_bool', '', $config, array( 'label'=>'Invert', 'defaultvalue'=>'0', 'options'=>'Yes=1||No=0', 'storage_field'=>'do' ) );
-        ?>
-    </ul>
-</div>
+// Set
+echo JCckDev::renderLayoutFile( 'cck'.JCck::v().'.construction.admin.edit', array(
+    'config'=>$config,
+    'form'=>array(
+        array(
+            'fields'=>array(
+				JCckDev::renderForm( 'core_dev_select', '', $config, array( 'label'=>'Site', 'options'=>$options, 'required'=>'required', 'bool8'=>0, 'storage_field'=>'sites' ) ),
+				JCckDev::renderForm( 'core_bool', '', $config, array( 'label'=>'Invert', 'type'=>'radio', 'defaultvalue'=>'0', 'options'=>'No=0||Yes=1', 'css'=>'btn-group', 'storage_field'=>'do' ) )
+            )
+        )
+    ),
+    'html'=>'',
+    'item'=>$this->item,
+    'script'=>'',
+    'type'=>'restriction'
+) );
+?>
