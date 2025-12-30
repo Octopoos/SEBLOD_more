@@ -10,6 +10,10 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
+
 // Plugin
 class plgCCK_FieldSearch_Total extends JCckPluginField
 {
@@ -72,7 +76,7 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 		$value		=	'';
 		
 		// Prepare
-		$options2	=	new JRegistry( $field->options2 );
+		$options2	=	new Registry( $field->options2 );
 		parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'id'=>$id, 'name'=>$name, 'jtext'=>$options2->get( 'jtext', '' ), 'alternative'=>(int)$options2->get( 'alternative', '0' ) ) );
 
 		// Set
@@ -152,13 +156,13 @@ class plgCCK_FieldSearch_Total extends JCckPluginField
 
 			if ( $jtext != '' ) {
 				if ( $alt ) {
-					if ( $config['total'] == 1 && JFactory::getLanguage()->hasKey( $jtext.'_1' ) ) {
+					if ( $config['total'] == 1 && Factory::getLanguage()->hasKey( $jtext.'_1' ) ) {
 						$jtext	.=	'_1';
-					} elseif ( $config['total'] == 0 && JFactory::getLanguage()->hasKey( $jtext.'_0' ) ) {
+					} elseif ( $config['total'] == 0 && Factory::getLanguage()->hasKey( $jtext.'_0' ) ) {
 						$jtext	.=	'_0';
 					}
 				}
-				$fields[$name]->form	=	JText::sprintf( $jtext, $config['total'], $step, $start, $end );
+				$fields[$name]->form	=	Text::sprintf( $jtext, $config['total'], $step, $start, $end );
 			} else {
 				$fields[$name]->form	=	$config['total'];
 			}
