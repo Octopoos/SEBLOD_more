@@ -58,22 +58,40 @@ class plgCCK_Field_RestrictionSearch_Total extends JCckPluginRestriction
 	{
 		if ( $config['client'] == 'search' ) {
 			parent::g_addProcess( 'beforeRenderForm', self::$type, $config, array( 'name'=>$field->name, 'restriction'=>$restriction ) );
+		} elseif ( $config['client'] == 'list' ) {
+			$diff	=	(int)$restriction->get( 'values', 0 );
+			$do		=	$restriction->get( 'do', 0 );
+
+			if ( $config['total'] > $diff ) {
+				$do	=	( $do ) ? false : true;
+			} else {
+				$do	=	( $do ) ? true : false;
+			}
+
+			if ( $do ) {
+				return true;
+			} else {
+				$field->display	=	0;
+				$field->state	=	0;
+				return false;
+			}
+		} else {
+			parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'restriction'=>$restriction ) );
 		}
 
 		return true;
 	}
 
-	// -------- -------- -------- -------- -------- -------- -------- -------- // Special Events
-
-	// onCCK_Field_RestrictionBeforeRenderForm
-	public static function onCCK_Field_RestrictionBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
+	// _authoriseBeforeEvent
+	protected static function _authoriseBeforeEvent( $process, &$fields, &$storages, &$config = array() )
 	{
 		$name			=	$process['name'];
 		$restriction	=	$process['restriction'];
 
+		$diff	=	(int)$restriction->get( 'values', 0 );
 		$do		=	$restriction->get( 'do', 0 );
 
-		if ( $config['total'] > 0 ) {
+		if ( $config['total'] > $diff ) {
 			$do	=	( $do ) ? false : true;
 		} else {
 			$do	=	( $do ) ? true : false;
@@ -86,6 +104,20 @@ class plgCCK_Field_RestrictionSearch_Total extends JCckPluginRestriction
 			$fields[$name]->state	=	0;
 			return false;
 		}
+	}
+
+	// -------- -------- -------- -------- -------- -------- -------- -------- // Special Events
+
+	// onCCK_Field_RestrictionBeforeRenderContent
+	public static function onCCK_Field_RestrictionBeforeRenderContent( $process, &$fields, &$storages, &$config = array() )
+	{
+		return self::_authoriseBeforeEvent( $process, $fields, $storages, $config );
+	}
+
+	// onCCK_Field_RestrictionBeforeRenderForm
+	public static function onCCK_Field_RestrictionBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
+	{
+		return self::_authoriseBeforeEvent( $process, $fields, $storages, $config );
 	}
 }
 ?>
