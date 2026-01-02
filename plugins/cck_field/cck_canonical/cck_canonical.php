@@ -10,6 +10,10 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Uri\Uri;
+
 // Plugin
 class plgCCK_FieldCck_Canonical extends JCckPluginField
 {
@@ -42,15 +46,16 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 			if ( $field->options2 != '' ) {
 				$fieldname		=	'';
 				$fieldname2		=	'';
+				$fieldname_url	=	'';
 				$itemIds		=	'';
 				$location		=	( $config['location'] ) ? $config['location'] : 'joomla_article';
-				$options2		=	new JRegistry( $field->options2 );
+				$options2		=	new Registry( $field->options2 );
 				
 				if ( $options2->get( 'content' ) == '2' ) {				
-					$fieldname	=	$options2->get( 'content_fieldname' );
+					$fieldname	=	$options2->get( 'content_fieldname', '' );
 				}
 				if ( $options2->get( 'itemid' ) == '-2' ) {
-					$fieldname2	=	$options2->get( 'itemid_fieldname' );
+					$fieldname2	=	$options2->get( 'itemid_fieldname', '' );
 					$itemId		=	$config['Itemid'];
 				} else {
 					$itemId		=	$options2->get( 'itemid', $config['Itemid'] );
@@ -59,7 +64,7 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 					$itemIds	=	$options2->get( 'itemids', '' );
 				}
 
-				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'mode2'=>(string)$field->bool2, 'itemIds'=>$itemIds, 'sef'=>$options2->get( 'sef', JCck::getConfig_Param( 'sef' ) ) ), 5 );
+				parent::g_addProcess( 'beforeRenderContent', self::$type, $config, array( 'name'=>$field->name, 'fieldname'=>$fieldname, 'itemId'=>$itemId, 'fieldname2'=>$fieldname2, 'location'=>$location, 'mode'=>(string)$field->bool, 'mode2'=>(string)$field->bool2, 'itemIds'=>$itemIds, 'fieldname_url'=>$options2->get( 'url_fieldname', '' ) ), 5 );
 			}
 		}
 
@@ -125,9 +130,9 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 			return;
 		}
 		
-		$app	=	JFactory::getApplication();
-		$doc	=	JFactory::getDocument();
-		$uri	=	JUri::getInstance();
+		$app	=	Factory::getApplication();
+		$doc	=	Factory::getDocument();
+		$uri	=	Uri::getInstance();
 
 		$domain	=	$uri->toString( array( 'scheme', 'host', 'port' ) );
 		$pk		=	$config['pk'];
@@ -140,27 +145,81 @@ class plgCCK_FieldCck_Canonical extends JCckPluginField
 			}
 		}
 
-		if ( $process['fieldname'] && isset( $fields[$process['fieldname']] ) && $fields[$process['fieldname']]->value ) {
-			$pk	=	$fields[$process['fieldname']]->value;
+		if ( $process['fieldname_url'] && isset( $fields[$process['fieldname_url']] ) && $fields[$process['fieldname_url']]->value ) {
+			$link	=	$fields[$process['fieldname_url']]->value;
+
+			if ( $link[0] != '/' ) {
+				$link	=	'/'.$link;
+			}
+		} else {
+			if ( $process['fieldname'] && isset( $fields[$process['fieldname']] ) && $fields[$process['fieldname']]->value ) {
+				$pk	=	$fields[$process['fieldname']]->value;
+			}
+
+			$config['sef_aliases']	=	(int)JCck::getConfig_Param( 'sef_aliases', '0' );
+			$itemId					=	0;
+			$sef					=	$process['sef'] ?? '';
+			$sef					=	(string)$sef;
+
+			if ( $process['fieldname2'] && isset( $fields[$process['fieldname2']] ) && $fields[$process['fieldname2']]->value ) {
+				$itemId	=	$fields[$process['fieldname2']]->value;
+			}
+			if ( !$itemId ) {
+				$itemId	=	$process['itemId'];
+			}	
+			if ( $sef === '' ) {
+				$menu	=	$app->getMenu();
+
+				$active	=	$itemId ? $menu->getItem( $itemId ) : $menu->getActive();
+
+				if ( isset( $active->query['view'] ) && $active->query['view'] == 'list' ) {
+					$options	=	JCckDatabase::loadResult( 'SELECT options FROM #__cck_core_searchs WHERE name = "'.$active->query['search'].'"' );
+					$options	=	json_decode( $options, true );
+					$path 		=	Uri::getInstance()->getPath();
+					
+					$sef		=	$options['sef'];
+
+					if ( $active->route != '' ) {
+						$pos		=	strpos( $path, $active->route );
+
+						if ( $pos !== false ) {
+							if ( $path[0] == '/' ) {
+								$pos++;
+							}
+
+							$path	=	substr( $path, $pos + strlen( $active->route ) );
+							$segments	=	explode( '/', $path );
+
+							if ( ( isset( $sef[0] ) && $sef[0] == '4' ) && count( $segments ) === 1 ) {
+								$sef[0]	=	'2';
+							}
+						}
+					}
+					if ( isset( $options['sef_route_aliases'] ) && (int)$options['sef_route_aliases'] != -1 ) {
+						$config['sef_aliases']	=	$options['sef_route_aliases'];
+					}
+				}
+			}
+			if ( $sef === '' ) {
+				$sef	=	$config['doSEF'];
+			}
+
+			$link	=	JCck::callFunc_Array( 'plgCCK_Storage_Location'.$process['location'], 'getRoute', array( $pk, $sef, $itemId, $config ) );
 		}
-		$itemId	=	0;
-		if ( $process['fieldname2'] && isset( $fields[$process['fieldname2']] ) && $fields[$process['fieldname2']]->value ) {
-			$itemId	=	$fields[$process['fieldname2']]->value;
-		}
-		if ( !$itemId ) {
-			$itemId	=	$process['itemId'];
-		}
-		$link	=	JCck::callFunc_Array( 'plgCCK_Storage_Location'.$process['location'], 'getRoute', array( $pk, $process['sef'], $itemId, $config ) );
 
 		if ( $process['mode2'] == '2' ) {
 			$itemIds	=	explode( '||', $process['itemIds'] );
 
-			if ( in_array( JFactory::getApplication()->input->getInt( 'Itemid' ), $itemIds ) && $doc->getBase() != $domain.$link ) {
+			if ( in_array( Factory::getApplication()->input->getInt( 'Itemid' ), $itemIds ) && $doc->getBase() != $domain.$link ) {
 				$app->redirect( $link, 301 );
 				return;
 			}
 		}
 		if ( $process['mode'] == '0' || ( $process['mode'] == '1' && $doc->getBase() != $domain.$link ) ) {
+			if ( $link == '/' ) {
+				$link	=	'';
+			}
+
 			$doc->addHeadLink( $domain.$link, 'canonical' );
 			$app->cck_canonical_url	=	$link;
 			$app->cck_canonical		=	true;	
