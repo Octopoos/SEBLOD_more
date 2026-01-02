@@ -10,6 +10,10 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 // Plugin
 class plgCCK_FieldMessage_Redirection extends JCckPluginField
 {
@@ -193,7 +197,7 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 			$message	=	$options2->message;
 
 			if ( JCck::getConfig_Param( 'language_jtext', 1 ) ) {
-				$message	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $message ) ) );
+				$message	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $message ) ) );
 			}
 		}
 		if ( isset( $options2->itemid ) && $options2->itemid ) {
@@ -201,14 +205,14 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 			$url	=	'';
 
 			if ( $itemId == -1 ) {
-				$itemId	=	JFactory::getApplication()->input->getInt( 'Itemid' );
+				$itemId	=	Factory::getApplication()->input->getInt( 'Itemid' );
 			} elseif ( $itemId == -2 ) {
 				$itemId	=	0;
-				$url	=	trim( JUri::current(), '/' );
+				$url	=	trim( Uri::current(), '/' );
 				$url	=	substr( $url, 0, strrpos( $url, '/' ) );
 			}
 			if ( isset( $options2->timeout ) && $options2->timeout == 0 ) {
-				$app			=	JFactory::getApplication();
+				$app			=	Factory::getApplication();
 				$status_code	=	303;
 
 				if ( isset( $options2->status_code ) && $options2->status_code ) {
@@ -225,10 +229,10 @@ class plgCCK_FieldMessage_Redirection extends JCckPluginField
 			} else {
 				$redirection	=	'document.location.href=\''.JCckDevHelper::getAbsoluteUrl( $itemId ).'\'';
 			
-				JFactory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$options2->timeout_ms.');' );
+				Factory::getDocument()->addScriptDeclaration( 'setTimeout("'.$redirection.'",'.$options2->timeout_ms.');' );
 			}
 		} elseif ( $message ) {
-			JFactory::getApplication()->enqueueMessage( $message, $options2->message_style );
+			Factory::getApplication()->enqueueMessage( $message, $options2->message_style );
 		}
 	}
 }
