@@ -26,7 +26,16 @@ class plgCCK_FieldCck_Break extends JCckPluginField
 		}
 		parent::g_onCCK_FieldConstruct( $data );
 	}
-	
+
+	// onCCK_FieldConstruct_TypeContent
+	public static function onCCK_FieldConstruct_TypeContent( &$field, $style, $data = array(), &$config = array() )
+	{
+		$data['markup']			=	null;
+		$data['markup_class']	=	null;
+
+		parent::onCCK_FieldConstruct_TypeContent( $field, $style, $data, $config );
+	}
+
 	// -------- -------- -------- -------- -------- -------- -------- -------- // Prepare
 	
 	// onCCK_FieldPrepareContent
@@ -35,7 +44,20 @@ class plgCCK_FieldCck_Break extends JCckPluginField
 		if ( self::$type != $field->type ) {
 			return;
 		}
+
+		$count	=	0;
+
+		if ( isset( $config['process']['beforeRenderContent'] ) && is_array( $config['process']['beforeRenderContent'] ) ) {
+			$count	=	count( $config['process']['beforeRenderContent'] );
+		}
+
 		parent::g_onCCK_FieldPrepareContent( $field, $config );
+
+		if ( isset( $config['process']['beforeRenderContent'] ) && is_array( $config['process']['beforeRenderContent'] ) ) {
+			if ( count( $config['process']['beforeRenderContent'] ) > $count ) {
+				$field->process	=	array_pop( $config['process']['beforeRenderContent'] );
+			}
+		}
 
 		// Set
 		if ( $field->state ) {
