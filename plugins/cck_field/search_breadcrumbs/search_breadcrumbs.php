@@ -10,6 +10,9 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 // Plugin
 class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 {
@@ -142,7 +145,7 @@ class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 	// onCCK_FieldBeforeRenderForm
 	public static function onCCK_FieldBeforeRenderForm( $process, &$fields, &$storages, &$config = array() )
 	{
-		$app				=	JFactory::getApplication();
+		$app				=	Factory::getApplication();
 		$name				=	$process['name'];
 
 		$class				=	( $fields[$name]->css ) ? ' class="'.$fields[$name]->css.'"' : '';
@@ -200,17 +203,17 @@ class plgCCK_FieldSearch_Breadcrumbs extends JCckPluginField
 								$child->label	=	'Nbsp';
 							}
 							if ( trim( $child->label ) ) {
-								$child->label	=	JText::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $child->label ) ) );
+								$child->label	=	Text::_( 'COM_CCK_' . str_replace( ' ', '_', trim( $child->label ) ) );
 							}
 						}	
 					}
-					$form	.=	'<li><span>'.$child->label.'</span>'.JText::_( 'COM_CCK_PAIR_KEY_VALUE_SEPARATOR' ).$val.'</li>';
+					$form	.=	'<li><span>'.$child->label.'</span>'.Text::_( 'COM_CCK_PAIR_KEY_VALUE_SEPARATOR' ).$val.'</li>';
 				}
 				$config['doTranslation']	=	$doTranslation;
 			}
 		}
 		if ( $process['clear_all'] && $clear_all ) {
-			$form	=	'<li><a'.$class.' href="javascript:void(0);" onclick="'.$clear_all_js.' '.$submit.'(\'search\');">'.JText::_( 'COM_CCK_PLG_SEARCH_BREADCRUMBS_ALL_RESULTS' ).'</a></li>'.$form;
+			$form	=	'<li><a'.$class.' href="javascript:void(0);" onclick="'.$clear_all_js.' '.$submit.'(\'search\');">'.Text::_( 'COM_CCK_PLG_SEARCH_BREADCRUMBS_ALL_RESULTS' ).'</a></li>'.$form;
 		}
 		if ( $form ) {
 			$form	=	'<ul>'.$form.'</ul>';

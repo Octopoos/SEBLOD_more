@@ -10,23 +10,37 @@
 
 defined( '_JEXEC' ) or die;
 
+// Init
+JCckDev::forceStorage();
 JCckDev::initScript( 'field', $this->item, array( 'hasOptions'=>true,
 												  'customAttr'=>array( 'clear' ), 'customAttrLabel'=>JText::_( 'COM_CCK_CLEAR' ),
 												  'fieldPicker'=>true ) );
-JCckDev::forceStorage();
-$options	=	JCckDev::fromSTRING( $this->item->options );
-?>
 
-<div class="seblod">
-	<?php echo JCckDev::renderLegend( JText::_( 'COM_CCK_CONSTRUCTION' ), JText::_( 'PLG_CCK_FIELD_'.$this->item->type.'_DESC' ) ); ?>
-	<ul class="adminformlist adminformlist-2cols">
-	<?php
-	echo JCckDev::renderForm( 'core_label', $this->item->label, $config );
-	echo JCckDev::renderForm( 'core_bool2', $this->item->bool2, $config, array( 'defaultvalue'=>1, 'label'=>'Clear All Toggle', 'options'=>'Hide=0||Show=1' ) );
-	echo JCckDev::renderForm( 'core_options', $options, $config, array( 'label'=>'Fields', 'rows'=>1 ), array( 'after'=>$this->item->init['fieldPicker'] ) );
-	
-	echo JCckDev::renderSpacer( JText::_( 'COM_CCK_STORAGE' ), JText::_( 'COM_CCK_STORAGE_DESC' ) );
-	echo JCckDev::getForm( 'core_storage', $this->item->storage, $config );
-	?>
-	</ul>
-</div>
+$options	=	JCckDev::fromSTRING( $this->item->options );
+
+// Set
+$displayData	=	array(
+						'config'=>$config,
+						'form'=>array(
+							array(
+								'fields'=>array(
+									JCckDev::renderForm( 'core_label', $this->item->label, $config ),
+									JCckDev::renderForm( 'core_bool2', $this->item->bool2, $config, array( 'defaultvalue'=>1, 'label'=>'Clear All Toggle', 'options'=>'Hide=0||Show=1' ) ),
+									JCckDev::renderForm( 'core_options', $options, $config, array( 'label'=>'Fields', 'rows'=>1 ), array( 'after'=>$this->item->init['fieldPicker'] ) )
+								),
+							),
+							array(
+								'fields'=>array(
+									JCckDev::getForm( 'core_storage', $this->item->storage, $config )
+								),
+								'mode'=>'storage'
+							)
+						),
+						'help'=>array(),
+						'html'=>'',
+						'item'=>$this->item,
+						'script'=>$js
+					);
+
+echo JCckDev::renderLayoutFile( 'cck'.JCck::v().'.construction.cck_field.edit', $displayData );
+?>
