@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\User\User;
 
 // Helper
 class Helper_Import 
@@ -496,10 +497,8 @@ class Helper_Import
 				$items	=	JCckDatabase::loadColumn( $query );
 
 				if ( count( $items ) ) {
-					JLoader::register( 'JUser', JPATH_PLATFORM.'/joomla/user/user.php' );
-
 					foreach ( $items as $item ) {
-						$table			=	JUser::getInstance( $item );
+						$table			=	User::getInstance( $item );
 
 						if ( !$table->authorise( 'core.admin' ) ) {
 							$table->block	=	1;
