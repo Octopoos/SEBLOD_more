@@ -10,10 +10,12 @@
 
 defined( '_JEXEC' ) or die;
 
+use Joomla\CMS\Language\Text;
+
 // Init
 JCckDev::forceStorage();
 JCckDev::initScript( 'field', $this->item, array( 'hasOptions'=>true,
-												  'customAttr'=>array( 'clear' ), 'customAttrLabel'=>JText::_( 'COM_CCK_CLEAR' ),
+												  'customAttr'=>array( 'clear' ), 'customAttrLabel'=>Text::_( 'COM_CCK_CLEAR' ),
 												  'fieldPicker'=>true ) );
 
 $options	=	JCckDev::fromSTRING( $this->item->options );
